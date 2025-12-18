@@ -7,7 +7,25 @@ find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_library(MyEngine STATIC 
-    # Add all your source files here
+    # core
+    include/lgml/core/window.hpp
+    src/core/window.cpp
+
+    # renderer
+    include/lgml/renderer/buffer.hpp
+    include/lgml/renderer/renderer.hpp
+    include/lgml/renderer/shader.hpp
+    include/lgml/renderer/texture.hpp
+    include/lgml/renderer/vertex_array.hpp
+    src/renderer/renderer.cpp
+
+    # scene
+    include/lgml/scene/camera.hpp
+    include/lgml/scene/light.hpp
+    include/lgml/scene/mesh.hpp
+    include/lgml/scene/node.hpp
+    include/lgml/scene/scene.hpp
+    src/scene/scene.cpp
 )
 
 target_include_directories(MyEngine PUBLIC include)
