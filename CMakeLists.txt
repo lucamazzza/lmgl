@@ -35,7 +35,7 @@ add_library(lmgl STATIC
     src/scene/scene.cpp
 )
 
-target_include_directories(lmgl PUBLIC include)
+target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(lmgl PUBLIC external/glad/include)
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
