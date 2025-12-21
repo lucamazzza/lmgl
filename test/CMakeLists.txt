@@ -17,5 +17,9 @@ add_executable(Tests
 
 target_link_libraries(Tests PRIVATE lmgl GTest::gtest_main)
 
+if(HEADLESS)
+    target_compile_definitions(Tests PRIVATE TEST_HEADLESS)
+endif()
+
 gtest_discover_tests(Tests)
 

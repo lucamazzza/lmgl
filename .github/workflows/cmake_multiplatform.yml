@@ -64,6 +64,13 @@ jobs:
         .\vcpkg\bootstrap-vcpkg.bat
         .\vcpkg\vcpkg install glfw3:x64-windows
     
+    - name: Setup Xvfb (Linux)
+      if : runner.os == 'Linux'
+      run: |
+        sudo apt-get install -y xvfb
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        echo "DISPLAY=:99" >> $GITHUB_ENV
+
     - name: Configure CMake
       env:
         CC: ${{ matrix.config.cc }}

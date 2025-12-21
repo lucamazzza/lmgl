@@ -4,6 +4,8 @@ project(lmgl VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+option(HEADLESS "Build without display support for CI" OFF)
+
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
@@ -37,6 +39,10 @@ add_library(lmgl STATIC
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(lmgl PUBLIC external/glad/include)
+
+if(HEADLESS)
+    target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
+endif()
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
