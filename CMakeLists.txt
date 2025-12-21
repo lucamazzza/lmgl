@@ -59,23 +59,6 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_GENERATOR "TGZ;ZIP")
 include(CPack)
 
-add_subdirectory(test)
-add_executable(Tests 
-    core/engine_test.cpp
-    core/window_test.cpp
-    
-    renderer/buffer_test.cpp
-    renderer/renderer_test.cpp
-    renderer/shader_test.cpp
-    renderer/texture_test.cpp
-    renderer/vertex_array_test.cpp
-
-    scene/camera_test.cpp
-    scene/light_test.cpp
-    scene/mesh_test.cpp
-    scene/node_test.cpp
-    scene/scene_test.cpp
-)
 enable_testing()
 include(GoogleTest)
-
+add_subdirectory(test)
