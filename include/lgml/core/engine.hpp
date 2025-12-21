@@ -13,6 +13,7 @@
  */
 #pragma once
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <functional>
 #include <string>
@@ -131,6 +132,17 @@ private:
 
     //! @brief Delete assignment operator to prevent copies.
     Engine& operator=(const Engine&) = delete;
+
+    /*!
+     * @brief Callback function for framebuffer size changes.
+     *
+     * Adjusts the OpenGL viewport when the window is resized.
+     *
+     * @param window Pointer to the GLFW window.
+     * @param w New width of the framebuffer.
+     * @param h New height of the framebuffer.
+     */
+    static void fb_size_callback(GLFWwindow* window, int w, int h);
 
     //! @brief Pointer to the GLFW window.
     GLFWwindow* m_window = nullptr;
