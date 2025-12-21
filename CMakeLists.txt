@@ -2,8 +2,15 @@ cmake_minimum_required(VERSION 3.10)
 project(lmgl VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(glfw3 REQUIRED)
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(external/glfw)
+add_subdirectory(external/glm)
+add_subdirectory(external/googletest)
+
 find_package(OpenGL REQUIRED)
 
 add_library(lmgl STATIC 
@@ -33,7 +40,7 @@ target_include_directories(lmgl PUBLIC external/glad/include)
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
-target_link_libraries(lmgl PUBLIC glfw ${OPENGL_LIBRARIES})
+target_link_libraries(lmgl PUBLIC glfw glm::glm ${OPENGL_LIBRARY})
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
@@ -41,3 +48,34 @@ endif()
 
 add_executable(Sandbox sandbox/main.cpp)
 target_link_libraries(Sandbox PRIVATE lmgl)
+
+set(CPACK_PACKAGE_NAME "lmgl")
+set(CPACK_PACKAGE_VENDOR "Luca Mazza")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "lmgl Graphics Engine Library")
+set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_GENERATOR "TGZ;ZIP")
+include(CPack)
+
+add_subdirectory(test)
+add_executable(Tests 
+    core/engine_test.cpp
+    core/window_test.cpp
+    
+    renderer/buffer_test.cpp
+    renderer/renderer_test.cpp
+    renderer/shader_test.cpp
+    renderer/texture_test.cpp
+    renderer/vertex_array_test.cpp
+
+    scene/camera_test.cpp
+    scene/light_test.cpp
+    scene/mesh_test.cpp
+    scene/node_test.cpp
+    scene/scene_test.cpp
+)
+enable_testing()
+include(GoogleTest)
+
