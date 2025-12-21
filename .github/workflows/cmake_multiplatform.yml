@@ -43,6 +43,8 @@ jobs:
           libglfw3-dev \
           libgl1-mesa-dev \
           xorg-dev \
+          libxkbcommon-dev \
+          libxkbcommon-x11-dev \
           cmake \
           build-essential
 

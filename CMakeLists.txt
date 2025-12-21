@@ -18,7 +18,9 @@ find_package(OpenGL REQUIRED)
 add_library(lmgl STATIC 
     # core
     include/lmgl/core/window.hpp
+    include/lmgl/core/engine.hpp
     src/core/window.cpp
+    src/core/engine.cpp
 
     # renderer
     include/lmgl/renderer/buffer.hpp
