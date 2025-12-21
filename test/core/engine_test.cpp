@@ -24,13 +24,12 @@ TEST_F(EngineTest, SingletonReturnsaSameInstance) {
     EXPECT_EQ(&engine1, &engine2);
 }
 
+#ifndef TEST_HEADLESS
 TEST_F(EngineTest, InitializationSucceeds) {
     auto& engine = Engine::get_instance();
-#ifndef TEST_HEADLESS
     bool result = engine.init(800, 600, "Test Window");
     EXPECT_TRUE(result);
     EXPECT_NE(engine.get_window(), nullptr);
-#endif
 }
 
 TEST_F(EngineTest, DeltaTimeIsPositive) {
@@ -44,6 +43,7 @@ TEST_F(EngineTest, DeltaTimeIsPositive) {
         EXPECT_GT(dt, 0.0f);
     }    
 }
+#endif
 
 } // namespace core
 

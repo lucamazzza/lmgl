@@ -23,6 +23,13 @@ bool Engine::init(int w, int h, std::string title) {
     m_window = glfwCreateWindow(w, h, title.c_str(), nullptr, nullptr);
     if (!m_window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return false;
+    }
+    glfwMakeContextCurrent(m_window);
+    glfwSetFramebufferSizeCallback(m_window, fb_size_callback);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
         glfwDestroyWindow(m_window);
         glfwTerminate();
         return false;
@@ -35,7 +42,7 @@ bool Engine::init(int w, int h, std::string title) {
 
 void Engine::run(std::function<void(float)> update_callback) {
     m_last_frame_time = static_cast<float>(glfwGetTime());
-    while(glfwWindowShouldClose(m_window)) {
+    while(!glfwWindowShouldClose(m_window)) {
         float current_time = static_cast<float>(glfwGetTime());
         m_delta_time = current_time - m_last_frame_time;
         m_last_frame_time = current_time;

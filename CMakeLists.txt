@@ -9,6 +9,11 @@ option(HEADLESS "Build without display support for CI" OFF)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+if(WIN32)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+endif()
+
 add_subdirectory(external/glfw)
 add_subdirectory(external/glm)
 add_subdirectory(external/googletest)
