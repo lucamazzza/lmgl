@@ -17,23 +17,23 @@ find_package(OpenGL REQUIRED)
 
 add_library(lmgl STATIC 
     # core
-    include/lgml/core/window.hpp
+    include/lmgl/core/window.hpp
     src/core/window.cpp
 
     # renderer
-    include/lgml/renderer/buffer.hpp
-    include/lgml/renderer/renderer.hpp
-    include/lgml/renderer/shader.hpp
-    include/lgml/renderer/texture.hpp
-    include/lgml/renderer/vertex_array.hpp
+    include/lmgl/renderer/buffer.hpp
+    include/lmgl/renderer/renderer.hpp
+    include/lmgl/renderer/shader.hpp
+    include/lmgl/renderer/texture.hpp
+    include/lmgl/renderer/vertex_array.hpp
     src/renderer/renderer.cpp
 
     # scene
-    include/lgml/scene/camera.hpp
-    include/lgml/scene/light.hpp
-    include/lgml/scene/mesh.hpp
-    include/lgml/scene/node.hpp
-    include/lgml/scene/scene.hpp
+    include/lmgl/scene/camera.hpp
+    include/lmgl/scene/light.hpp
+    include/lmgl/scene/mesh.hpp
+    include/lmgl/scene/node.hpp
+    include/lmgl/scene/scene.hpp
     src/scene/scene.cpp
 )
 
