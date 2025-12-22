@@ -68,6 +68,14 @@ void VertexArray::set_index_buffer(const std::shared_ptr<IndexBuffer>& index_buf
     m_index_buffer = index_buffer;
 }
 
+const std::vector<std::shared_ptr<VertexBuffer>>& VertexArray::get_vertex_buffers() const {
+    return m_vertex_buffers;
+}
+
+const std::shared_ptr<IndexBuffer>& VertexArray::get_index_buffer() const {
+    return m_index_buffer;
+}
+
 } // namespace renderer
 
 } // namespace lmgl
