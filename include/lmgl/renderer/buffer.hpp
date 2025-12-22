@@ -232,6 +232,16 @@ public:
     void set_data(const void* data, unsigned int size);
 
     /*! 
+     * @brief Set the layout of the vertex buffer.
+     *
+     * Assigns a BufferLayout to the vertex buffer, defining the structure
+     * of the vertex data.
+     *
+     * @param layout The BufferLayout to be assigned to the vertex buffer.
+     */
+    void set_layout(const BufferLayout& layout);
+
+    /*! 
      * @brief Get the layout of the vertex buffer.
      *
      * Returns a constant reference to the BufferLayout that describes
@@ -248,6 +258,9 @@ private:
 
     //! @brief Layout of the vertex buffer.
     unsigned int m_count;
+
+    //! @brief Layout of the vertex buffer.
+    BufferLayout m_layout;
 };
 
 /*! 
