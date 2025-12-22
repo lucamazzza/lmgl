@@ -11,8 +11,10 @@ class VertexArrayTest : public ::testing::Test {
 protected:
     void SetUp() override {
         // Setup code before each test 
+#ifndef TEST_HEADLESS
         auto& engine_instance = core::Engine::get_instance();
         if (!engine_instance.get_window()) engine_instance.init(800, 600, "VertexArray Test");
+#endif
     }
 
     void TearDown() override {
@@ -20,6 +22,7 @@ protected:
     }
 };
 
+#ifndef TEST_HEADLESS
 TEST_F(VertexArrayTest, Creation) {
     auto vao = std::make_shared<VertexArray>();
     EXPECT_NE(vao, nullptr);
@@ -118,6 +121,8 @@ TEST_F(VertexArrayTest, BindUnbind) {
     vao->bind();
     vao->unbind();
 }
+
+#endif
 
 } // namespace renderer
 

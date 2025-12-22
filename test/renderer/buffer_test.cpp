@@ -11,8 +11,10 @@ class BufferTest : public ::testing::Test {
 protected:
     void SetUp() override {
         // Setup code before each test
+#ifndef TEST_HEADLESS
         auto& engine = core::Engine::get_instance();
         if (!engine.get_window()) engine.init(800, 600, "Buffer Test");
+#endif
     }
     
     void TearDown() override {
@@ -85,6 +87,7 @@ TEST_F(BufferTest, BufferLayoutOffsetCalculation) {
     EXPECT_EQ(elements[2].offset, 28);         // Float2 starts at 28
 }
 
+#ifndef TEST_HEADLESS
 TEST_F(BufferTest, VertexBufferCalculation) {
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
@@ -140,6 +143,8 @@ TEST_F(BufferTest, BufferBindUnbind) {
     ibo->bind();
     ibo->unbind();
 }
+
+#endif 
 
 } // namespace renderer
 
