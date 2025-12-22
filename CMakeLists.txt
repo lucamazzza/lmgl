@@ -22,28 +22,32 @@ find_package(OpenGL REQUIRED)
 
 add_library(lmgl STATIC 
     # core
-    include/lmgl/core/window.hpp
     include/lmgl/core/engine.hpp
-    src/core/window.cpp
     src/core/engine.cpp
 
     # renderer
     include/lmgl/renderer/buffer.hpp
-    include/lmgl/renderer/renderer.hpp
-    include/lmgl/renderer/shader.hpp
-    include/lmgl/renderer/texture.hpp
+    #include/lmgl/renderer/renderer.hpp
+    #include/lmgl/renderer/shader.hpp
+    #include/lmgl/renderer/texture.hpp
     include/lmgl/renderer/vertex_array.hpp
     src/renderer/buffer.cpp
-    src/renderer/renderer.cpp
+    #src/renderer/renderer.cpp
+    #src/renderer/shader.cpp
+    #src/renderer/texture.cpp
     src/renderer/vertex_array.cpp
 
     # scene
-    include/lmgl/scene/camera.hpp
-    include/lmgl/scene/light.hpp
-    include/lmgl/scene/mesh.hpp
-    include/lmgl/scene/node.hpp
-    include/lmgl/scene/scene.hpp
-    src/scene/scene.cpp
+    #include/lmgl/scene/camera.hpp
+    #include/lmgl/scene/light.hpp
+    #include/lmgl/scene/mesh.hpp
+    #include/lmgl/scene/node.hpp
+    #include/lmgl/scene/scene.hpp
+    #src/scene/camera.cpp
+    #src/scene/light.cpp
+    #src/scene/mesh.cpp
+    #src/scene/node.cpp
+    #src/scene/scene.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
