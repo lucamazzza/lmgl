@@ -52,7 +52,7 @@ public:
      *
      * @param vertexBuffer A shared pointer to the Vertex Buffer to be added.
      */
-    void addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer);
+    void add_vertex_buffer(const std::shared_ptr<VertexBuffer>& vertex_buffer);
 
     /*!
      * @brief Sets the Index Buffer for the Vertex Array Object.
@@ -61,7 +61,7 @@ public:
      *
      * @param indexBuffer A shared pointer to the Index Buffer to be set.
      */
-    void setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer);
+    void set_index_buffer(const std::shared_ptr<IndexBuffer>& index_buffer);
 
     /*! 
      * @brief Retrieves the list of Vertex Buffers associated with the Vertex Array Object.
@@ -70,7 +70,7 @@ public:
      *
      * @return A constant reference to a vector of shared pointers to the Vertex Buffers.
      */
-    const std::vector<std::shared_ptr<VertexBuffer>>& getVertexBuffers() const;
+    const std::vector<std::shared_ptr<VertexBuffer>>& get_vertex_buffers() const;
 
     /*! 
      * @brief Retrieves the Index Buffer associated with the Vertex Array Object.
@@ -79,7 +79,7 @@ public:
      *
      * @return A shared pointer to the Index Buffer.
      */
-    const std::shared_ptr<IndexBuffer>& getIndexBuffer() const;
+    const std::shared_ptr<IndexBuffer>& get_index_buffer() const;
 
 private:
 
