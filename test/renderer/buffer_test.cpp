@@ -91,7 +91,7 @@ TEST_F(BufferTest, VertexBufferCalculation) {
          0.5f, -0.5f, 0.0f,
          0.0f,  0.5f, 0.0f
     };
-    auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices) / sizeof(float));
+    auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
     EXPECT_NE(vbo, nullptr);
     
     BufferLayout layout = {
@@ -107,7 +107,7 @@ TEST_F(BufferTest, DynamicVertexBufferCreation) {
          0.5f, -0.5f, 0.0f,
          0.0f,  0.5f, 0.0f
     };
-    auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices) / sizeof(float));
+    auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
     EXPECT_NE(vbo, nullptr);
 
     float new_vertices[] = {
@@ -127,7 +127,7 @@ TEST_F(BufferTest, IndexBufferCreation) {
 
 TEST_F(BufferTest, BufferBindUnbind) {
     float vertices[] = { -0.5f, -0.5f, 0.0f };
-    auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices) / sizeof(float));
+    auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
 
     // should not crash
     vbo->bind();
