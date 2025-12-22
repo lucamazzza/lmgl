@@ -53,14 +53,6 @@ BufferLayout::BufferLayout(const std::initializer_list<BufferElement>& elements)
     calculate_offsets_and_stride();
 }
 
-inline unsigned int BufferLayout::get_stride() const {
-    return m_stride;
-}
-
-inline const std::vector<BufferElement>& BufferLayout::get_elements() const {
-    return m_elements;
-}
-
 std::vector<BufferElement>::const_iterator BufferLayout::begin() const {
     return m_elements.begin();
 }
@@ -139,10 +131,6 @@ void IndexBuffer::bind() const {
 
 void IndexBuffer::unbind() const {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-inline unsigned int IndexBuffer::get_count() const {
-    return m_count;
 }
 
 } // namespace renderer

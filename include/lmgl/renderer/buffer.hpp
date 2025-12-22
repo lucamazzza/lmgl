@@ -111,7 +111,7 @@ public:
      *
      * @return Stride of the buffer layout in bytes.
      */
-    inline unsigned int get_stride() const;
+    inline unsigned int get_stride() const { return m_stride; }
 
     /*! 
      * @brief Get the elements of the buffer layout.
@@ -121,7 +121,7 @@ public:
      *
      * @return Constant reference to the vector of BufferElement instances.
      */
-    inline const std::vector<BufferElement>& get_elements() const;
+    inline const std::vector<BufferElement>& get_elements() const { return m_elements; }
 
     /*! 
      * @brief Iterator support for the buffer layout elements.
@@ -309,7 +309,7 @@ public:
      *
      * @return Number of indices.
      */
-    inline unsigned int get_count() const;
+    inline unsigned int get_count() const { return m_count; }
 
 private:
 
