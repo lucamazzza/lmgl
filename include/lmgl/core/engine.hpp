@@ -93,6 +93,18 @@ public:
     void free();
 
     /*!
+     * @brief Clear the screen.
+     *
+     * This method can be used to clear the screen before rendering a new frame.
+     *
+     * @param r Red component of the clear color (0.0 to 1.0).
+     * @param g Green component of the clear color (0.0 to 1.0).
+     * @param b Blue component of the clear color (0.0 to 1.0).
+     * @param a Alpha component of the clear color (0.0 to 1.0), default is 1.0.
+     */
+    void clear(float r, float g, float b, float a = 1.0f);
+
+    /*!
      * @brief Check if the engine is still running.
      *
      * The engine is considered running as long as the window has not been closed.

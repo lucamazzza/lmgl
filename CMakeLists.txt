@@ -59,8 +59,7 @@ if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
 endif()
 
-add_executable(Sandbox sandbox/main.cpp)
-target_link_libraries(Sandbox PRIVATE lmgl)
+add_subdirectory(sandbox)
 
 set(CPACK_PACKAGE_NAME "lmgl")
 set(CPACK_PACKAGE_VENDOR "Luca Mazza")

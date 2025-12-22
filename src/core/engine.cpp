@@ -60,6 +60,11 @@ void Engine::free() {
     glfwTerminate();
 }
 
+void Engine::clear(float r, float g, float b, float a) {
+    glClearColor(r, g, b, a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 bool Engine::is_running() const {
     return m_window && !glfwWindowShouldClose(m_window);
 }
