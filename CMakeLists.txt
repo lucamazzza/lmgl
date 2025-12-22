@@ -33,6 +33,7 @@ add_library(lmgl STATIC
     include/lmgl/renderer/shader.hpp
     include/lmgl/renderer/texture.hpp
     include/lmgl/renderer/vertex_array.hpp
+    src/renderer/buffer.cpp
     src/renderer/renderer.cpp
 
     # scene
