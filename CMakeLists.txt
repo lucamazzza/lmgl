@@ -35,6 +35,7 @@ add_library(lmgl STATIC
     include/lmgl/renderer/vertex_array.hpp
     src/renderer/buffer.cpp
     src/renderer/renderer.cpp
+    src/renderer/vertex_array.cpp
 
     # scene
     include/lmgl/scene/camera.hpp
