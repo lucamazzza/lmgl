@@ -38,7 +38,6 @@ namespace lmgl {
 namespace core {
 
 /*!
- * @class Engine
  * @bried A singleton class that manages the main application loop using GLFW.
  *
  * This class provides methods to initialize the engine, run the main loop,

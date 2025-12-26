@@ -1,3 +1,16 @@
+/*!
+ * @file vertex_array.hpp 
+ *
+ * @brief Declaration of the VertexArray class for managing Vertex Array Objects (VAOs) in OpenGL.
+ *
+ * This file contains the declaration of the VertexArray class, which encapsulates
+ * the functionality of a Vertex Array Object (VAO) in OpenGL. The class provides methods
+ * to bind and unbind the VAO, add vertex buffers, and set an index buffer.
+ *
+ * \copyright{Copyright (c) 2026 Luca Mazza. All rights reserved.}
+ * \license{This project is released under the MIT License.}
+ */
+
 #pragma once
 
 #include "buffer.hpp"

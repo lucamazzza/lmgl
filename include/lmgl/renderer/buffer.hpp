@@ -1,3 +1,15 @@
+/*!
+ * @file buffer.hpp
+ * @brief Defines classes and structures for managing vertex and index buffers in OpenGL.
+ *
+ * This header file contains the definitions for BufferElement, BufferLayout,
+ * VertexBuffer, and IndexBuffer classes. These classes facilitate the creation,
+ * management, and usage of vertex and index buffers in an OpenGL rendering context.
+ *
+ * \copyright{Copyright (c) 2026 Luca Mazza. All rights reserved.}
+ * \license{This project is released under the MIT License.}
+ */
+
 #pragma once
 
 #include <cstddef>
@@ -10,7 +22,6 @@ namespace lmgl {
 namespace renderer {
 
 /*! 
- * @enum ShaderDataType
  * @brief Enumerates the various data types used in shaders.
  *
  * This enumeration defines the different types of data that can be used
