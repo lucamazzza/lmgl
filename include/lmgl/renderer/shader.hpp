@@ -197,11 +197,11 @@ private:
      * links them into a shader program, and returns the OpenGL-assigned ID
      * of the created program.
      *
-     * @param vert The source code for the vertex shader.
-     * @param frag The source code for the fragment shader.
+     * @param vert The vertex shader compiled ID.
+     * @param frag The fragment shader compiled ID.
      * @return The OpenGL-assigned ID of the created shader program.
      */
-    unsigned int create_program(const std::string& vert, const std::string& frag);
+    unsigned int create_program(unsigned int vert, unsigned int frag);
 
     /*!
      * @brief Reads the contents of a file into a string.
@@ -212,6 +212,17 @@ private:
      * @return The contents of the file as a string.
      */
     static std::string read_file(const std::string& fpath);
+
+    /*!
+     * @brief Parses a GLSL shader source code into vertex and fragment shader components.
+     *
+     * Splits the provided GLSL source code into separate vertex and fragment shader
+     * source code strings based on predefined markers.
+     *
+     * @param src The GLSL shader source code containing both vertex and fragment shaders.
+     * @return A pair of strings: the first is the vertex shader source, the second is the fragment shader source.
+     */
+    static std::pair<std::string, std::string> parse_glsl_shader(const std::string& src);
 };
 
 /*!
@@ -246,7 +257,19 @@ public:
      * @param frag The file path to the fragment shader source code.
      * @return A shared pointer to the created Shader instance.
      */
-    static std::shared_ptr<Shader> load(const std::string& name, const std::string& vert, const std::string& frag);
+    static std::shared_ptr<Shader> load_vf(const std::string& name, const std::string& vert, const std::string& frag);
+
+    /*!
+     * @brief Loads a shader program from a GLSL source string and adds it to the library.
+     *
+     * Parses the provided GLSL source code into vertex and fragment shader components,
+     * compiles them, links them into a shader program, and stores it in the library under the given name.
+     *
+     * @param name The name to associate with the shader program.
+     * @param src The GLSL shader source code containing both vertex and fragment shaders.
+     * @return A shared pointer to the created Shader instance.
+     */
+    static std::shared_ptr<Shader> load_glsl(const std::string& name, const std::string& src);
 
     /*!
      * @brief Retrieve a shader program from the library by name.

@@ -1,7 +1,8 @@
-#include <cstddef>
+#include "lmgl/renderer/buffer.hpp"
+
 #include <glad/glad.h>
 
-#include "lmgl/renderer/buffer.hpp"
+#include <cstddef>
 
 namespace lmgl {
 
