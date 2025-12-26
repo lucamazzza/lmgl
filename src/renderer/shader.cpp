@@ -46,6 +46,10 @@ void Shader::unbind() const {
     glUseProgram(0);
 }
 
+unsigned int Shader::get_id() const {
+    return m_renderer_id;
+}
+
 void Shader::set_int(const std::string& name, int val) {
     glUniform1i(get_uniform_location(name), val);
 }
@@ -85,8 +89,9 @@ int Shader::get_uniform_location(const std::string& name) const {
     int loc = glGetUniformLocation(m_renderer_id, name.c_str());
     if (loc == -1) {
         std::cerr << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+    } else {
+        m_uniform_location_cache[name] = loc;
     }
-    m_uniform_location_cache[name] = loc;
     return loc;
 }
 
@@ -114,6 +119,7 @@ unsigned int Shader::compile_shader(unsigned int type, const std::string& source
 }
 
 unsigned int Shader::create_program(unsigned int vert, unsigned int frag) {
+    if (vert == 0 || frag == 0) return 0;
     unsigned int program = glCreateProgram();
     glAttachShader(program, vert);
     glAttachShader(program, frag);
@@ -131,6 +137,7 @@ unsigned int Shader::create_program(unsigned int vert, unsigned int frag) {
         glDeleteProgram(program);
         return 0;
     }
+#ifndef NDEBUG
     glValidateProgram(program);
     glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
     if (!success) {
@@ -141,9 +148,8 @@ unsigned int Shader::create_program(unsigned int vert, unsigned int frag) {
         std::cerr << "ERROR: Shader program validation failed:" << std::endl;
         std::cerr << msg << std::endl;
         delete[] msg;
-        glDeleteProgram(program);
-        return 0;
     }
+#endif
     glDeleteShader(vert);
     glDeleteShader(frag);
     return program;
@@ -191,6 +197,10 @@ std::pair<std::string, std::string> Shader::parse_glsl_shader(const std::string&
 void ShaderLibrary::add(const std::string&name, std::shared_ptr<Shader> shader) {
     if (exists(name)) {
         std::cerr << "Warning: Shader '" << name << "' already exists in the library!" << std::endl;
+    }
+    if (shader == nullptr || shader->get_id() == 0) {
+        std::cerr << "Error: Cannot add invalid shader '" << name << "' to the library!" << std::endl;
+        return;
     }
     s_shaders[name] = shader;
 }
