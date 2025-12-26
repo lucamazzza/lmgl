@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
+#ifndef TEST_HEADLESS
 #include "lmgl/core/engine.hpp"
+#endif
 #include "lmgl/renderer/buffer.hpp"
 
 namespace lmgl {
