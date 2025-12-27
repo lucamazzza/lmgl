@@ -52,6 +52,7 @@ add_library(lmgl STATIC
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(lmgl PUBLIC external/glad/include)
+target_include_directories(lmgl PRIVATE external/stb)
 
 if(HEADLESS)
     target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
