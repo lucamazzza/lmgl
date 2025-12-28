@@ -4,7 +4,7 @@ add_executable(Tests
     renderer/buffer_test.cpp
     #renderer/renderer_test.cpp
     renderer/shader_test.cpp
-    #renderer/texture_test.cpp
+    renderer/texture_test.cpp
     renderer/vertex_array_test.cpp
 
     #scene/camera_test.cpp
