@@ -51,14 +51,14 @@ public:
      *
      * Activates the framebuffer for subsequent rendering operations.
      */
-    void bind();
+    void bind() const;
 
     /*! 
      * @brief Unbind the framebuffer.
      *
      * Deactivates the framebuffer, reverting to the default framebuffer.
      */
-    void unbind();
+    void unbind() const;
 
     /*! 
      * @brief Resize the framebuffer.
