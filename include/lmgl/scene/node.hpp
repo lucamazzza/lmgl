@@ -163,6 +163,14 @@ public:
      * @return Corresponding transformation matrix.
      */
     inline glm::mat4 get_local_transform() const { return m_local_transform; }
+
+    /*! 
+     * @brief Get the world transform of the node.
+     *
+     * Provides access to the node's world transformation matrix.
+     *
+     * @return World transformation matrix.
+     */
     inline glm::mat4 get_world_transform() const { return m_world_transform; }
 
     // Hierarchy
@@ -214,7 +222,7 @@ public:
     /*! 
      * @brief Update transforms.
      *
-     * Updates the local and world transformation matrices of the node.
+     * Updates the world transformation matrices of the node.
      * This method should be called whenever the node's position, rotation,
      * or scale changes, or when the parent's transform is updated.
      *
