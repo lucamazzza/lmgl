@@ -42,14 +42,14 @@ add_library(lmgl STATIC
     # scene
     #include/lmgl/scene/camera.hpp
     #include/lmgl/scene/light.hpp
-    #include/lmgl/scene/mesh.hpp
-    #include/lmgl/scene/node.hpp
-    #include/lmgl/scene/scene.hpp
+    include/lmgl/scene/mesh.hpp
+    include/lmgl/scene/node.hpp
+    include/lmgl/scene/scene.hpp
     #src/scene/camera.cpp
     #src/scene/light.cpp
-    #src/scene/mesh.cpp
-    #src/scene/node.cpp
-    #src/scene/scene.cpp
+    src/scene/mesh.cpp
+    src/scene/node.cpp
+    src/scene/scene.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
