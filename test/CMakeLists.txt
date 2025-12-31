@@ -12,7 +12,7 @@ add_executable(Tests
     #scene/light_test.cpp
     #scene/mesh_test.cpp
     scene/node_test.cpp
-    #scene/scene_test.cpp
+    scene/scene_test.cpp
 )
 
 target_link_libraries(Tests PRIVATE lmgl GTest::gtest_main)
