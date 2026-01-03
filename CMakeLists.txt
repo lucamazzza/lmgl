@@ -40,12 +40,12 @@ add_library(lmgl STATIC
     src/renderer/vertex_array.cpp
 
     # scene
-    #include/lmgl/scene/camera.hpp
+    include/lmgl/scene/camera.hpp
     #include/lmgl/scene/light.hpp
     include/lmgl/scene/mesh.hpp
     include/lmgl/scene/node.hpp
     include/lmgl/scene/scene.hpp
-    #src/scene/camera.cpp
+    src/scene/camera.cpp
     #src/scene/light.cpp
     src/scene/mesh.cpp
     src/scene/node.cpp
