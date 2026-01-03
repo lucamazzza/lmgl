@@ -2,7 +2,6 @@
 
 <img src="https://capsule-render.vercel.app/api?type=venom&color=782b90&height=200&section=header&text=lmgl&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=Modern%20OpenGL%20Engine%20Library&descAlignY=61&descAlign=50"/>
 
-
 </p>
 
 <p align='center'>
