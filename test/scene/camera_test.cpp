@@ -11,7 +11,12 @@ namespace scene {
 class CameraTest : public ::testing::Test {
 protected:
     void SetUp() override {
+        // Setup code before each test
         camera = std::make_unique<Camera>();
+    }
+
+    void TearDown() override {
+        // Cleanup code after each test
     }
     
     std::unique_ptr<Camera> camera;
