@@ -44,6 +44,20 @@ enum class RenderMode {
 };
 
 /*! 
+ * @brief Enumerates the different render layers.
+ *
+ * This enumeration defines layers for rendering order, such as skybox,
+ * opaque objects, transparent objects, and UI elements. Each layer has
+ * a specific priority to ensure correct rendering order.
+ */
+enum class RenderLayer {
+    Skybox = 0,
+    Opaque = 100,
+    Transparent = 200,
+    UI = 300
+};
+
+/*! 
  * @brief Manages the rendering of scenes.
  *
  * This class is responsible for rendering 3D scenes using OpenGL.
@@ -178,10 +192,26 @@ private:
      * and its distance to the camera for sorting purposes.
      */
     struct RenderItem {
+
+        //! @brief Shared pointer to the mesh to be rendered.
         std::shared_ptr<scene::Mesh> mesh;
+
+        //! @brief Transformation matrix for the mesh.
         glm::mat4 transform;
+
+        //! @brief Distance from the mesh to the camera.
         float distance_to_camera;
+
+        //! @brief Render layer of the mesh.
+        RenderLayer layer;
+
+        //! @brief Flag indicating if the mesh is transparent.
+        bool is_transparent;
+
     };
+
+    //! @brief Render queue containing items to be rendered.
+    std::vector<RenderItem> m_render_queue;
 
     /*! 
      * @brief Build the render queue from the scene graph.
@@ -200,6 +230,15 @@ private:
                             std::shared_ptr<scene::Camera> camera, 
                             const glm::mat4& par_transform, 
                             std::vector<RenderItem>& out_items);
+
+    /*!
+     * @brief Sort the render queue based on distance to the camera.
+     *
+     * This method sorts the render items in the render queue to optimize
+     * rendering order. Opaque objects are sorted front-to-back, while
+     * transparent objects are sorted back-to-front.
+     */
+    void sort_render_queue(std::vector<RenderItem>& items);
 
     /*! 
      * @brief Render a single mesh with the given transformation and camera.

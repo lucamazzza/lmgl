@@ -34,7 +34,7 @@ add_library(lmgl STATIC
     include/lmgl/renderer/vertex_array.hpp
     src/renderer/buffer.cpp
     src/renderer/framebuffer.cpp
-    #src/renderer/renderer.cpp
+    src/renderer/renderer.cpp
     src/renderer/shader.cpp
     src/renderer/texture.cpp
     src/renderer/vertex_array.cpp
