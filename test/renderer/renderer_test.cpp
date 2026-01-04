@@ -122,8 +122,8 @@ TEST_F(RendererTest, RenderModeChanges) {
     EXPECT_NO_THROW(renderer->render(scene, camera));
 }
 
-#endif
-
 } // namespace renderer
 
 } // namespace lmgl
+
+#endif
