@@ -11,7 +11,6 @@
 #include "lmgl/scene/node.hpp"
 #include "lmgl/scene/scene.hpp"
 
-#include <cmath>
 #include <iostream>
 #include <memory>
 
@@ -70,7 +69,7 @@ int main() {
         sat_node->set_mesh(satellite);
         sat_node->set_scale(0.4f);
         
-        float angle = (i / 3.0f) * 2.0f * M_PI;
+        float angle = (i / 3.0f) * 2.0f * glm::pi<float>();
         sat_node->set_position(glm::vec3(std::cos(angle) * 2.0f, 0.0f, std::sin(angle) * 2.0f));
         
         center_node->add_child(sat_node);
