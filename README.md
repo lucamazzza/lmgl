@@ -40,8 +40,9 @@ work in progress) and *Linux* (testing in backlog).
 There are no specific hardware requirement to run (no specific GPU), just make 
 sure you have the correct *drivers* installed for your GPU.
 
-An update on Software and Hardware compatibility will be given in a further
-notice when the development of `v1.0` reaches the end.
+> [!NOTE]
+> An update on Software and Hardware compatibility will be given in a further
+> notice when the development of `v1.0` reaches the end.
 
 Documentation
 -------------
@@ -51,6 +52,7 @@ The code is documented using *Doxygen*, that is automatically deployed on
 every version released.
 
 <br>
+
 <hr>
 <p align="center">
   

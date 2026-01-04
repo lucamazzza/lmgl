@@ -27,31 +27,38 @@ add_library(lmgl STATIC
 
     # renderer
     include/lmgl/renderer/buffer.hpp
-    #include/lmgl/renderer/renderer.hpp
+    include/lmgl/renderer/framebuffer.hpp
+    include/lmgl/renderer/renderer.hpp
     include/lmgl/renderer/shader.hpp
-    #include/lmgl/renderer/texture.hpp
+    include/lmgl/renderer/texture.hpp
     include/lmgl/renderer/vertex_array.hpp
     src/renderer/buffer.cpp
-    #src/renderer/renderer.cpp
+    src/renderer/framebuffer.cpp
+    src/renderer/renderer.cpp
     src/renderer/shader.cpp
-    #src/renderer/texture.cpp
+    src/renderer/texture.cpp
     src/renderer/vertex_array.cpp
 
     # scene
-    #include/lmgl/scene/camera.hpp
+    include/lmgl/scene/camera.hpp
     #include/lmgl/scene/light.hpp
-    #include/lmgl/scene/mesh.hpp
-    #include/lmgl/scene/node.hpp
-    #include/lmgl/scene/scene.hpp
-    #src/scene/camera.cpp
+    include/lmgl/scene/mesh.hpp
+    include/lmgl/scene/node.hpp
+    include/lmgl/scene/scene.hpp
+    src/scene/camera.cpp
     #src/scene/light.cpp
-    #src/scene/mesh.cpp
-    #src/scene/node.cpp
-    #src/scene/scene.cpp
+    src/scene/mesh.cpp
+    src/scene/node.cpp
+    src/scene/scene.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(lmgl PUBLIC external/glad/include)
+target_include_directories(lmgl PRIVATE external/stb)
+
+if(HEADLESS)
+    target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
+endif()
 
 if(HEADLESS)
     target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)

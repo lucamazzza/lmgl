@@ -38,7 +38,7 @@ namespace lmgl {
 namespace core {
 
 /*!
- * @bried A singleton class that manages the main application loop using GLFW.
+ * @brief A singleton class that manages the main application loop using GLFW.
  *
  * This class provides methods to initialize the engine, run the main loop,
  * and clean up resources. It also tracks the delta time between frames.
