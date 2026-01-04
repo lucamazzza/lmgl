@@ -99,9 +99,6 @@ private:
     //! Renderer ID for the Vertex Array Object
     unsigned int m_renderer_id;
 
-    //! Current index for the Vertex Buffer
-    unsigned int m_vertex_buffer_index = 0;
-
     //! List of Vertex Buffers associated with the VAO
     std::vector<std::shared_ptr<VertexBuffer>> m_vertex_buffers;
 

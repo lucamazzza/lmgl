@@ -100,6 +100,8 @@ void Renderer::build_render_queue(std::shared_ptr<scene::Node> node,
         glm::vec3 mesh_pos(cur_transform[3]);
         glm::vec3 cam_pos(camera->get_position());
         item.distance_to_camera = glm::length(cam_pos - mesh_pos);
+        item.is_transparent = false;
+        item.layer = RenderLayer::Opaque;
         out_items.push_back(item);
     }
     for (const auto& child : node->get_children()) {
@@ -127,20 +129,18 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh,
     if (!mesh || !camera) return;
     auto shader = mesh->get_shader();
     if (!shader) return;
+    if (mesh->get_vertex_array()) mesh->get_vertex_array()->bind();
     shader->bind();
     glm::mat4 view(camera->get_view_matrix());
     glm::mat4 proj(camera->get_projection_matrix());
     glm::mat4 mvp(proj * view * transform);
     shader->set_mat4("u_Model", transform);
-    shader->set_mat4("u_View", view);
-    shader->set_mat4("u_Projection", proj);
     shader->set_mat4("u_MVP", mvp);
     glm::mat3 normal_matrix = glm::transpose(glm::inverse(glm::mat3(transform)));
     shader->set_mat3("u_NormalMatrix", normal_matrix);
     mesh->render();
     m_draw_calls++;
     m_triangles_count += mesh->get_index_count() / 3;
-    shader->unbind();
 }
 
 } // namespace renderer

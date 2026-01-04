@@ -47,25 +47,28 @@ void VertexArray::add_vertex_buffer(const std::shared_ptr<VertexBuffer>& vertex_
     glBindVertexArray(m_renderer_id);
     vertex_buffer->bind();
     const auto& layout = vertex_buffer->get_layout();
+    unsigned int index = 0;
     for (const auto& element : layout) {
-        glEnableVertexAttribArray(m_vertex_buffer_index);
+        glEnableVertexAttribArray(index);
         glVertexAttribPointer(
-            m_vertex_buffer_index,
+            index,
             element.get_component_count(),
             shader_data_type_to_opengl_type(element.type),
             element.normalized ? GL_TRUE : GL_FALSE,
             layout.get_stride(),
             (const void*)element.offset
         );
-        m_vertex_buffer_index++;
+        index++;
     }
     m_vertex_buffers.push_back(vertex_buffer);
+    glBindVertexArray(0);
 }
 
 void VertexArray::set_index_buffer(const std::shared_ptr<IndexBuffer>& index_buffer) {
     glBindVertexArray(m_renderer_id);
     index_buffer->bind();
     m_index_buffer = index_buffer;
+    glBindVertexArray(0);
 }
 
 const std::vector<std::shared_ptr<VertexBuffer>>& VertexArray::get_vertex_buffers() const {

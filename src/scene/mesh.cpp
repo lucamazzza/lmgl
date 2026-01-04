@@ -56,7 +56,6 @@ void Mesh::unbind() const {
 }
 
 void Mesh::render() const {
-    bind();
     glDrawElements(GL_TRIANGLES, m_index_count, GL_UNSIGNED_INT, nullptr);
 }
 
@@ -65,7 +64,7 @@ std::shared_ptr<Mesh> Mesh::create_cube(std::shared_ptr<renderer::Shader> shader
     std::vector<unsigned int> indices;
     subdivisions = std::max(1u, std::min(subdivisions, 50u));
     const float step = 1.0f / subdivisions;
-    unsigned int vertex_offset = 0;
+    
     auto generate_face = [&](
             const glm::vec3& origin,
             const glm::vec3& right,
@@ -96,12 +95,12 @@ std::shared_ptr<Mesh> Mesh::create_cube(std::shared_ptr<renderer::Shader> shader
             }
         }
     };
-    generate_face(glm::vec3(0, 0,  0.5f), glm::vec3(1, 0, 0),  glm::vec3(0, 1, 0),  glm::vec3(0, 0,  1)); // Front
-    generate_face(glm::vec3(0, 0, -0.5f), glm::vec3(-1, 0, 0), glm::vec3(0, 1, 0),  glm::vec3(0, 0, -1)); // Back
-    generate_face(glm::vec3(0,  0.5f, 0), glm::vec3(1, 0, 0),  glm::vec3(0, 0, -1), glm::vec3(0,  1, 0)); // Top
-    generate_face(glm::vec3(0, -0.5f, 0), glm::vec3(1, 0, 0),  glm::vec3(0, 0,  1), glm::vec3(0, -1, 0)); // Bottom
-    generate_face(glm::vec3( 0.5f, 0, 0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0),  glm::vec3( 1, 0, 0)); // Right
-    generate_face(glm::vec3(-0.5f, 0, 0), glm::vec3(0, 0,  1), glm::vec3(0, 1, 0),  glm::vec3(-1, 0, 0)); // Left
+    generate_face(glm::vec3(0, 0, 0.5f),  glm::vec3(1, 0, 0),  glm::vec3(0, 1, 0),  glm::vec3(0, 0, 1));
+    generate_face(glm::vec3(0, 0, -0.5f), glm::vec3(1, 0, 0),  glm::vec3(0, -1, 0), glm::vec3(0, 0, -1));
+    generate_face(glm::vec3(0, 0.5f, 0),  glm::vec3(1, 0, 0),  glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
+    generate_face(glm::vec3(0, -0.5f, 0), glm::vec3(1, 0, 0),  glm::vec3(0, 0, 1),  glm::vec3(0, -1, 0));
+    generate_face(glm::vec3(0.5f, 0, 0),  glm::vec3(0, 0, -1), glm::vec3(0, 1, 0),  glm::vec3(1, 0, 0));
+    generate_face(glm::vec3(-0.5f, 0, 0), glm::vec3(0, 0, 1),  glm::vec3(0, 1, 0),  glm::vec3(-1, 0, 0));
     return std::make_shared<Mesh>(vertices, indices, shader);
 }
 
@@ -131,14 +130,17 @@ std::shared_ptr<Mesh> Mesh::create_sphere(
          std::vector<unsigned int> indices;
          latsegs = std::max(3u, std::min(latsegs, 500u));
          lonsegs = std::max(3u, std::min(lonsegs, 500u));
+         
          for (unsigned int lat = 0; lat <= latsegs; ++lat) {
              float theta = lat * glm::pi<float>() / latsegs;
              float sin_theta = std::sin(theta);
              float cos_theta = std::cos(theta);
+             
              for (unsigned int lon = 0; lon <= lonsegs; ++lon) {
                  float phi = lon * 2.0f * glm::pi<float>() / lonsegs;
                  float sin_phi = std::sin(phi);
                  float cos_phi = std::cos(phi);
+                 
                  glm::vec3 position(
                      radius * sin_theta * cos_phi,
                      radius * cos_theta,
@@ -152,18 +154,24 @@ std::shared_ptr<Mesh> Mesh::create_sphere(
                  vertices.push_back({ position, normal, glm::vec4(1.0f), uv });
              }
          }
+         
          for (unsigned int lat = 0; lat < latsegs; ++lat) {
              for (unsigned int lon = 0; lon < lonsegs; ++lon) {
                  unsigned int first = (lat * (lonsegs + 1)) + lon;
                  unsigned int second = first + lonsegs + 1;
+                 
+                 // Triangle 1: counter-clockwise winding
                  indices.push_back(first);
-                 indices.push_back(second);
                  indices.push_back(first + 1);
                  indices.push_back(second);
+                 
+                 // Triangle 2: counter-clockwise winding
+                 indices.push_back(second);
+                 indices.push_back(first + 1);
                  indices.push_back(second + 1);
-                 indices.push_back(first + 1);
              }
          }
+         
          return std::make_shared<Mesh>(vertices, indices, shader);
      }
 
