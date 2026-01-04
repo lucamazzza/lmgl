@@ -28,7 +28,7 @@ add_library(lmgl STATIC
     # renderer
     include/lmgl/renderer/buffer.hpp
     include/lmgl/renderer/framebuffer.hpp
-    #include/lmgl/renderer/renderer.hpp
+    include/lmgl/renderer/renderer.hpp
     include/lmgl/renderer/shader.hpp
     include/lmgl/renderer/texture.hpp
     include/lmgl/renderer/vertex_array.hpp
