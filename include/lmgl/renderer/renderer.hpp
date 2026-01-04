@@ -1,10 +1,11 @@
 /*!
- * @file buffer.hpp
- * @brief Defines classes and structures for managing vertex and index buffers in OpenGL.
+ * @file renderer.hpp
+ * @brief Declares classes and structures for rendering scenes using OpenGL.
  *
- * This header file contains the definitions for BufferElement, BufferLayout,
- * VertexBuffer, and IndexBuffer classes. These classes facilitate the creation,
- * management, and usage of vertex and index buffers in an OpenGL rendering context.
+ * This header file contains the definitions for the renderer namespace, the
+ * Renderer class, and related enumerations such as RenderMode and RenderLayer.
+ * These types coordinate scene rendering, camera setup, and drawing operations
+ * in an OpenGL-based rendering pipeline.
  *
  * \copyright{Copyright (c) 2026 Luca Mazza. All rights reserved.}
  * \license{This project is released under the MIT License.}
