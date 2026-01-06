@@ -21,6 +21,12 @@ add_subdirectory(external/googletest)
 find_package(OpenGL REQUIRED)
 
 add_library(lmgl STATIC 
+    # assets
+    include/lmgl/assets/texture_library.hpp
+    include/lmgl/assets/model_loader.hpp
+    src/assets/texture_library.cpp
+    #src/assets/model_loader.cpp
+
     # core
     include/lmgl/core/engine.hpp
     src/core/engine.cpp
