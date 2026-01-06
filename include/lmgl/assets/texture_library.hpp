@@ -38,7 +38,7 @@ public:
      * @brief Get the singleton instance of the TextureLibrary
      * @return Reference to the TextureLibrary instance
      */
-    static TextureLibrary& getInstance();
+    static TextureLibrary& get_instance();
 
     /*!
      * @brief Load a texture from a file path
@@ -49,7 +49,7 @@ public:
      * @param srgb Whether to load the texture in sRGB color space
      * @return Shared pointer to the loaded texture
      */
-    std::shared_ptr<renderer::Texture> load(const std::string& path, bool srgb = false);
+    std::shared_ptr<renderer::Texture> load(const std::string& fpath);
 
     /*!
      * @brief Check if a texture exists in the cache
@@ -60,7 +60,7 @@ public:
      * @param path The file path of the texture
      * @return True if the texture is cached, false otherwise
      */
-    bool exists(const std::string& path) const;
+    bool exists(const std::string& fpath) const;
 
     /*!
      * @brief Retrieve a cached texture
@@ -71,7 +71,7 @@ public:
      * @param path The file path of the texture
      * @return Shared pointer to the cached texture, or nullptr if not found
      */
-    std::shared_ptr<renderer::Texture> get(const std::string& path) const;
+    std::shared_ptr<renderer::Texture> get(const std::string& fpath) const;
 
     /*!
      * @brief Clear the texture cache
