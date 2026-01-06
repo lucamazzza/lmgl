@@ -3,16 +3,18 @@ name: Build and Test
 on:
   push:
     branches: [ main, dev ]
-  pull_request:
+    tags:
+      - 'v*'  # Added:  Trigger on version tags
+  pull_request: 
     branches: [ main, dev ]
 
 jobs:
-  build:
+  build: 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
-      matrix:
+      matrix: 
         config:
           - name: Ubuntu latest GCC
             os: ubuntu-latest
@@ -31,7 +33,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses:  actions/checkout@v4
       with:
         submodules: recursive
 
@@ -77,7 +79,7 @@ jobs:
 
     - name: Configure CMake (macOS)
       if: runner.os == 'macOS'
-      env:
+      env: 
         CC: ${{ matrix.config.cc }}
         CXX: ${{ matrix.config.cxx }}
       run: |
@@ -116,7 +118,7 @@ jobs:
     name: Create Release
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github. ref, 'refs/tags/v')
 
     steps:
       - name: Checkout repository
@@ -124,14 +126,14 @@ jobs:
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
-        with:
+        with: 
           path: artifacts
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
+        uses:  softprops/action-gh-release@v1
+        with: 
           files: artifacts/**/*
           draft: false
-          prelease: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
