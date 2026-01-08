@@ -171,6 +171,39 @@ public:
      */
     inline void set_casts_shadows(bool casts_shadows) { m_casts_shadows = casts_shadows; }
 
+    // Factory methods
+    
+    /*! @brief Creates a directional light.
+     *
+     * @param direction The direction of the light as a glm::vec3.
+     * @param color The color of the light as a glm::vec3 (default is white).
+     * @return A shared pointer to the created Light object.
+     */
+    static std::shared_ptr<Light> create_directional(const glm::vec3& direction, const glm::vec3& color = glm::vec3(1.0f));
+
+    /*! @brief Creates a point light.
+     *
+     * @param position The position of the light as a glm::vec3.
+     * @param range The range of the light as a float (default is 10.0f).
+     * @param color The color of the light as a glm::vec3 (default is white).
+     * @return A shared pointer to the created Light object.
+     */
+    static std::shared_ptr<Light> create_point(const glm::vec3& position, 
+                                        float range = 10.0f, 
+                                        const glm::vec3& color = glm::vec3(1.0f));
+
+    /*! @brief Creates a spotlight.
+     *
+     * @param position The position of the light as a glm::vec3.
+     * @param direction The direction of the light as a glm::vec3.
+     * @param range The range of the light as a float (default is 10.0f).
+     * @param color The color of the light as a glm::vec3 (default is white).
+     * @return A shared pointer to the created Light object.
+     */
+    static std::shared_ptr<Light> create_spot(const glm::vec3& position, 
+                                       const glm::vec3& direction, float range = 10.0f,
+                                       const glm::vec3& color = glm::vec3(1.0f));
+
 protected:
 
     //! @brief The type of the light.
