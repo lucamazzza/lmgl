@@ -1,4 +1,6 @@
 add_executable(Tests 
+    assets/texture_library_test.cpp
+
     core/engine_test.cpp
     
     renderer/buffer_test.cpp

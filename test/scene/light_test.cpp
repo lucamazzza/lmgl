@@ -3,7 +3,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-using namespace lmgl::scene;
+namespace lmgl {
+
+namespace scene {
 
 class LightTest : public ::testing::Test {
 protected:
@@ -210,3 +212,7 @@ TEST_F(LightTest, FlashlightLight) {
     EXPECT_EQ(flashlight->get_type(), LightType::Spot);
     EXPECT_FLOAT_EQ(flashlight->get_intensity(), 50.0f);
 }
+
+} // namespace scene
+
+} // namespace lmgl
