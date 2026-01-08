@@ -13,6 +13,8 @@
 
 #include <glm/glm.hpp>
 
+#include <memory>
+
 namespace lmgl {
 
 namespace scene {
