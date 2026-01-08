@@ -15,6 +15,7 @@
 
 #include "lmgl/renderer/shader.hpp"
 #include "lmgl/renderer/vertex_array.hpp"
+#include "lmgl/scene/material.hpp"
 
 #include <memory>
 
@@ -42,6 +43,12 @@ struct Vertex {
 
     //! @brief Texture coordinates (UVs) of the vertex.
     glm::vec2 uvs;
+
+    //! @brief Texture tangent
+    glm::vec3 tangent;
+
+    //! @brief Texture bitangetn
+    glm::vec3 bitangent;
 
     /*! 
      * @brief Constructor for the Vertex struct.
@@ -181,7 +188,20 @@ public:
      * @return True if both vertices and indices are present, false otherwise.
      */
     inline bool has_vert_data() const { return !m_vertices.empty() && !m_indices.empty(); }
+  
+    /*!
+     * @brief Retrieve the material associated with the mesh
+     *
+     * @return the material associated to the mesh.
+     */
+    inline std::shared_ptr<Material> get_material() const { return m_material; }
 
+    /*!
+     * @brief Sets the material associated to the mesh
+     *
+     * @param material The new material to set.
+     */
+    inline void set_material(std::shared_ptr<Material> material) { m_material = material; }
     // Factory Methods
     
     /*! 
@@ -226,6 +246,9 @@ public:
                                                unsigned int latsegs = 32);
 
 private:
+
+    //! @brief Material associated to the mesh.
+    std::shared_ptr<Material> m_material;
 
     //! @brief Vertex array associated with the mesh.
     std::shared_ptr<renderer::VertexArray> m_vertex_array;

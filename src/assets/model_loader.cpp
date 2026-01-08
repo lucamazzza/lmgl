@@ -1,5 +1,4 @@
 #include "lmgl/assets/model_loader.hpp"
-#include "assimp/mesh.h"
 #include "lmgl/assets/texture_library.hpp"
 
 #include <assimp/Importer.hpp>
@@ -118,6 +117,18 @@ std::shared_ptr<scene::Mesh> ModelLoader::process_mesh(aiMesh* ai_mesh,
         } else {
             vertex.color = glm::vec4(1.0f);
         }
+        if (ai_mesh->HasTangentsAndBitangents()) {
+            vertex.tangent = glm::vec3(
+                ai_mesh->mTangents[i].x,
+                ai_mesh->mTangents[i].y,
+                ai_mesh->mTangents[i].z
+            );
+            vertex.bitangent = glm::vec3(
+                ai_mesh->mBitangents[i].x,
+                ai_mesh->mBitangents[i].y,
+                ai_mesh->mBitangents[i].z
+            );
+        }
         vertices.push_back(vertex);
     }
     for (unsigned int i = 0; i < ai_mesh->mNumFaces; ++i) {
@@ -126,14 +137,67 @@ std::shared_ptr<scene::Mesh> ModelLoader::process_mesh(aiMesh* ai_mesh,
             indices.push_back(face.mIndices[j]);
         }
     }
+    // Create mesh
+    auto mesh = std::make_shared<scene::Mesh>(vertices, indices, shader);
+
+    // Load and attach material
     if (ai_mesh->mMaterialIndex >= 0) {
-        aiMaterial* material = ai_scene->mMaterials[ai_mesh->mMaterialIndex];
-        auto diffuse_maps = load_material_textures(material, aiTextureType_DIFFUSE, dir);
-        auto normal_maps = load_material_textures(material, aiTextureType_NORMALS, dir);
-        auto specular_maps = load_material_textures(material, aiTextureType_SPECULAR, dir);
-        // TODO: Store textures in mesh/material when material system is implemented
+        aiMaterial* ai_material = ai_scene->mMaterials[ai_mesh->mMaterialIndex];
+        auto material = std::make_shared<scene::Material>(ai_material->GetName().C_Str());
+        // Load PBR properties
+        aiColor3D color;
+        float value;
+        // Albedo/Diffuse
+        if (ai_material->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS) {
+            material->set_albedo(glm::vec3(color.r, color.g, color.b));
+        }
+        // Metallic
+        if (ai_material->Get(AI_MATKEY_METALLIC_FACTOR, value) == AI_SUCCESS) {
+            material->set_metallic(value);
+        }
+        // Roughness
+        if (ai_material->Get(AI_MATKEY_ROUGHNESS_FACTOR, value) == AI_SUCCESS) {
+            material->set_roughness(value);
+        }
+        // Emissive
+        if (ai_material->Get(AI_MATKEY_COLOR_EMISSIVE, color) == AI_SUCCESS) {
+            material->set_emissive(glm::vec3(color.r, color.g, color.b));
+        }
+        // Load texture maps
+        auto& tex_lib = TextureLibrary::get_instance();
+        // Albedo/Diffuse map
+        auto diffuse_maps = load_material_textures(ai_material, aiTextureType_DIFFUSE, dir);
+        if (!diffuse_maps.empty()) {
+            material->set_albedo_map(diffuse_maps[0]);
+        }
+        // Normal map
+        auto normal_maps = load_material_textures(ai_material, aiTextureType_NORMALS, dir);
+        if (!normal_maps.empty()) {
+            material->set_normal_map(normal_maps[0]);
+        }
+        // Metallic map
+        auto metallic_maps = load_material_textures(ai_material, aiTextureType_METALNESS, dir);
+        if (!metallic_maps.empty()) {
+            material->set_metallic_map(metallic_maps[0]);
+        }
+        // Roughness map
+        auto roughness_maps = load_material_textures(ai_material, aiTextureType_DIFFUSE_ROUGHNESS, dir);
+        if (!roughness_maps.empty()) {
+            material->set_roughness_map(roughness_maps[0]);
+        }
+        // AO map
+        auto ao_maps = load_material_textures(ai_material, aiTextureType_AMBIENT_OCCLUSION, dir);
+        if (!ao_maps.empty()) {
+            material->set_ao_map(ao_maps[0]);
+        }
+        // Emissive map
+        auto emissive_maps = load_material_textures(ai_material, aiTextureType_EMISSIVE, dir);
+        if (!emissive_maps.empty()) {
+            material->set_emissive_map(emissive_maps[0]);
+        }
+        mesh->set_material(material);
     }
-    return std::make_shared<scene::Mesh>(vertices, indices, shader);
+    return mesh;
 }
 
 std::vector<std::shared_ptr<renderer::Texture>> ModelLoader::load_material_textures(aiMaterial* ai_material,

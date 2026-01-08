@@ -4,6 +4,7 @@ in vec3 v_FragPos;
 in vec3 v_Normal;
 in vec4 v_Color;
 in vec2 v_TexCoord;
+in mat3 v_TBN;
 
 out vec4 FragColor;
 
@@ -121,10 +122,16 @@ void main() {
     }
     
     // Get normal
-    vec3 N = normalize(v_Normal);
+    vec3 N;
     if (u_Material.hasNormalMap == 1) {
-        // TODO: Implement tangent space normal mapping
-        // For now just use vertex normal
+        // Sample normal from normal map
+        vec3 normalMap = texture(u_Material.normalMap, v_TexCoord).rgb;
+        // Transform from [0,1] to [-1,1]
+        normalMap = normalMap * 2.0 - 1.0;
+        // Transform to world space using TBN matrix
+        N = normalize(v_TBN * normalMap);
+    } else {
+        N = normalize(v_Normal);
     }
     
     vec3 V = normalize(u_CameraPos - v_FragPos);

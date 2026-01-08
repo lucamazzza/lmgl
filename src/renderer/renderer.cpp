@@ -1,5 +1,7 @@
 #include "lmgl/renderer/renderer.hpp"
+#include "lmgl/scene/light.hpp"
 #include "lmgl/scene/mesh.hpp"
+#include "lmgl/scene/node.hpp"
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -31,6 +33,7 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     m_render_queue.clear();
     glm::mat4 identity(1.0f);
     build_render_queue(scene->get_root(), camera, identity, m_render_queue);
+    collect_lights(scene);
     sort_render_queue(m_render_queue);
     apply_render_mode();
     for (const auto& item : m_render_queue) {
@@ -138,9 +141,92 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh,
     shader->set_mat4("u_MVP", mvp);
     glm::mat3 normal_matrix = glm::transpose(glm::inverse(glm::mat3(transform)));
     shader->set_mat3("u_NormalMatrix", normal_matrix);
+    shader->set_vec3("u_CameraPos", camera->get_position());
+    auto material = mesh->get_material();
+    if (material) material->bind(shader);
+    else {
+        // Set default material
+        // TODO: save it as default material
+        shader->set_vec3("u_Material.albedo", glm::vec3(1.0f));
+        shader->set_float("u_Material.metallic", 0.0f);
+        shader->set_float("u_Material.roughness", 0.5f);
+        shader->set_float("u_Material.ao", 1.0f);
+        shader->set_vec3("u_Material.emissive", glm::vec3(0.0f));
+        shader->set_int("u_Material.hasAlbedoMap", 0);
+        shader->set_int("u_Material.hasNormalMap", 0);
+        shader->set_int("u_Material.hasMetallicMap", 0);
+        shader->set_int("u_Material.hasRoughnessMap", 0);
+        shader->set_int("u_Material.hasAoMap", 0);
+        shader->set_int("u_Material.hasEmissiveMap", 0);
+    }
     mesh->render();
     m_draw_calls++;
     m_triangles_count += mesh->get_index_count() / 3;
+}
+
+void Renderer::collect_lights(std::shared_ptr<scene::Scene> scene) {
+    m_directional_lights.clear();
+    m_point_lights.clear();
+    m_spot_lights.clear();
+    for (const auto& light : scene->get_lights()) {
+        switch (light->get_type()) {
+            case scene::LightType::Directional:
+                m_directional_lights.push_back(light);
+                break;
+            case scene::LightType::Point:
+                m_point_lights.push_back(light);
+                break;
+            case scene::LightType::Spot:
+                m_spot_lights.push_back(light);
+                break;
+        }
+    }
+    collect_node_lights(scene->get_root());
+}
+
+void Renderer::collect_node_lights(std::shared_ptr<scene::Node> node) {
+    if (!node) return;
+    if (node->has_light()) {
+        auto light = node->get_light();
+        if (light->get_type() == scene::LightType::Point || light->get_type() == scene::LightType::Spot) {
+            light->set_position(node->get_position());
+        }
+        switch(light->get_type()) {
+            case scene::LightType::Directional:
+                m_directional_lights.push_back(light);
+                break;
+            case scene::LightType::Point:
+                m_point_lights.push_back(light);
+                break;
+            case scene::LightType::Spot:
+                m_spot_lights.push_back(light);
+                break;
+        }
+    }
+    for (const auto& child : node->get_children()) {
+        collect_node_lights(child);
+    }
+}
+
+void Renderer::bind_lights(std::shared_ptr<renderer::Shader> shader) {
+    if (!shader) return;
+    int num_dir_lights = std::min((int)m_directional_lights.size(), 4);
+    shader->set_int("u_NumDirLights", num_dir_lights);
+    for (int i = 0; i < num_dir_lights; ++i) {
+        std::string base = "u_DirLights[" + std::to_string(i) + "]";
+        shader->set_vec3(base + ".direction", m_directional_lights[i]->get_direction());
+        shader->set_vec3(base + ".color", m_directional_lights[i]->get_color());
+        shader->set_float(base + ".intensity", m_directional_lights[i]->get_intensity());
+    }
+    int num_point_lights = std::min((int)m_point_lights.size(), 16);
+    shader->set_int("u_NumPointLights", num_point_lights);
+    for (int i = 0; i < num_point_lights; ++i) {
+        std::string base = "u_PointLights[" + std::to_string(i) + "]";
+        shader->set_vec3(base + ".position", m_point_lights[i]->get_position());
+        shader->set_vec3(base + ".color", m_point_lights[i]->get_color());
+        shader->set_float(base + ".intensity", m_point_lights[i]->get_intensity());
+        shader->set_float(base + ".range", m_point_lights[i]->get_range());
+    }
 }
 
 } // namespace renderer

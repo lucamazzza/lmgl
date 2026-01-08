@@ -33,7 +33,9 @@ void Mesh::setup_mesh() {
         { renderer::ShaderDataType::Float3, "a_Position" },
         { renderer::ShaderDataType::Float3, "a_Normal" },
         { renderer::ShaderDataType::Float4, "a_Color" },
-        { renderer::ShaderDataType::Float2, "a_TexCoords" }
+        { renderer::ShaderDataType::Float2, "a_TexCoords" },
+        { renderer::ShaderDataType::Float3, "a_Tangent" },
+        { renderer::ShaderDataType::Float3, "a_Bitangent" }
     };
     vbo->set_layout(layout);
     auto ibo = std::make_shared<renderer::IndexBuffer>(

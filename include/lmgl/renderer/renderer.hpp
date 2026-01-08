@@ -263,6 +263,39 @@ private:
      * render mode, adjusting polygon mode and other relevant settings.
      */
     void apply_render_mode();
+
+    /*!
+     * @brief Collects all the lights and puts them in type-specific containers
+     *
+     * @param scene The scene to collect lights from.
+     */
+    void collect_lights(std::shared_ptr<scene::Scene> scene);
+
+    /*!
+     * @brief Collects lights associated with a node and its children, and puts them into type-specific containers
+     * 
+     * @param the node to collect lights from
+     */
+    void collect_node_lights(std::shared_ptr<scene::Node> node);
+
+    /*!
+     * @brief Binds all the lights with a shader.
+     *
+     * @param shader The shader to use.
+     */
+    void bind_lights(std::shared_ptr<renderer::Shader> shader);
+
+private:
+
+    //! Directional lights to render.
+    std::vector<std::shared_ptr<scene::Light>> m_directional_lights;
+
+    //! Point lights to render
+    std::vector<std::shared_ptr<scene::Light>> m_point_lights;
+    
+    //! Spot lights to render
+    std::vector<std::shared_ptr<scene::Light>> m_spot_lights;
+
 };
 
 } // namespace renderer

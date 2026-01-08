@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include "lmgl/scene/light.hpp"
 #include "lmgl/scene/node.hpp"
 
 #include <memory>
@@ -81,6 +82,32 @@ public:
      */
     inline void set_name(const std::string& name) { m_name = name; }
 
+    /*!
+     * @brief Returns all the lights in the scene.
+     *
+     * @return Vector containing all the lights introduced into the scene.
+     */
+    inline std::vector<std::shared_ptr<Light>> get_lights() const { return m_lights; }
+
+    /*!
+     * @brief Adds a light in the scene.
+     *
+     * @param light the light to add.
+     */
+    void add_light(std::shared_ptr<Light> light);
+
+    /*!
+     * @brief Removes a light from the scene.
+     *
+     * @param light the light to remove.
+     */
+    void remove_light(std::shared_ptr<Light> light);
+
+    /*!
+     * @brief Removes all lights from the scene.
+     */
+    void clear_lights();
+
 private:
 
     //! @brief Name of the scene.
@@ -88,6 +115,9 @@ private:
 
     //! @brief Root node of the scene graph.
     std::shared_ptr<Node> m_root;
+
+    //! @brief Lights in the scene.
+    std::vector<std::shared_ptr<Light>> m_lights;
 };
 
 } // namespace scene

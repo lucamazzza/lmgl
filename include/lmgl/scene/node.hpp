@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include "lmgl/scene/light.hpp"
 #include "lmgl/scene/mesh.hpp"
 
 #include <glm/glm.hpp>
@@ -275,6 +276,25 @@ public:
      */
     inline void set_name(const std::string& name) { m_name = name; }
 
+    /*!
+     * @brief Retrieves the light associated with the node.
+     *
+     * @return the light associated with the node.
+     */
+    inline std::shared_ptr<Light> get_light() const { return m_light; }
+
+    /*!
+     * @brief Set the light associated with the node.
+     *
+     * @param light The new light associated with the node
+     */
+    inline void set_light(std::shared_ptr<Light> light) { m_light = light; }
+
+    /*!
+     * @brief Check if node has a light
+     */
+    bool has_light() const { return m_light != nullptr; }
+
 private:
 
     //! @brief Node properties
@@ -303,6 +323,9 @@ private:
 
     //! @brief Mesh associated with the node
     std::shared_ptr<Mesh> m_mesh;
+
+    //! @brief Light associated with the node
+    std::shared_ptr<Light> m_light;
 
     /*! 
      * @brief Update the local transformation matrix.
