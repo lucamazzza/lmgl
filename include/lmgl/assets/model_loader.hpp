@@ -60,17 +60,80 @@ struct ModelLoadOptions {
  */
 class ModelLoader {
 public:
-    static std::shared_ptr<scene::Node> load(aiNode* ai_node,
-                                             const aiScene* ai_scene,
-                                             const std::string& dir,
-                                             std::shared_ptr<renderer::Shader> shader);
+    /*!
+     * @brief Load a 3D model from a file.
+     *
+     * This function loads a 3D model from the specified file path using the Assimp library.
+     * It processes the model's meshes, materials, and textures, and constructs a scene graph
+     * representation of the model.
+     *
+     * @param fpath The file path to the 3D model.
+     * @param shader A shared pointer to the shader to be used for rendering the model.
+     * @param options Options for loading the model.
+     * @return A shared pointer to the root node of the loaded model's scene graph.
+     */
+    static std::shared_ptr<scene::Node> load(const std::string& fpath, 
+                                             std::shared_ptr<renderer::Shader> shader, 
+                                             const ModelLoadOptions& options);
+private:
+
+    /*!
+     * @brief Process an Assimp node and its children.
+     *
+     * This function processes an Assimp node, converting it into a scene graph node.
+     * It recursively processes all child nodes and their meshes.
+     *
+     * @param ai_node The Assimp node to process.
+     * @param ai_scene The Assimp scene containing the node.
+     * @param dir The directory of the model file, used for loading textures.
+     * @param shader A shared pointer to the shader to be used for rendering the model.
+     * @return A shared pointer to the processed scene graph node.
+     */
+    static std::shared_ptr<scene::Node> process_node(aiNode* ai_node,
+                                                     const aiScene* ai_scene,
+                                                     const std::string& dir,
+                                                     std::shared_ptr<renderer::Shader> shader);
+
+    /*!
+     * @brief Process an Assimp mesh and convert it to a Mesh object.
+     *
+     * This function processes an Assimp mesh, extracting its vertices, indices,
+     * and material information, and converts it into a Mesh object.
+     *
+     * @param ai_mesh The Assimp mesh to process.
+     * @param ai_scene The Assimp scene containing the mesh.
+     * @param dir The directory of the model file, used for loading textures.
+     * @param shader A shared pointer to the shader to be used for rendering the mesh.
+     * @return A shared pointer to the processed Mesh object.
+     */
     static std::shared_ptr<scene::Mesh> process_mesh(aiMesh* ai_mesh,
                                                      const aiScene* ai_scene,
                                                      const std::string& dir,
                                                      std::shared_ptr<renderer::Shader> shader);
+
+    /*!
+     * @brief Load textures from an Assimp material.
+     *
+     * This function loads textures of a specified type from an Assimp material.
+     * It retrieves the texture file paths and loads the textures into Texture objects.
+     *
+     * @param ai_material The Assimp material to load textures from.
+     * @param type The type of texture to load (e.g., diffuse, specular).
+     * @param dir The directory of the model file, used for loading textures.
+     * @return A vector of shared pointers to the loaded Texture objects.
+     */
     static std::vector<std::shared_ptr<renderer::Texture>> load_material_textures(aiMaterial* ai_material,
                                                                                   unsigned int type,
                                                                                   const std::string& dir);
+    /*!
+     * @brief Get the directory from a file path.
+     *
+     * This function extracts the directory part from a given file path.
+     * It is used to determine the base directory for loading related assets such as textures.
+     *
+     * @param filepath The file path to extract the directory from.
+     * @return The directory part of the file path.
+     */
     static std::string get_directory(const std::string& filepath);
 
 };

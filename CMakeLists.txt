@@ -17,6 +17,7 @@ endif()
 add_subdirectory(external/glfw)
 add_subdirectory(external/glm)
 add_subdirectory(external/googletest)
+add_subdirectory(external/assimp)
 
 find_package(OpenGL REQUIRED)
 
@@ -25,7 +26,7 @@ add_library(lmgl STATIC
     include/lmgl/assets/texture_library.hpp
     include/lmgl/assets/model_loader.hpp
     src/assets/texture_library.cpp
-    #src/assets/model_loader.cpp
+    src/assets/model_loader.cpp
 
     # core
     include/lmgl/core/engine.hpp
@@ -68,7 +69,7 @@ endif()
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
-target_link_libraries(lmgl PUBLIC glfw glm::glm ${OPENGL_LIBRARY})
+target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY})
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
