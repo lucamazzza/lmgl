@@ -9,7 +9,8 @@ add_executable(Tests
     renderer/vertex_array_test.cpp
 
     scene/camera_test.cpp
-    #scene/light_test.cpp
+    scene/light_test.cpp
+    scene/material_test.cpp
     scene/mesh_test.cpp
     scene/node_test.cpp
     scene/scene_test.cpp

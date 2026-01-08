@@ -85,7 +85,7 @@ public:
      *
      * @param intensity The new intensity for the light as a float.
      */
-    inline void set_intesity(float intensity) { m_intensity = intensity; }
+    inline void set_intensity(float intensity) { m_intensity = intensity; }
 
     /*!
      * @brief Gets the direction of the light.
