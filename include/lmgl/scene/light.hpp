@@ -189,8 +189,8 @@ public:
      * @return A shared pointer to the created Light object.
      */
     static std::shared_ptr<Light> create_point(const glm::vec3& position, 
-                                        float range = 10.0f, 
-                                        const glm::vec3& color = glm::vec3(1.0f));
+                                               float range = 10.0f, 
+                                               const glm::vec3& color = glm::vec3(1.0f));
 
     /*! @brief Creates a spotlight.
      *
@@ -201,8 +201,9 @@ public:
      * @return A shared pointer to the created Light object.
      */
     static std::shared_ptr<Light> create_spot(const glm::vec3& position, 
-                                       const glm::vec3& direction, float range = 10.0f,
-                                       const glm::vec3& color = glm::vec3(1.0f));
+                                              const glm::vec3& direction,
+                                              float angle = 45.0f,
+                                              const glm::vec3& color = glm::vec3(1.0f));
 
 protected:
 
