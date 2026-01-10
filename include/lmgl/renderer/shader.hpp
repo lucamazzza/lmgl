@@ -13,10 +13,10 @@
 
 #pragma once
 
-#include <string>
-#include <memory>
-#include <unordered_map>
 #include <glm/glm.hpp>
+#include <memory>
+#include <string>
+#include <unordered_map>
 
 namespace lmgl {
 
@@ -31,8 +31,7 @@ namespace renderer {
  * for rendering graphics.
  */
 class Shader {
-public:
-
+  public:
     /*!
      * @brief Creates a shader program from vertex and fragment shader source code.
      *
@@ -42,7 +41,7 @@ public:
      * @param vertex_src The source code for the vertex shader.
      * @param fragment_src The source code for the fragment shader.
      */
-    Shader(const std::string& vert, const std::string& frag);
+    Shader(const std::string &vert, const std::string &frag);
 
     /*!
      * @brief Destructor for the Shader class.
@@ -61,7 +60,7 @@ public:
      * @param frag The file path to the fragment shader source code.
      * @return A shared pointer to the created Shader instance.
      */
-    static std::shared_ptr<Shader> from_vf_files(const std::string& vert, const std::string& frag);
+    static std::shared_ptr<Shader> from_vf_files(const std::string &vert, const std::string &frag);
 
     /*!
      * @brief Creates a Shader instance from a single GLSL file.
@@ -72,7 +71,7 @@ public:
      * @param glsl The file path to the GLSL shader source code.
      * @return A shared pointer to the created Shader instance.
      */
-    static std::shared_ptr<Shader> from_glsl_file(const std::string& glsl);
+    static std::shared_ptr<Shader> from_glsl_file(const std::string &glsl);
 
     /*!
      * @brief Binds the shader program for use in rendering.
@@ -95,73 +94,72 @@ public:
      */
     unsigned int get_id() const;
 
-    /*! 
+    /*!
      * @brief Sets an integer uniform variable in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param val The integer value to set.
      */
-    void set_int(const std::string& name, int val);
+    void set_int(const std::string &name, int val);
 
-    /*! 
+    /*!
      * @brief Sets an array of integer uniform variables in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param vals Pointer to the array of integer values to set.
      * @param count The number of integers in the array.
      */
-    void set_int_array(const std::string& name, int* vals, unsigned int count);
+    void set_int_array(const std::string &name, int *vals, unsigned int count);
 
-    /*! 
+    /*!
      * @brief Sets a float uniform variable in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param val The float value to set.
      */
-    void set_float(const std::string& name, float val);
+    void set_float(const std::string &name, float val);
 
-    /*! 
+    /*!
      * @brief Sets a vec2 uniform variable in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param val The glm::vec2 value to set.
      */
-    void set_vec2(const std::string& name, const glm::vec2& val);
+    void set_vec2(const std::string &name, const glm::vec2 &val);
 
-    /*! 
+    /*!
      * @brief Sets a vec3 uniform variable in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param val The glm::vec3 value to set.
      */
-    void set_vec3(const std::string& name, const glm::vec3& val);
+    void set_vec3(const std::string &name, const glm::vec3 &val);
 
-    /*! 
+    /*!
      * @brief Sets a vec4 uniform variable in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param val The glm::vec4 value to set.
      */
-    void set_vec4(const std::string& name, const glm::vec4& val);
+    void set_vec4(const std::string &name, const glm::vec4 &val);
 
-    /*! 
+    /*!
      * @brief Sets a mat3 uniform variable in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param val The glm::mat3 value to set.
      */
-    void set_mat3(const std::string& name, const glm::mat3& val);
+    void set_mat3(const std::string &name, const glm::mat3 &val);
 
-    /*! 
+    /*!
      * @brief Sets a mat4 uniform variable in the shader program.
      *
      * @param name The name of the uniform variable.
      * @param val The glm::mat4 value to set.
      */
-    void set_mat4(const std::string& name, const glm::mat4& val);
+    void set_mat4(const std::string &name, const glm::mat4 &val);
 
-private:
-
+  private:
     //! Caches uniform locations to optimize performance
     unsigned int m_renderer_id;
 
@@ -176,7 +174,7 @@ private:
      * @param name The name of the uniform variable.
      * @return The location of the uniform variable.
      */
-    int get_uniform_location(const std::string& name) const;
+    int get_uniform_location(const std::string &name) const;
 
     /*!
      * @brief Compiles a shader of the specified type from source code.
@@ -188,7 +186,7 @@ private:
      * @param src The source code of the shader.
      * @return The OpenGL-assigned ID of the compiled shader.
      */
-    unsigned int compile_shader(unsigned int type, const std::string& src);
+    unsigned int compile_shader(unsigned int type, const std::string &src);
 
     /*!
      * @brief Creates a shader program from vertex and fragment shader source code.
@@ -211,7 +209,7 @@ private:
      * @param fpath The file path to read from.
      * @return The contents of the file as a string.
      */
-    static std::string read_file(const std::string& fpath);
+    static std::string read_file(const std::string &fpath);
 
     /*!
      * @brief Parses a GLSL shader source code into vertex and fragment shader components.
@@ -222,7 +220,7 @@ private:
      * @param src The GLSL shader source code containing both vertex and fragment shaders.
      * @return A pair of strings: the first is the vertex shader source, the second is the fragment shader source.
      */
-    static std::pair<std::string, std::string> parse_glsl_shader(const std::string& src);
+    static std::pair<std::string, std::string> parse_glsl_shader(const std::string &src);
 };
 
 /*!
@@ -234,8 +232,7 @@ private:
  * easy access and management of multiple shader programs.
  */
 class ShaderLibrary {
-public:
-
+  public:
     /*!
      * @brief Adds a shader program to the library.
      *
@@ -244,7 +241,7 @@ public:
      * @param name The name to associate with the shader program.
      * @param shader A shared pointer to the Shader instance to add.
      */
-    static void add(const std::string& name, const std::shared_ptr<Shader> shader);
+    static void add(const std::string &name, const std::shared_ptr<Shader> shader);
 
     /*!
      * @brief Loads a shader program from vertex and fragment shader files and adds it to the library.
@@ -257,7 +254,7 @@ public:
      * @param frag The file path to the fragment shader source code.
      * @return A shared pointer to the created Shader instance.
      */
-    static std::shared_ptr<Shader> load_vf(const std::string& name, const std::string& vert, const std::string& frag);
+    static std::shared_ptr<Shader> load_vf(const std::string &name, const std::string &vert, const std::string &frag);
 
     /*!
      * @brief Loads a shader program from a GLSL source string and adds it to the library.
@@ -269,7 +266,7 @@ public:
      * @param src The GLSL shader source code containing both vertex and fragment shaders.
      * @return A shared pointer to the created Shader instance.
      */
-    static std::shared_ptr<Shader> load_glsl(const std::string& name, const std::string& src);
+    static std::shared_ptr<Shader> load_glsl(const std::string &name, const std::string &src);
 
     /*!
      * @brief Retrieve a shader program from the library by name.
@@ -279,7 +276,7 @@ public:
      * @param name The name of the shader program to retrieve.
      * @return A shared pointer to the Shader instance.
      */
-    static std::shared_ptr<Shader> get(const std::string& name);
+    static std::shared_ptr<Shader> get(const std::string &name);
 
     /*!
      * @brief Checks if a shader program exists in the library by name.
@@ -287,7 +284,7 @@ public:
      * @param name The name of the shader program to check.
      * @return True if the shader program exists, false otherwise.
      */
-    static bool exists(const std::string& name);
+    static bool exists(const std::string &name);
 
     /*!
      * @brief Clears all shader programs from the library.
@@ -296,8 +293,7 @@ public:
      */
     static void clear();
 
-private:
-
+  private:
     //! Static map storing shader programs by name
     static std::unordered_map<std::string, std::shared_ptr<Shader>> s_shaders;
 };

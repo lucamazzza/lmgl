@@ -11,20 +11,19 @@
 
 #pragma once
 
-#include "lmgl/scene/node.hpp"
-#include "lmgl/scene/mesh.hpp"
 #include "lmgl/renderer/shader.hpp"
 #include "lmgl/renderer/texture.hpp"
+#include "lmgl/scene/mesh.hpp"
+#include "lmgl/scene/node.hpp"
 
 #include <memory>
 #include <string>
 #include <vector>
 
-struct aiScene;     //!< Forward declarations for Assimp Scene structure
-struct aiNode;      //!< Forward declarations for Assimp Node structure
-struct aiMesh;      //!< Forward declarations for Assimp Mesh structure
-struct aiMaterial;  //!< Forward declarations for Assimp Material structure
-
+struct aiScene;    //!< Forward declarations for Assimp Scene structure
+struct aiNode;     //!< Forward declarations for Assimp Node structure
+struct aiMesh;     //!< Forward declarations for Assimp Mesh structure
+struct aiMaterial; //!< Forward declarations for Assimp Material structure
 
 namespace lmgl {
 
@@ -59,7 +58,7 @@ struct ModelLoadOptions {
  * and textures, and constructs a scene graph representation of the model.
  */
 class ModelLoader {
-public:
+  public:
     /*!
      * @brief Load a 3D model from a file.
      *
@@ -72,11 +71,10 @@ public:
      * @param options Options for loading the model.
      * @return A shared pointer to the root node of the loaded model's scene graph.
      */
-    static std::shared_ptr<scene::Node> load(const std::string& fpath, 
-                                             std::shared_ptr<renderer::Shader> shader, 
-                                             const ModelLoadOptions& options);
-private:
+    static std::shared_ptr<scene::Node> load(const std::string &fpath, std::shared_ptr<renderer::Shader> shader,
+                                             const ModelLoadOptions &options);
 
+  private:
     /*!
      * @brief Process an Assimp node and its children.
      *
@@ -89,9 +87,7 @@ private:
      * @param shader A shared pointer to the shader to be used for rendering the model.
      * @return A shared pointer to the processed scene graph node.
      */
-    static std::shared_ptr<scene::Node> process_node(aiNode* ai_node,
-                                                     const aiScene* ai_scene,
-                                                     const std::string& dir,
+    static std::shared_ptr<scene::Node> process_node(aiNode *ai_node, const aiScene *ai_scene, const std::string &dir,
                                                      std::shared_ptr<renderer::Shader> shader);
 
     /*!
@@ -106,9 +102,7 @@ private:
      * @param shader A shared pointer to the shader to be used for rendering the mesh.
      * @return A shared pointer to the processed Mesh object.
      */
-    static std::shared_ptr<scene::Mesh> process_mesh(aiMesh* ai_mesh,
-                                                     const aiScene* ai_scene,
-                                                     const std::string& dir,
+    static std::shared_ptr<scene::Mesh> process_mesh(aiMesh *ai_mesh, const aiScene *ai_scene, const std::string &dir,
                                                      std::shared_ptr<renderer::Shader> shader);
 
     /*!
@@ -122,9 +116,8 @@ private:
      * @param dir The directory of the model file, used for loading textures.
      * @return A vector of shared pointers to the loaded Texture objects.
      */
-    static std::vector<std::shared_ptr<renderer::Texture>> load_material_textures(aiMaterial* ai_material,
-                                                                                  unsigned int type,
-                                                                                  const std::string& dir);
+    static std::vector<std::shared_ptr<renderer::Texture>>
+    load_material_textures(aiMaterial *ai_material, unsigned int type, const std::string &dir);
     /*!
      * @brief Get the directory from a file path.
      *
@@ -134,12 +127,9 @@ private:
      * @param filepath The file path to extract the directory from.
      * @return The directory part of the file path.
      */
-    static std::string get_directory(const std::string& filepath);
-
+    static std::string get_directory(const std::string &filepath);
 };
 
 } // namespace assets
 
 } // namespace lmgl
-
-

@@ -23,7 +23,7 @@ namespace lmgl {
 
 namespace scene {
 
-/*! 
+/*!
  * @brief Represents a single vertex in 3D space.
  *
  * The Vertex struct encapsulates the properties of a vertex, including its position,
@@ -50,7 +50,7 @@ struct Vertex {
     //! @brief Texture bitangetn
     glm::vec3 bitangent;
 
-    /*! 
+    /*!
      * @brief Constructor for the Vertex struct.
      *
      * Initializes a Vertex with specified position, normal, color, and UVs.
@@ -61,14 +61,12 @@ struct Vertex {
      * @param col Color of the vertex (default is (1.0, 1.0, 1.0, 1.0)).
      * @param uv Texture coordinates of the vertex (default is (0.0, 0.0)).
      */
-    Vertex(const glm::vec3& pos = glm::vec3(0.0f),
-           const glm::vec3& norm = glm::vec3(0.0f, 1.0f, 0.0f),
-           const glm::vec4& col = glm::vec4(1.0f),
-           const glm::vec2& uv = glm::vec2(0.0f))
+    Vertex(const glm::vec3 &pos = glm::vec3(0.0f), const glm::vec3 &norm = glm::vec3(0.0f, 1.0f, 0.0f),
+           const glm::vec4 &col = glm::vec4(1.0f), const glm::vec2 &uv = glm::vec2(0.0f))
         : position(pos), normal(norm), color(col), uvs(uv) {}
 };
 
-/*! 
+/*!
  * @brief Represents a 3D mesh with associated vertex array and shader.
  *
  * The Mesh class encapsulates a vertex array and a shader program used for rendering 3D meshes.
@@ -76,9 +74,8 @@ struct Vertex {
  * in a graphics application.
  */
 class Mesh {
-public:
-    
-    /*! 
+  public:
+    /*!
      * @brief Constructor for the Mesh class.
      *
      * Initializes a Mesh with the provided vertices, indices, and shader.
@@ -87,11 +84,10 @@ public:
      * @param indices Vector of unsigned integers defining the mesh indices.
      * @param shader Shared pointer to the Shader object.
      */
-    Mesh(const std::vector<Vertex>& vert, 
-         const std::vector<unsigned int>& indices,
+    Mesh(const std::vector<Vertex> &vert, const std::vector<unsigned int> &indices,
          std::shared_ptr<renderer::Shader> shader);
 
-    /*! 
+    /*!
      * @brief Constructor for the Mesh class.
      *
      * Initializes a Mesh with the provided vertex array and shader.
@@ -105,21 +101,21 @@ public:
     //! @brief Destructor for the Mesh class.
     ~Mesh() = default;
 
-    /*! 
+    /*!
      * @brief Binds the mesh for rendering.
      *
      * Prepares the mesh for rendering by binding the vertex array and shader.
      */
     void bind() const;
 
-    /*! 
+    /*!
      * @brief Unbinds the mesh after rendering.
      *
      * Cleans up after rendering by unbinding the vertex array and shader.
      */
     void unbind() const;
 
-    /*! 
+    /*!
      * @brief Renders the mesh.
      *
      * Issues the draw call to render the mesh using the associated vertex array and shader.
@@ -169,7 +165,7 @@ public:
      *
      * @return Constant reference to the vector of Vertex objects.
      */
-    inline const std::vector<Vertex>& get_vertices() const { return m_vertices; }
+    inline const std::vector<Vertex> &get_vertices() const { return m_vertices; }
 
     /*!
      * @brief Getter for indices
@@ -178,7 +174,7 @@ public:
      *
      * @return Constant reference to the vector of unsigned int indices.
      */
-    inline const std::vector<unsigned int>& get_indices() const { return m_indices; }
+    inline const std::vector<unsigned int> &get_indices() const { return m_indices; }
 
     /*!
      * @brief Check if the mesh has vertex data
@@ -188,7 +184,7 @@ public:
      * @return True if both vertices and indices are present, false otherwise.
      */
     inline bool has_vert_data() const { return !m_vertices.empty() && !m_indices.empty(); }
-  
+
     /*!
      * @brief Retrieve the material associated with the mesh
      *
@@ -203,8 +199,8 @@ public:
      */
     inline void set_material(std::shared_ptr<Material> material) { m_material = material; }
     // Factory Methods
-    
-    /*! 
+
+    /*!
      * @brief Creates a cube mesh.
      *
      * Generates a cube mesh with the specified shader and subdivisions.
@@ -215,7 +211,7 @@ public:
      */
     static std::shared_ptr<Mesh> create_cube(std::shared_ptr<renderer::Shader> shader, unsigned int subdivs = 1);
 
-    /*! 
+    /*!
      * @brief Creates a quad mesh.
      *
      * Generates a quad mesh with the specified shader, width, and height.
@@ -225,8 +221,7 @@ public:
      * @param height Height of the quad (default is 1.0f).
      * @return Shared pointer to the created Mesh object.
      */
-    static std::shared_ptr<Mesh> create_quad(std::shared_ptr<renderer::Shader> shader, 
-                                             float width = 1.0f, 
+    static std::shared_ptr<Mesh> create_quad(std::shared_ptr<renderer::Shader> shader, float width = 1.0f,
                                              float height = 1.0f);
 
     /*!
@@ -240,13 +235,10 @@ public:
      * @param latsegs Number of latitudinal segments (default is 32).
      * @return Shared pointer to the created Mesh object.
      */
-    static std::shared_ptr<Mesh> create_sphere(std::shared_ptr<renderer::Shader> shader, 
-                                               float radius = 0.5f, 
-                                               unsigned int lonsegs = 32, 
-                                               unsigned int latsegs = 32);
+    static std::shared_ptr<Mesh> create_sphere(std::shared_ptr<renderer::Shader> shader, float radius = 0.5f,
+                                               unsigned int lonsegs = 32, unsigned int latsegs = 32);
 
-private:
-
+  private:
     //! @brief Material associated to the mesh.
     std::shared_ptr<Material> m_material;
 
@@ -265,7 +257,7 @@ private:
     //! @brief Vector of indices defining the mesh geometry.
     std::vector<unsigned int> m_indices;
 
-    /*! 
+    /*!
      * @brief Sets up the mesh by creating the vertex array.
      *
      * Initializes the vertex array using the stored vertices and indices.

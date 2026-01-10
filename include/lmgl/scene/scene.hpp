@@ -36,16 +36,15 @@ namespace scene {
  * provides methods to update the scene.
  */
 class Scene {
-public:
-
-    /*! 
+  public:
+    /*!
      * @brief Constructor for the Scene class.
      *
      * Initializes a Scene with a root node.
      *
      * @param name Optional name for the scene.
      */
-    Scene(const std::string& name = "Scene");
+    Scene(const std::string &name = "Scene");
 
     /*!
      * @brief Getter for the root node.
@@ -64,23 +63,23 @@ public:
      */
     void update();
 
-    /*! 
+    /*!
      * @brief Getters and setters for the scene's name.
      *
      * Provides access to the scene's name property.
      *
      * @return Name of the scene.
      */
-    inline const std::string& get_name() const { return m_name; }
+    inline const std::string &get_name() const { return m_name; }
 
-    /*! 
+    /*!
      * @brief Set the name of the scene.
      *
      * Updates the scene's name property.
      *
      * @param name New name for the scene.
      */
-    inline void set_name(const std::string& name) { m_name = name; }
+    inline void set_name(const std::string &name) { m_name = name; }
 
     /*!
      * @brief Returns all the lights in the scene.
@@ -108,8 +107,7 @@ public:
      */
     void clear_lights();
 
-private:
-
+  private:
     //! @brief Name of the scene.
     std::string m_name;
 

@@ -5,20 +5,20 @@
 #include "lmgl/core/engine.hpp"
 #include "lmgl/renderer/renderer.hpp"
 #include "lmgl/renderer/shader.hpp"
-#include "lmgl/scene/scene.hpp"
 #include "lmgl/scene/camera.hpp"
-#include "lmgl/scene/node.hpp"
 #include "lmgl/scene/mesh.hpp"
+#include "lmgl/scene/node.hpp"
+#include "lmgl/scene/scene.hpp"
 
 namespace lmgl {
 
 namespace renderer {
 
 class RendererTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
         // Setup code before each test
-        auto& engine = core::Engine::get_instance();
+        auto &engine = core::Engine::get_instance();
         engine.init(800, 600, "Renderer Test");
         renderer = std::make_unique<Renderer>();
         scene = std::make_shared<scene::Scene>();
@@ -49,13 +49,9 @@ TEST_F(RendererTest, SetRenderMode) {
     EXPECT_EQ(renderer->get_render_mode(), RenderMode::Solid);
 }
 
-TEST_F(RendererTest, RenderNullSceneDoesNotCrash) {
-    EXPECT_NO_THROW(renderer->render(nullptr, camera));
-}
+TEST_F(RendererTest, RenderNullSceneDoesNotCrash) { EXPECT_NO_THROW(renderer->render(nullptr, camera)); }
 
-TEST_F(RendererTest, RenderNullCameraDoesNotCrash) {
-    EXPECT_NO_THROW(renderer->render(scene, nullptr));
-}
+TEST_F(RendererTest, RenderNullCameraDoesNotCrash) { EXPECT_NO_THROW(renderer->render(scene, nullptr)); }
 
 TEST_F(RendererTest, RenderEmptyScene) {
     renderer->render(scene, camera);

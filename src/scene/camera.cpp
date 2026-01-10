@@ -17,8 +17,7 @@ Camera::Camera(float fov, float aspect, float near, float far)
     , m_fov(fov)
     , m_aspect(aspect)
     , m_near(near)
-    , m_far(far)
-{
+    , m_far(far) {
     set_perspective(fov, aspect, near, far);
 }
 
@@ -38,7 +37,7 @@ void Camera::set_orthographic(float left, float right, float bottom, float top, 
     m_projection = glm::ortho(left, right, bottom, top, near, far);
 }
 
-const glm::mat4& Camera::get_view_matrix() const {
+const glm::mat4 &Camera::get_view_matrix() const {
     if (m_view_dirty) {
         m_view = glm::lookAt(m_position, m_target, m_up);
         m_view_dirty = false;
@@ -46,9 +45,7 @@ const glm::mat4& Camera::get_view_matrix() const {
     return m_view;
 }
 
-glm::mat4 Camera::get_view_projection_matrix() const {
-    return m_projection * get_view_matrix();
-}
+glm::mat4 Camera::get_view_projection_matrix() const { return m_projection * get_view_matrix(); }
 
 glm::vec3 Camera::unproject(float screen_x, float screen_y, float screen_width, float screen_height) const {
     float x = (2.0f * screen_x) / screen_width - 1.0f;
@@ -63,5 +60,5 @@ glm::vec3 Camera::unproject(float screen_x, float screen_y, float screen_width, 
 }
 
 } // namespace scene
- 
+
 } // namespace lmgl

@@ -13,17 +13,18 @@ namespace lmgl {
 namespace renderer {
 
 class ShaderTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
         // Setup code before each test
 #ifndef TEST_HEADLESS
-        auto& engine_instance = core::Engine::get_instance();
-        if (!engine_instance.get_window()) engine_instance.init(800, 600, "Shader Test");
+        auto &engine_instance = core::Engine::get_instance();
+        if (!engine_instance.get_window())
+            engine_instance.init(800, 600, "Shader Test");
 #endif
         ShaderLibrary::clear();
         create_test_shaders();
     }
-    
+
     void TearDown() override {
         // Cleanup code after each test
         ShaderLibrary::clear();
@@ -32,7 +33,7 @@ protected:
         remove("test_shader.glsl");
         remove("test_invalid.glsl");
     }
-    
+
     void create_test_shaders() {
         std::ofstream vert_file("test_shader.vert");
         vert_file << R"(
@@ -45,17 +46,17 @@ void main() {
 )";
         vert_file.close();
         std::ofstream frag_file("test_shader.frag");
-         frag_file << R"(
+        frag_file << R"(
  #version 410 core
  uniform vec4 u_Color;
  out vec4 FragColor;
  void main() {
      FragColor = u_Color;
  }
- )";    
-         frag_file.close();
-         std::ofstream glsl_file("test_shader.glsl");
-         glsl_file << R"(
+ )";
+        frag_file.close();
+        std::ofstream glsl_file("test_shader.glsl");
+        glsl_file << R"(
  #shader vertex
  #version 410 core
  layout(location = 0) in vec3 a_Position;
@@ -72,9 +73,9 @@ void main() {
      FragColor = u_Color;
  }
  )";
-         glsl_file.close();
-         std::ofstream invalid_file("test_invalid.glsl");
-         invalid_file << R"(
+        glsl_file.close();
+        std::ofstream invalid_file("test_invalid.glsl");
+        invalid_file << R"(
  #shader vertex
  #version 410 core
  THIS IS INVALID GLSL CODE!!!
@@ -83,8 +84,8 @@ void main() {
  #version 410 core
  ALSO INVALID!!!
  )";
-         invalid_file.close();
-     }
+        invalid_file.close();
+    }
 };
 
 // Shader
@@ -121,14 +122,14 @@ TEST_F(ShaderTest, ShaderLibraryStartsEmpty) {
 #ifndef TEST_HEADLESS
 
 TEST_F(ShaderTest, CreateFromSourceStrings) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() {
     gl_Position = vec4(a_Position, 1.0);
 }
 )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() {
@@ -161,12 +162,12 @@ TEST_F(ShaderTest, BindAndUnbind) {
 }
 
 TEST_F(ShaderTest, SetIntUniform) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 uniform int u_IntValue;
 out vec4 FragColor;
@@ -188,12 +189,12 @@ TEST_F(ShaderTest, SetFloatUniform) {
 }
 
 TEST_F(ShaderTest, SetVec2Uniform) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 uniform vec2 u_Vec2;
 out vec4 FragColor;
@@ -223,7 +224,7 @@ TEST_F(ShaderTest, SetVec4Uniform) {
 }
 
 TEST_F(ShaderTest, SetMat3Uniform) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 uniform mat3 u_Mat3;
@@ -231,7 +232,7 @@ void main() {
     gl_Position = vec4(u_Mat3 * a_Position, 1.0);
 }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() {
@@ -254,12 +255,12 @@ TEST_F(ShaderTest, SetMat4Uniform) {
 }
 
 TEST_F(ShaderTest, SetIntArrayUniform) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 uniform int u_IntArray[4];
 out vec4 FragColor;
@@ -270,7 +271,7 @@ void main() {
     auto shader = std::make_shared<Shader>(vert, frag);
     shader->bind();
 
-    int values[4] = { 255, 128, 64, 32 };
+    int values[4] = {255, 128, 64, 32};
     // Should not crash
     shader->set_int_array("u_IntArray", values, 4);
 }
@@ -298,14 +299,14 @@ TEST_F(ShaderTest, InvalidUniformName) {
 // ShaderLibrary
 
 TEST_F(ShaderTest, AddToShaderLibrary) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() {
     gl_Position = vec4(a_Position, 1.0);
 }
 )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() {
@@ -319,14 +320,14 @@ void main() {
 }
 
 TEST_F(ShaderTest, RetrieveFromShaderLibrary) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() {
     gl_Position = vec4(a_Position, 1.0);
 }
 )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() {

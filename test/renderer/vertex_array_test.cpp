@@ -10,12 +10,13 @@ namespace lmgl {
 namespace renderer {
 
 class VertexArrayTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
-        // Setup code before each test 
+        // Setup code before each test
 #ifndef TEST_HEADLESS
-        auto& engine_instance = core::Engine::get_instance();
-        if (!engine_instance.get_window()) engine_instance.init(800, 600, "VertexArray Test");
+        auto &engine_instance = core::Engine::get_instance();
+        if (!engine_instance.get_window())
+            engine_instance.init(800, 600, "VertexArray Test");
 #endif
     }
 
@@ -31,28 +32,22 @@ TEST_F(VertexArrayTest, Creation) {
 }
 
 TEST_F(VertexArrayTest, AddVertexBuffer) {
-    float vertices[] = {
-     -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-      0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
-    };
+    float vertices[] = {-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, -0.5f, 0.0f,
+                        0.0f,  1.0f,  0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f,  1.0f};
 
     auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
-    vbo->set_layout({
-        { ShaderDataType::Float3, "a_Position" },
-        { ShaderDataType::Float3, "a_Color" }
-    });
+    vbo->set_layout({{ShaderDataType::Float3, "a_Position"}, {ShaderDataType::Float3, "a_Color"}});
 
     auto vao = std::make_shared<VertexArray>();
     vao->add_vertex_buffer(vbo);
 
-    const auto& buffers = vao->get_vertex_buffers();
+    const auto &buffers = vao->get_vertex_buffers();
     EXPECT_EQ(buffers.size(), 1);
     EXPECT_EQ(buffers[0], vbo);
 }
 
 TEST_F(VertexArrayTest, SetIndexBuffer) {
-    unsigned int indices[] = { 0, 1, 2 };
+    unsigned int indices[] = {0, 1, 2};
     auto ibo = std::make_shared<IndexBuffer>(indices, sizeof(indices) / sizeof(unsigned int));
 
     auto vao = std::make_shared<VertexArray>();
@@ -63,21 +58,14 @@ TEST_F(VertexArrayTest, SetIndexBuffer) {
 }
 
 TEST_F(VertexArrayTest, CompleteVertexArraySetup) {
-    float vertices[] = {
-        // positions         // colors
-        -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-         0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f, 1.0f
-    };
+    float vertices[] = {// positions         // colors
+                        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+                        0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f, -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
 
-    unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
+    unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
     auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
-    vbo->set_layout({
-        { ShaderDataType::Float3, "a_Position" },
-        { ShaderDataType::Float4, "a_Color" }
-    });
+    vbo->set_layout({{ShaderDataType::Float3, "a_Position"}, {ShaderDataType::Float4, "a_Color"}});
     auto ibo = std::make_shared<IndexBuffer>(indices, sizeof(indices) / sizeof(unsigned int));
     auto vao = std::make_shared<VertexArray>();
     vao->add_vertex_buffer(vbo);
@@ -92,24 +80,12 @@ TEST_F(VertexArrayTest, CompleteVertexArraySetup) {
 }
 
 TEST_F(VertexArrayTest, MultipleVertexBuffers) {
-    float positions[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
+    float positions[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
     auto p_vbo = std::make_shared<VertexBuffer>(positions, sizeof(positions));
-    p_vbo->set_layout({
-        { ShaderDataType::Float3, "a_Position" }
-    });
-    float colors[] = {
-        1.0f, 0.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f, 1.0f
-    };
+    p_vbo->set_layout({{ShaderDataType::Float3, "a_Position"}});
+    float colors[] = {1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
     auto c_vbo = std::make_shared<VertexBuffer>(colors, sizeof(colors));
-    c_vbo->set_layout({
-        { ShaderDataType::Float4, "a_Color" }
-    });
+    c_vbo->set_layout({{ShaderDataType::Float4, "a_Color"}});
     auto vao = std::make_shared<VertexArray>();
     vao->add_vertex_buffer(p_vbo);
     vao->add_vertex_buffer(c_vbo);
@@ -118,7 +94,7 @@ TEST_F(VertexArrayTest, MultipleVertexBuffers) {
 
 TEST_F(VertexArrayTest, BindUnbind) {
     auto vao = std::make_shared<VertexArray>();
-    
+
     // should not crash
     vao->bind();
     vao->unbind();

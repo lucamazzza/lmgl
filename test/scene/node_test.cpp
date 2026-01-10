@@ -11,9 +11,9 @@ namespace lmgl {
 namespace scene {
 
 class NodeTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
-        // Setup code before each test 
+        // Setup code before each test
     }
     void TearDown() override {
         // Cleanup code after each test
@@ -173,8 +173,6 @@ TEST_F(NodeTest, RenameNode) {
     node->set_name("NewName");
     EXPECT_EQ(node->get_name(), "NewName");
 }
-
-
 
 } // namespace scene
 

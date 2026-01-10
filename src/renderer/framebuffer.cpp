@@ -6,10 +6,7 @@ namespace lmgl {
 
 namespace renderer {
 
-Framebuffer::Framebuffer(int width, int height) 
-    : m_width(width), m_height(height) {
-    invalidate();
-}
+Framebuffer::Framebuffer(int width, int height) : m_width(width), m_height(height) { invalidate(); }
 
 Framebuffer::~Framebuffer() {
     glDeleteFramebuffers(1, &m_renderer_id);
@@ -40,12 +37,11 @@ void Framebuffer::bind() const {
     glViewport(0, 0, m_width, m_height);
 }
 
-void Framebuffer::unbind() const {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
+void Framebuffer::unbind() const { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 
 void Framebuffer::resize(int width, int height) {
-    if (width == 0 || height == 0 || (width == m_width && height == m_height)) return;
+    if (width == 0 || height == 0 || (width == m_width && height == m_height))
+        return;
     m_width = width;
     m_height = height;
     invalidate();

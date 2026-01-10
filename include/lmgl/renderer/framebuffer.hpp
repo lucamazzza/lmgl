@@ -6,7 +6,7 @@
  * including color and depth attachments.
  *
  * \copyright{Copyright (c) 2026 Luca Mazza. All rights reserved.}
- * \license{This project is released under the MIT License.}* 
+ * \license{This project is released under the MIT License.}*
  */
 
 #pragma once
@@ -21,7 +21,7 @@ namespace lmgl {
 
 namespace renderer {
 
-/*! 
+/*!
  * @brief Framebuffer class for off-screen rendering.
  *
  * This class encapsulates the creation and management of an OpenGL framebuffer,
@@ -30,9 +30,8 @@ namespace renderer {
  * @note The framebuffer can be resized and bound/unbound for rendering.
  */
 class Framebuffer {
-public:
-
-    /*! 
+  public:
+    /*!
      * @brief Constructor for the Framebuffer.
      *
      * Initializes the framebuffer with the specified width and height.
@@ -46,21 +45,21 @@ public:
     //! @brief Destructor for the Framebuffer.
     ~Framebuffer();
 
-    /*! 
+    /*!
      * @brief Bind the framebuffer.
      *
      * Activates the framebuffer for subsequent rendering operations.
      */
     void bind() const;
 
-    /*! 
+    /*!
      * @brief Unbind the framebuffer.
      *
      * Deactivates the framebuffer, reverting to the default framebuffer.
      */
     void unbind() const;
 
-    /*! 
+    /*!
      * @brief Resize the framebuffer.
      *
      * Adjusts the size of the framebuffer and its attachments.
@@ -70,7 +69,7 @@ public:
      */
     void resize(int width, int height);
 
-    /*! 
+    /*!
      * @brief Get the color attachment texture.
      *
      * Returns a shared pointer to the texture used as the color attachment
@@ -80,9 +79,8 @@ public:
      */
     inline std::shared_ptr<Texture> get_color_attachment() const { return m_texture_attachment; }
 
-private:
-
-    /*! 
+  private:
+    /*!
      * @brief Invalidate the framebuffer.
      *
      * Recreates the framebuffer and its attachments. Called during resizing.

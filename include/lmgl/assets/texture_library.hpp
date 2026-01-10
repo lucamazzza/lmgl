@@ -32,13 +32,12 @@ namespace assets {
  * the application.
  */
 class TextureLibrary {
-public:
-
+  public:
     /*!
      * @brief Get the singleton instance of the TextureLibrary
      * @return Reference to the TextureLibrary instance
      */
-    static TextureLibrary& get_instance();
+    static TextureLibrary &get_instance();
 
     /*!
      * @brief Load a texture from a file path
@@ -49,7 +48,7 @@ public:
      * @param srgb Whether to load the texture in sRGB color space
      * @return Shared pointer to the loaded texture
      */
-    std::shared_ptr<renderer::Texture> load(const std::string& fpath);
+    std::shared_ptr<renderer::Texture> load(const std::string &fpath);
 
     /*!
      * @brief Check if a texture exists in the cache
@@ -60,7 +59,7 @@ public:
      * @param path The file path of the texture
      * @return True if the texture is cached, false otherwise
      */
-    bool exists(const std::string& fpath) const;
+    bool exists(const std::string &fpath) const;
 
     /*!
      * @brief Retrieve a cached texture
@@ -71,7 +70,7 @@ public:
      * @param path The file path of the texture
      * @return Shared pointer to the cached texture, or nullptr if not found
      */
-    std::shared_ptr<renderer::Texture> get(const std::string& fpath) const;
+    std::shared_ptr<renderer::Texture> get(const std::string &fpath) const;
 
     /*!
      * @brief Clear the texture cache
@@ -89,8 +88,7 @@ public:
      */
     inline size_t size() const { return m_textures.size(); }
 
-private:
-
+  private:
     //! @brief Private constructor for singleton pattern
     TextureLibrary() = default;
 
@@ -98,10 +96,10 @@ private:
     ~TextureLibrary() = default;
 
     //! @brief Delete copy constructor and assignment operator
-    TextureLibrary(const TextureLibrary&) = delete;
+    TextureLibrary(const TextureLibrary &) = delete;
 
     //! @brief Delete assignment operator
-    TextureLibrary& operator=(const TextureLibrary&) = delete;
+    TextureLibrary &operator=(const TextureLibrary &) = delete;
 
     //! @brief Map storing cached textures
     std::unordered_map<std::string, std::shared_ptr<renderer::Texture>> m_textures;

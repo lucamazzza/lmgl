@@ -38,8 +38,7 @@ enum class LightType {
  * including its type, color, intensity, and position/direction.
  */
 class Light {
-public:
-
+  public:
     /*!
      * @brief Constructs a Light object with the specified type.
      *
@@ -66,14 +65,14 @@ public:
      *
      * @param type The new LightType for the light.
      */
-    inline const glm::vec3& get_color() const { return m_color; }
+    inline const glm::vec3 &get_color() const { return m_color; }
 
     /*!
      * @brief Sets the color of the light.
      *
      * @param color The new color for the light as a glm::vec3.
      */
-    inline void set_color(const glm::vec3& color) { m_color = color; }
+    inline void set_color(const glm::vec3 &color) { m_color = color; }
 
     /*!
      * @brief Gets the intensity of the light.
@@ -94,28 +93,28 @@ public:
      *
      * @return The direction of the light as a glm::vec3.
      */
-    inline const glm::vec3& get_direction() const { return m_direction; }
+    inline const glm::vec3 &get_direction() const { return m_direction; }
 
     /*!
      * @brief Sets the direction of the light.
      *
      * @param direction The new direction for the light as a glm::vec3.
      */
-    inline void set_direction(const glm::vec3& direction) { m_direction = glm::normalize(direction); }
+    inline void set_direction(const glm::vec3 &direction) { m_direction = glm::normalize(direction); }
 
     /*!
      * @brief Gets the position of the light.
      *
      * @return The position of the light as a glm::vec3.
      */
-    inline const glm::vec3& get_position() const { return m_position; }
+    inline const glm::vec3 &get_position() const { return m_position; }
 
     /*!
      * @brief Sets the position of the light.
      *
      * @param position The new position for the light as a glm::vec3.
      */
-    inline void set_position(const glm::vec3& position) { m_position = position; }
+    inline void set_position(const glm::vec3 &position) { m_position = position; }
 
     /*!
      * @brief Gets the range of the light.
@@ -174,14 +173,15 @@ public:
     inline void set_casts_shadows(bool casts_shadows) { m_casts_shadows = casts_shadows; }
 
     // Factory methods
-    
+
     /*! @brief Creates a directional light.
      *
      * @param direction The direction of the light as a glm::vec3.
      * @param color The color of the light as a glm::vec3 (default is white).
      * @return A shared pointer to the created Light object.
      */
-    static std::shared_ptr<Light> create_directional(const glm::vec3& direction, const glm::vec3& color = glm::vec3(1.0f));
+    static std::shared_ptr<Light> create_directional(const glm::vec3 &direction,
+                                                     const glm::vec3 &color = glm::vec3(1.0f));
 
     /*! @brief Creates a point light.
      *
@@ -190,9 +190,8 @@ public:
      * @param color The color of the light as a glm::vec3 (default is white).
      * @return A shared pointer to the created Light object.
      */
-    static std::shared_ptr<Light> create_point(const glm::vec3& position, 
-                                               float range = 10.0f, 
-                                               const glm::vec3& color = glm::vec3(1.0f));
+    static std::shared_ptr<Light> create_point(const glm::vec3 &position, float range = 10.0f,
+                                               const glm::vec3 &color = glm::vec3(1.0f));
 
     /*! @brief Creates a spotlight.
      *
@@ -202,13 +201,10 @@ public:
      * @param color The color of the light as a glm::vec3 (default is white).
      * @return A shared pointer to the created Light object.
      */
-    static std::shared_ptr<Light> create_spot(const glm::vec3& position, 
-                                              const glm::vec3& direction,
-                                              float angle = 45.0f,
-                                              const glm::vec3& color = glm::vec3(1.0f));
+    static std::shared_ptr<Light> create_spot(const glm::vec3 &position, const glm::vec3 &direction,
+                                              float angle = 45.0f, const glm::vec3 &color = glm::vec3(1.0f));
 
-protected:
-
+  protected:
     //! @brief The type of the light.
     LightType m_type;
 

@@ -13,15 +13,16 @@ namespace lmgl {
 namespace scene {
 
 class MeshTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
         // Setup code before each test
 #ifndef TEST_HEADLESS
-        auto& engine = core::Engine::get_instance();
-        if (!engine.get_window()) engine.init(800, 600, "Buffer Test");
+        auto &engine = core::Engine::get_instance();
+        if (!engine.get_window())
+            engine.init(800, 600, "Buffer Test");
 #endif
     }
-    
+
     void TearDown() override {
         // Cleanup code after each test
     }
@@ -36,12 +37,8 @@ TEST_F(MeshTest, VertexDefaultConstruction) {
 }
 
 TEST_F(MeshTest, VertexCustomConstruction) {
-    Vertex v(
-        glm::vec3(1.0f, 2.0f, 3.0f),
-        glm::vec3(0.0f, 0.0f, 1.0f),
-        glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
-        glm::vec2(0.5f, 0.5f)
-    );
+    Vertex v(glm::vec3(1.0f, 2.0f, 3.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
+             glm::vec2(0.5f, 0.5f));
     EXPECT_EQ(v.position, glm::vec3(1.0f, 2.0f, 3.0f));
     EXPECT_EQ(v.normal, glm::vec3(0.0f, 0.0f, 1.0f));
     EXPECT_EQ(v.color, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
@@ -88,12 +85,12 @@ void main() { FragColor = vec4(1.0); }
 }
 
 TEST_F(MeshTest, CreateQuad) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() { FragColor = vec4(1.0); }
@@ -101,16 +98,16 @@ void main() { FragColor = vec4(1.0); }
     auto shader = std::make_shared<renderer::Shader>(vert, frag);
     auto quad = Mesh::create_quad(shader);
     EXPECT_NE(quad, nullptr);
-    EXPECT_EQ(quad->get_index_count(), 6);  // 2 triangles
+    EXPECT_EQ(quad->get_index_count(), 6); // 2 triangles
 }
 
 TEST_F(MeshTest, CreateSphere) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() { FragColor = vec4(1.0); }
@@ -122,12 +119,12 @@ void main() { FragColor = vec4(1.0); }
 }
 
 TEST_F(MeshTest, MeshBindAndUnbind) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() { FragColor = vec4(1.0); }
@@ -141,12 +138,12 @@ void main() { FragColor = vec4(1.0); }
 }
 
 TEST_F(MeshTest, SetShader) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() { FragColor = vec4(1.0); }
@@ -160,12 +157,12 @@ void main() { FragColor = vec4(1.0); }
 }
 
 TEST_F(MeshTest, HasVertexData) {
-    const char* vert = R"(
+    const char *vert = R"(
 #version 410 core
 layout(location = 0) in vec3 a_Position;
 void main() { gl_Position = vec4(a_Position, 1.0); }
     )";
-    const char* frag = R"(
+    const char *frag = R"(
 #version 410 core
 out vec4 FragColor;
 void main() { FragColor = vec4(1.0); }

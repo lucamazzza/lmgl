@@ -10,12 +10,13 @@ namespace lmgl {
 namespace renderer {
 
 class FramebufferTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
         // Setup code before each test
 #ifndef TEST_HEADLESS
-        auto& engine_instance = core::Engine::get_instance();
-        if (!engine_instance.get_window()) engine_instance.init(800, 600, "Framebuffer Test");
+        auto &engine_instance = core::Engine::get_instance();
+        if (!engine_instance.get_window())
+            engine_instance.init(800, 600, "Framebuffer Test");
 #endif
     }
 

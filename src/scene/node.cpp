@@ -9,30 +9,27 @@ namespace lmgl {
 
 namespace scene {
 
-Node::Node(const std::string& name) 
-    : m_name(name) {
-    update_local_transform();
-}
+Node::Node(const std::string &name) : m_name(name) { update_local_transform(); }
 
 // Transforms
 
-void Node::set_position(const glm::vec3& position) {
+void Node::set_position(const glm::vec3 &position) {
     m_position = position;
     update_local_transform();
 }
 
-void Node::set_rotation(const glm::quat& rotation) {
+void Node::set_rotation(const glm::quat &rotation) {
     m_rotation = rotation;
     update_local_transform();
 }
 
-void Node::set_rotation(const glm::vec3& euler_angles) {
+void Node::set_rotation(const glm::vec3 &euler_angles) {
     glm::vec3 euler_rad = glm::radians(euler_angles);
     m_rotation = glm::quat(euler_rad);
     update_local_transform();
 }
 
-void Node::set_scale(const glm::vec3& scale) {
+void Node::set_scale(const glm::vec3 &scale) {
     m_scale = scale;
     update_local_transform();
 }
@@ -42,17 +39,15 @@ void Node::set_scale(float scale) {
     update_local_transform();
 }
 
-void Node::rotate(float angle, const glm::vec3& axis) {
+void Node::rotate(float angle, const glm::vec3 &axis) {
     glm::quat delta_rotation = glm::angleAxis(glm::radians(angle), glm::normalize(axis));
     m_rotation = delta_rotation * m_rotation;
     update_local_transform();
 }
 
-glm::vec3 Node::get_euler_angles() const {
-    return glm::degrees(glm::eulerAngles(m_rotation));
-}
+glm::vec3 Node::get_euler_angles() const { return glm::degrees(glm::eulerAngles(m_rotation)); }
 
-void Node::look_at(const glm::vec3& target, const glm::vec3& up) {
+void Node::look_at(const glm::vec3 &target, const glm::vec3 &up) {
     glm::vec3 direction = glm::normalize(target - m_position);
     glm::quat look_rotation = glm::quatLookAt(direction, up);
     set_rotation(look_rotation);
@@ -61,7 +56,8 @@ void Node::look_at(const glm::vec3& target, const glm::vec3& up) {
 // Hierarchy
 
 void Node::add_child(std::shared_ptr<Node> child) {
-    if (!child) return;
+    if (!child)
+        return;
     child->detach_from_parent();
     child->m_parent = weak_from_this();
     m_children.push_back(child);
@@ -69,7 +65,8 @@ void Node::add_child(std::shared_ptr<Node> child) {
 }
 
 void Node::remove_child(std::shared_ptr<Node> child) {
-    if (!child) return;
+    if (!child)
+        return;
     auto it = std::find(m_children.begin(), m_children.end(), child);
     if (it != m_children.end()) {
         (*it)->m_parent.reset();
@@ -90,9 +87,9 @@ void Node::update_local_transform() {
     m_local_transform = translation * rotation * scale;
 }
 
-void Node::update_transform(const glm::mat4& parent_transform) {
+void Node::update_transform(const glm::mat4 &parent_transform) {
     m_world_transform = parent_transform * m_local_transform;
-    for (auto& child : m_children) {
+    for (auto &child : m_children) {
         child->update_transform(m_world_transform);
     }
 }

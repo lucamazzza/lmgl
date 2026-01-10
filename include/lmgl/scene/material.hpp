@@ -34,8 +34,7 @@ namespace scene {
  * them to a shader for rendering.
  */
 class Material {
-public:
-
+  public:
     /*!
      * @brief Constructs a Material with an optional name.
      *
@@ -44,35 +43,35 @@ public:
      *
      * @param name The name of the material.
      */
-    Material(const std::string& name = "Default Material");
+    Material(const std::string &name = "Default Material");
 
     /*!
      * @brief Gets the name of the material.
      *
      * @return The name of the material.
      */
-    inline const std::string& get_name() const { return m_name; }
+    inline const std::string &get_name() const { return m_name; }
 
     /*!
      * @brief Sets the name of the material.
      *
      * @param name The new name for the material.
      */
-    inline void set_name(const std::string& name) { m_name = name; }
+    inline void set_name(const std::string &name) { m_name = name; }
 
-    /*! 
+    /*!
      * @brief Gets the albedo color of the material.
      *
      * @return The albedo color as a glm::vec3.
      */
-    inline const glm::vec3& get_albedo() const { return m_albedo; }
+    inline const glm::vec3 &get_albedo() const { return m_albedo; }
 
-    /*! 
+    /*!
      * @brief Sets the albedo color of the material.
      *
      * @param albedo The new albedo color as a glm::vec3.
      */
-    inline void set_albedo(const glm::vec3& albedo) { m_albedo = albedo; }
+    inline void set_albedo(const glm::vec3 &albedo) { m_albedo = albedo; }
 
     /*!
      * @brief Gets the metallic property of the material.
@@ -121,93 +120,93 @@ public:
      *
      * @return The emissive color as a glm::vec3.
      */
-    inline const glm::vec3& get_emissive() const { return m_emissive; }
+    inline const glm::vec3 &get_emissive() const { return m_emissive; }
 
     /*!
      * @brief Sets the emissive color of the material.
      *
      * @param emissive The new emissive color as a glm::vec3.
      */
-    inline void set_emissive(const glm::vec3& emissive) { m_emissive = emissive; }
+    inline void set_emissive(const glm::vec3 &emissive) { m_emissive = emissive; }
 
-    /*! 
+    /*!
      * @brief Sets the albedo texture map of the material.
      *
      * @param texture A shared pointer to the albedo texture.
      */
-    void set_albedo_map(const std::shared_ptr<renderer::Texture>& texture);
+    void set_albedo_map(const std::shared_ptr<renderer::Texture> &texture);
 
-    /*! 
+    /*!
      * @brief Sets the normal texture map of the material.
      *
      * @param texture A shared pointer to the normal texture.
      */
-    void set_normal_map(const std::shared_ptr<renderer::Texture>& texture);
+    void set_normal_map(const std::shared_ptr<renderer::Texture> &texture);
 
-    /*! 
+    /*!
      * @brief Sets the metallic texture map of the material.
      *
      * @param texture A shared pointer to the metallic texture.
      */
-    void set_metallic_map(const std::shared_ptr<renderer::Texture>& texture);
+    void set_metallic_map(const std::shared_ptr<renderer::Texture> &texture);
 
-    /*! 
+    /*!
      * @brief Sets the roughness texture map of the material.
      *
      * @param texture A shared pointer to the roughness texture.
      */
-    void set_roughness_map(const std::shared_ptr<renderer::Texture>& texture);
+    void set_roughness_map(const std::shared_ptr<renderer::Texture> &texture);
 
-    /*! 
+    /*!
      * @brief Sets the ambient occlusion (AO) texture map of the material.
      *
      * @param texture A shared pointer to the AO texture.
      */
-    void set_ao_map(const std::shared_ptr<renderer::Texture>& texture);
+    void set_ao_map(const std::shared_ptr<renderer::Texture> &texture);
 
-    /*! 
+    /*!
      * @brief Sets the emissive texture map of the material.
      *
      * @param texture A shared pointer to the emissive texture.
      */
-    void set_emissive_map(const std::shared_ptr<renderer::Texture>& texture);
+    void set_emissive_map(const std::shared_ptr<renderer::Texture> &texture);
 
-    /*! 
+    /*!
      * @brief Gets the albedo texture map of the material.
      *
      * @return A shared pointer to the albedo texture.
      */
     inline std::shared_ptr<renderer::Texture> get_albedo_map() const { return m_albedo_map; };
 
-    /*! 
+    /*!
      * @brief Gets the normal texture map of the material.
      *
      * @return A shared pointer to the normal texture.
      */
     inline std::shared_ptr<renderer::Texture> get_normal_map() const { return m_normal_map; };
 
-    /*! 
+    /*!
      * @brief Gets the metallic texture map of the material.
      *
      * @return A shared pointer to the metallic texture.
      */
     inline std::shared_ptr<renderer::Texture> get_metallic_map() const { return m_metallic_map; };
 
-    /*! 
+    /*!
      * @brief Gets the roughness texture map of the material.
      *
      * @return A shared pointer to the roughness texture.
      */
     inline std::shared_ptr<renderer::Texture> get_roughness_map() const { return m_roughness_map; };
 
-    /*! 
+    /*!
      * @brief Gets the ambient occlusion (AO) texture map of the material.
      *
      * @return A shared pointer to the AO texture.
      */
     inline std::shared_ptr<renderer::Texture> get_ao_map() const { return m_ao_map; };
 
-    /*! 
+    /*!
      * @brief Gets the emissive texture map of the material.
      *
      * @return A shared pointer to the emissive texture.
@@ -222,10 +221,9 @@ public:
      *
      * @param shader A shared pointer to the shader to bind the material to.
      */
-    void bind(const std::shared_ptr<renderer::Shader>& shader) const;
+    void bind(const std::shared_ptr<renderer::Shader> &shader) const;
 
-private:
-
+  private:
     //! @brief The name of the material.
     std::string m_name;
 

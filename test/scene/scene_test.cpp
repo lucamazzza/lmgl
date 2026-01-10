@@ -7,9 +7,9 @@ namespace lmgl {
 namespace scene {
 
 class SceneTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
-        // Setup code before each test 
+        // Setup code before each test
     }
     void TearDown() override {
         // Cleanup code after each test

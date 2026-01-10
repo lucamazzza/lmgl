@@ -21,9 +21,7 @@ std::shared_ptr<Light> Light::create_point(const glm::vec3 &position, float rang
     return light;
 }
 
-std::shared_ptr<Light> Light::create_spot(const glm::vec3 &position,
-                                          const glm::vec3 &direction, 
-                                          float angle,
+std::shared_ptr<Light> Light::create_spot(const glm::vec3 &position, const glm::vec3 &direction, float angle,
                                           const glm::vec3 &color) {
     auto light = std::make_shared<Light>(LightType::Spot);
     light->set_position(position);
@@ -35,5 +33,5 @@ std::shared_ptr<Light> Light::create_spot(const glm::vec3 &position,
 }
 
 } // namespace scene
- 
+
 } // namespace lmgl
