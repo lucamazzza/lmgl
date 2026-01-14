@@ -8,7 +8,7 @@
 <p align='center'>
 
 <img src="https://img.shields.io/badge/4.1-235586A4?style=for-the-badge&logo=opengl&logoColor=%235586A4&labelColor=%23ffffff&color=%235586A4&logoSize=auto"/>
-<img src="https://img.shields.io/badge/20-%23044f88?style=for-the-badge&logo=cplusplus&logoColor=%23044f88&labelColor=%23ffffff&color=%23044f88"/>
+<img src="https://img.shields.io/badge/17-%23044f88?style=for-the-badge&logo=cplusplus&logoColor=%23044f88&labelColor=%23ffffff&color=%23044f88"/>
 <img src="https://img.shields.io/github/actions/workflow/status/lucamazzza/lmgl/.github%2Fworkflows%2Fcmake_multiplatform.yml?style=for-the-badge&logo=cmake&logoSize=auto&label=%20"/>
 <img src="https://img.shields.io/github/v/release/lucamazzza/lmgl?include_prereleases&sort=date&display_name=release&style=for-the-badge&label=%20"/>
 
