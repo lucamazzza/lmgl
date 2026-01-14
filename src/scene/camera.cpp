@@ -30,6 +30,13 @@ void Camera::set_perspective(float fov, float aspect, float near, float far) {
     m_projection = glm::perspective(glm::radians(fov), aspect, near, far);
 }
 
+void Camera::set_aspect(float aspect) {
+    m_aspect = aspect;
+    if (m_mode == ProjectionMode::Perspective) {
+        m_projection = glm::perspective(glm::radians(m_fov), m_aspect, m_near, m_far);
+    }
+}
+
 void Camera::set_orthographic(float left, float right, float bottom, float top, float near, float far) {
     m_near = near;
     m_far = far;

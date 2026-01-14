@@ -137,6 +137,7 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &t
     glm::mat3 normal_matrix = glm::transpose(glm::inverse(glm::mat3(transform)));
     shader->set_mat3("u_NormalMatrix", normal_matrix);
     shader->set_vec3("u_CameraPos", camera->get_position());
+    bind_lights(shader);
     auto material = mesh->get_material();
     if (material)
         material->bind(shader);

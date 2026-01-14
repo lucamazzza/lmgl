@@ -176,7 +176,25 @@ class Camera {
      */
     inline ProjectionMode get_projection_mode() const { return m_mode; }
 
+    /*!
+     * @brief Get the current aspect ratio.
+     *
+     * @return The current aspect ratio.
+     */
+    inline float get_aspect() const { return m_aspect; }
+
+    /*!
+     * @brief Set a new aspect ratio.
+     *
+     * Updates the aspect ratio and recalculates the projection matrix
+     * if the camera is in perspective mode.
+     *
+     * @param aspect The new aspect ratio
+     */
+    void set_aspect(float aspect);
+
   private:
+
     //! @brief Camera position in world space.
     glm::vec3 m_position;
 
