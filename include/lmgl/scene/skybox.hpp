@@ -153,7 +153,7 @@ class Skybox {
      *
      * @param cubemap A shared pointer to the Cubemap object to be used for the skybox.
      */
-    void set_cubemap(std::shared_ptr<Cubemap> cubemap);
+    inline void set_cubemap(std::shared_ptr<Cubemap> cubemap) { m_cubemap = cubemap; }
 
     /*! 
      * @brief Retrieves the cubemap texture used by the skybox.
