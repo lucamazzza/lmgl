@@ -40,6 +40,7 @@ bool Engine::init(int w, int h, std::string title, bool resizable, bool vsync) {
     glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, fb_size_callback);
     glfwSetKeyCallback(m_window, key_callback);
+    glfwSetMouseButtonCallback(m_window, mouse_button_callback);
     glfwSetCursorPosCallback(m_window, cursor_position_callback);
     glfwSetScrollCallback(m_window, scroll_callback);
     glViewport(0, 0, w, h);
@@ -64,9 +65,9 @@ void Engine::run(std::function<void(float)> update_callback) {
             m_fps_timer = 0.0f;
         }
         update_input_state();
+        glfwPollEvents();
         update_callback(m_delta_time);
         glfwSwapBuffers(m_window);
-        glfwPollEvents();
         m_scroll_x = 0.0f;
         m_scroll_y = 0.0f;
     }
