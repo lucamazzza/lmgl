@@ -17,6 +17,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace lmgl {
 
@@ -44,6 +45,15 @@ class Shader {
     Shader(const std::string &vert, const std::string &frag);
 
     /*!
+     * @brief Creates a shader program with vertex, geometry, and fragment shaders.
+     *
+     * @param vertex_src The source code for the vertex shader.
+     * @param geometry_src The source code for the geometry shader.
+     * @param fragment_src The source code for the fragment shader.
+     */
+    Shader(const std::string &vert, const std::string &geom, const std::string &frag);
+
+    /*!
      * @brief Destructor for the Shader class.
      *
      * Cleans up the shader program and releases any associated resources.
@@ -63,10 +73,21 @@ class Shader {
     static std::shared_ptr<Shader> from_vf_files(const std::string &vert, const std::string &frag);
 
     /*!
+     * @brief Creates a Shader instance from vertex, geometry, and fragment shader files.
+     *
+     * @param vert The file path to the vertex shader source code.
+     * @param geom The file path to the geometry shader source code.
+     * @param frag The file path to the fragment shader source code.
+     * @return A shared pointer to the created Shader instance.
+     */
+    static std::shared_ptr<Shader> from_vgf_files(const std::string &vert, const std::string &geom, const std::string &frag);
+
+    /*!
      * @brief Creates a Shader instance from a single GLSL file.
      *
      * Reads the shader source code from the specified GLSL file, which contains
      * both vertex and fragment shader code, compiles them, and links them into a shader program.
+     * Also supports optional geometry shader with #shader geometry directive.
      *
      * @param glsl The file path to the GLSL shader source code.
      * @return A shared pointer to the created Shader instance.
@@ -202,6 +223,16 @@ class Shader {
     unsigned int create_program(unsigned int vert, unsigned int frag);
 
     /*!
+     * @brief Creates a shader program from vertex, geometry, and fragment shaders.
+     *
+     * @param vert The vertex shader compiled ID.
+     * @param geom The geometry shader compiled ID.
+     * @param frag The fragment shader compiled ID.
+     * @return The OpenGL-assigned ID of the created shader program.
+     */
+    unsigned int create_program(unsigned int vert, unsigned int geom, unsigned int frag);
+
+    /*!
      * @brief Reads the contents of a file into a string.
      *
      * Reads the entire contents of the specified file and returns it as a string.
@@ -212,15 +243,15 @@ class Shader {
     static std::string read_file(const std::string &fpath);
 
     /*!
-     * @brief Parses a GLSL shader source code into vertex and fragment shader components.
+     * @brief Parses a GLSL shader source code into shader components.
      *
-     * Splits the provided GLSL source code into separate vertex and fragment shader
-     * source code strings based on predefined markers.
+     * Splits the provided GLSL source code into separate shader source strings
+     * based on #shader directives. Supports vertex, geometry (optional), and fragment shaders.
      *
-     * @param src The GLSL shader source code containing both vertex and fragment shaders.
-     * @return A pair of strings: the first is the vertex shader source, the second is the fragment shader source.
+     * @param src The GLSL shader source code.
+     * @return A vector of strings: [vertex, fragment] or [vertex, geometry, fragment].
      */
-    static std::pair<std::string, std::string> parse_glsl_shader(const std::string &src);
+    static std::vector<std::string> parse_glsl_shader(const std::string &src);
 };
 
 /*!

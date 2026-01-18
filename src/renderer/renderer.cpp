@@ -19,6 +19,12 @@ Renderer::Renderer()
     set_depth_test(true);
     set_culling(true);
     set_blending(false);
+    m_default_material = std::make_shared<scene::Material>("DefaultMaterial");
+    m_default_material->set_albedo(glm::vec3(1.0f));
+    m_default_material->set_metallic(0.0f);
+    m_default_material->set_roughness(0.5f);
+    m_default_material->set_ao(1.0f);
+    m_default_material->set_emissive(glm::vec3(0.0f));
 }
 
 void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> camera) {
@@ -142,19 +148,7 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &t
     if (material)
         material->bind(shader);
     else {
-        // Set default material
-        // TODO: save it as default material
-        shader->set_vec3("u_Material.albedo", glm::vec3(1.0f));
-        shader->set_float("u_Material.metallic", 0.0f);
-        shader->set_float("u_Material.roughness", 0.5f);
-        shader->set_float("u_Material.ao", 1.0f);
-        shader->set_vec3("u_Material.emissive", glm::vec3(0.0f));
-        shader->set_int("u_Material.hasAlbedoMap", 0);
-        shader->set_int("u_Material.hasNormalMap", 0);
-        shader->set_int("u_Material.hasMetallicMap", 0);
-        shader->set_int("u_Material.hasRoughnessMap", 0);
-        shader->set_int("u_Material.hasAoMap", 0);
-        shader->set_int("u_Material.hasEmissiveMap", 0);
+        m_default_material->bind(shader);
     }
     mesh->render();
     m_draw_calls++;

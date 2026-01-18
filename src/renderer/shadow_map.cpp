@@ -111,29 +111,6 @@ void CubemapShadowMap::bind_texture(unsigned int slot) const {
 
 ShadowRenderer::ShadowRenderer() {
     m_depth_shader = Shader::from_glsl_file("shaders/dir_light_depth.glsl");
-    // NOTE: for Geom Shader I need to use Shader::from_source with Geometry support
-    // for now use basic depth shader
-    const char *depth_cube_geom = R"(
-        #version 410 core
-        layout (triangles) in;
-        layout (triangle_strip, max_vertices=18) out;
-
-        uniform mat4 u_ShadowMatrices[6];
-
-        out vec4 v_FragPos;
-
-        void main() {
-            for(int face = 0; face < 6; ++face) {
-                gl_Layer = face;
-                for(int i = 0; i < 3; ++i) {
-                    v_FragPos = gl_in[i].gl_Position;
-                    gl_Position = u_ShadowMatrices[face] * v_FragPos;
-                    EmitVertex();
-                }
-                EndPrimitive();
-            }
-        }
-    )";
     m_depth_cubemap_shader = Shader::from_glsl_file("shaders/pt_light_depth.glsl");
 }
 
@@ -150,15 +127,61 @@ void ShadowRenderer::render_directional_shadow(std::shared_ptr<scene::Scene> sce
 
 void ShadowRenderer::render_point_shadow(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Light> light,
                                          std::shared_ptr<CubemapShadowMap> shadow_map) {
-    // TODO: Implement point light shadow rendering
-    // Requires rendering to all 6 cubemap faces
+    if (!scene || !light || !shadow_map) return;
+    glm::vec3 light_pos = light->get_position();
+    float far_plane = light->get_range();
+    glm::mat4 shadow_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, far_plane);
+    std::vector<glm::mat4> shadow_transforms;
+    shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+    shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+    shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)));
+    shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)));
+    shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+    shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+    m_depth_cubemap_shader->bind();
+    m_depth_cubemap_shader->set_vec3("u_LightPos", light_pos);
+    m_depth_cubemap_shader->set_float("u_FarPlane", far_plane);
+    for (unsigned int i = 0; i < 6; ++i) {
+        m_depth_cubemap_shader->set_mat4("u_ShadowMatrices[" + std::to_string(i) + "]", shadow_transforms[i]);
+    }
+    shadow_map->bind(0);
+    glCullFace(GL_FRONT);
+    render_scene_depth(scene, shadow_transforms[0]); // Pass first transform as placeholder
+    glCullFace(GL_BACK);
+    shadow_map->unbind();
 }
 
 void ShadowRenderer::render_scene_depth(std::shared_ptr<scene::Scene> scene, const glm::mat4 &light_space_matrix) {
-    // TODO: Traverse scene graph and render all meshes with depth shader
-    // This is a simplified version, needs to impl full scene traversal
+    if (!scene) return;
     m_depth_shader->bind();
     m_depth_shader->set_mat4("u_LightSpaceMatrix", light_space_matrix);
+    std::function<void(std::shared_ptr<scene::Node>, const glm::mat4&)> traverse;
+    traverse = [&](std::shared_ptr<scene::Node> node, const glm::mat4& parent_transform) {
+        if (!node) return;
+        glm::mat4 transform = parent_transform * node->get_local_transform();
+        auto mesh = node->get_mesh();
+        if (mesh) {
+            m_depth_shader->set_mat4("u_Model", transform);
+            mesh->render();
+        }
+        for (const auto& child : node->get_children()) {
+            traverse(child, transform);
+        }
+    };
+    traverse(scene->get_root(), glm::mat4(1.0f));
+}
+
+glm::mat4 ShadowRenderer::get_light_space_matrix(std::shared_ptr<scene::Light> light, const glm::vec3& scene_center,
+                                                 float scene_radius) {
+    glm::vec3 light_dir = glm::normalize(light->get_direction());
+    glm::vec3 light_pos = scene_center - light_dir * scene_radius;
+    
+    glm::mat4 light_projection = glm::ortho(-scene_radius, scene_radius,
+                                           -scene_radius, scene_radius,
+                                           0.1f, scene_radius * 2.0f);
+    glm::mat4 light_view = glm::lookAt(light_pos, scene_center, glm::vec3(0.0f, 1.0f, 0.0f));
+    
+    return light_projection * light_view;
 }
 
 } // namespace renderer

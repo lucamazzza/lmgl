@@ -279,6 +279,9 @@ class Renderer {
 
     //! Spot lights to render
     std::vector<std::shared_ptr<scene::Light>> m_spot_lights;
+    
+    //! Default material for meshes without materials
+    std::shared_ptr<scene::Material> m_default_material;
 };
 
 } // namespace renderer

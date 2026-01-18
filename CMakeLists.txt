@@ -37,14 +37,14 @@ add_library(lmgl STATIC
     include/lmgl/renderer/framebuffer.hpp
     include/lmgl/renderer/renderer.hpp
     include/lmgl/renderer/shader.hpp
-    #include/lmgl/renderer/shadow_map.hpp
+    include/lmgl/renderer/shadow_map.hpp
     include/lmgl/renderer/texture.hpp
     include/lmgl/renderer/vertex_array.hpp
     src/renderer/buffer.cpp
     src/renderer/framebuffer.cpp
     src/renderer/renderer.cpp
     src/renderer/shader.cpp
-    #src/renderer/shadow_map.hpp
+    src/renderer/shadow_map.cpp
     src/renderer/texture.cpp
     src/renderer/vertex_array.cpp
 

@@ -22,6 +22,13 @@ Shader::Shader(const std::string &vert, const std::string &frag) {
     m_renderer_id = create_program(vertex_shader, fragment_shader);
 }
 
+Shader::Shader(const std::string &vert, const std::string &geom, const std::string &frag) {
+    unsigned int vertex_shader = compile_shader(GL_VERTEX_SHADER, vert);
+    unsigned int geometry_shader = compile_shader(GL_GEOMETRY_SHADER, geom);
+    unsigned int fragment_shader = compile_shader(GL_FRAGMENT_SHADER, frag);
+    m_renderer_id = create_program(vertex_shader, geometry_shader, fragment_shader);
+}
+
 Shader::~Shader() { glDeleteProgram(m_renderer_id); }
 
 std::shared_ptr<Shader> Shader::from_vf_files(const std::string &vert, const std::string &frag) {
@@ -30,10 +37,23 @@ std::shared_ptr<Shader> Shader::from_vf_files(const std::string &vert, const std
     return std::make_shared<Shader>(vertex_src, fragment_src);
 }
 
+std::shared_ptr<Shader> Shader::from_vgf_files(const std::string &vert, const std::string &geom, const std::string &frag) {
+    std::string vertex_src = read_file(vert);
+    std::string geometry_src = read_file(geom);
+    std::string fragment_src = read_file(frag);
+    return std::make_shared<Shader>(vertex_src, geometry_src, fragment_src);
+}
+
 std::shared_ptr<Shader> Shader::from_glsl_file(const std::string &glsl) {
     std::string src = read_file(glsl);
-    auto [vertex_src, fragment_src] = parse_glsl_shader(src);
-    return std::make_shared<Shader>(vertex_src, fragment_src);
+    auto shaders = parse_glsl_shader(src);
+    if (shaders.size() == 2) {
+        return std::make_shared<Shader>(shaders[0], shaders[1]);
+    } else if (shaders.size() == 3) {
+        return std::make_shared<Shader>(shaders[0], shaders[1], shaders[2]);
+    }
+    std::cerr << "ERROR: Invalid shader file format" << std::endl;
+    return nullptr;
 }
 
 void Shader::bind() const { glUseProgram(m_renderer_id); }
@@ -95,8 +115,11 @@ unsigned int Shader::compile_shader(unsigned int type, const std::string &source
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
         char *msg = new char[len];
         glGetShaderInfoLog(shader, len, &len, msg);
-        std::cerr << "ERROR: Shader compilation failed (" << (type == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT")
-                  << "):" << std::endl;
+        const char* shader_type = 
+            type == GL_VERTEX_SHADER ? "VERTEX" :
+            type == GL_GEOMETRY_SHADER ? "GEOMETRY" :
+            type == GL_FRAGMENT_SHADER ? "FRAGMENT" : "UNKNOWN";
+        std::cerr << "ERROR: Shader compilation failed (" << shader_type << "):" << std::endl;
         std::cerr << msg << std::endl;
         delete[] msg;
         glDeleteShader(shader);
@@ -143,6 +166,46 @@ unsigned int Shader::create_program(unsigned int vert, unsigned int frag) {
     return program;
 }
 
+unsigned int Shader::create_program(unsigned int vert, unsigned int geom, unsigned int frag) {
+    if (vert == 0 || geom == 0 || frag == 0)
+        return 0;
+    unsigned int program = glCreateProgram();
+    glAttachShader(program, vert);
+    glAttachShader(program, geom);
+    glAttachShader(program, frag);
+    glLinkProgram(program);
+    int success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success) {
+        int len;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
+        char *msg = new char[len];
+        glGetProgramInfoLog(program, len, &len, msg);
+        std::cerr << "ERROR: Shader program linking failed:" << std::endl;
+        std::cerr << msg << std::endl;
+        delete[] msg;
+        glDeleteProgram(program);
+        return 0;
+    }
+#ifndef NDEBUG
+    glValidateProgram(program);
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
+    if (!success) {
+        int len;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
+        char *msg = new char[len];
+        glGetProgramInfoLog(program, len, &len, msg);
+        std::cerr << "ERROR: Shader program validation failed:" << std::endl;
+        std::cerr << msg << std::endl;
+        delete[] msg;
+    }
+#endif
+    glDeleteShader(vert);
+    glDeleteShader(geom);
+    glDeleteShader(frag);
+    return program;
+}
+
 std::string Shader::read_file(const std::string &fpath) {
     std::ifstream file(fpath);
     if (!file.is_open()) {
@@ -154,16 +217,20 @@ std::string Shader::read_file(const std::string &fpath) {
     return ss.str();
 }
 
-std::pair<std::string, std::string> Shader::parse_glsl_shader(const std::string &src) {
-    enum class ShaderType { NONE = -1, VERTEX = 0, FRAGMENT = 1 };
+std::vector<std::string> Shader::parse_glsl_shader(const std::string &src) {
+    enum class ShaderType { NONE = -1, VERTEX = 0, GEOMETRY = 1, FRAGMENT = 2 };
     std::stringstream ss(src);
     std::string line;
-    std::stringstream shaders[2];
+    std::stringstream shaders[3];
     ShaderType type = ShaderType::NONE;
+    bool has_geometry = false;
     while (std::getline(ss, line)) {
         if (line.find("#shader") != std::string::npos) {
             if (line.find("vertex") != std::string::npos) {
                 type = ShaderType::VERTEX;
+            } else if (line.find("geometry") != std::string::npos) {
+                type = ShaderType::GEOMETRY;
+                has_geometry = true;
             } else if (line.find("fragment") != std::string::npos) {
                 type = ShaderType::FRAGMENT;
             }
@@ -173,7 +240,10 @@ std::pair<std::string, std::string> Shader::parse_glsl_shader(const std::string 
             }
         }
     }
-    return {shaders[0].str(), shaders[1].str()};
+    if (has_geometry) {
+        return {shaders[0].str(), shaders[1].str(), shaders[2].str()};
+    }
+    return {shaders[0].str(), shaders[2].str()};
 }
 
 // ShaderLibrary
