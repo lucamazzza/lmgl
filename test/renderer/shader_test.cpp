@@ -31,6 +31,7 @@ class ShaderTest : public ::testing::Test {
         remove("test_shader.vert");
         remove("test_shader.frag");
         remove("test_shader.glsl");
+        remove("test_geom_shader.glsl");
         remove("test_invalid.glsl");
     }
 
@@ -74,12 +75,41 @@ void main() {
  }
  )";
         glsl_file.close();
+        std::ofstream geom_glsl_file("test_geom_shader.glsl");
+        geom_glsl_file << R"(
+ #shader vertex
+ #version 410 core
+ layout(location = 0) in vec3 a_Position;
+ void main() {
+     gl_Position = vec4(a_Position, 1.0);
+ }
+ 
+ #shader geometry
+ #version 410 core
+ layout (triangles) in;
+ layout (triangle_strip, max_vertices=3) out;
+ void main() {
+     for(int i = 0; i < 3; i++) {
+         gl_Position = gl_in[i].gl_Position;
+         EmitVertex();
+     }
+     EndPrimitive();
+ }
+ 
+ #shader fragment
+ #version 410 core
+ out vec4 FragColor;
+ void main() {
+     FragColor = vec4(1.0);
+ }
+ )";
+        geom_glsl_file.close();
         std::ofstream invalid_file("test_invalid.glsl");
         invalid_file << R"(
  #shader vertex
  #version 410 core
  THIS IS INVALID GLSL CODE!!!
- 
+
  #shader fragment
  #version 410 core
  ALSO INVALID!!!
@@ -386,6 +416,46 @@ TEST_F(ShaderTest, LoadInvalidGLSLFile) {
     // Should print error but not crash
     ShaderLibrary::load_glsl("invalid", "test_invalid.glsl");
     EXPECT_FALSE(ShaderLibrary::exists("invalid"));
+}
+
+TEST_F(ShaderTest, CreateGeometryShaderFromSource) {
+    const char *vert = R"(
+#version 410 core
+layout(location = 0) in vec3 a_Position;
+void main() { gl_Position = vec4(a_Position, 1.0); }
+)";
+    const char *geom = R"(
+#version 410 core
+layout (triangles) in;
+layout (triangle_strip, max_vertices=3) out;
+void main() {
+    for(int i = 0; i < 3; i++) {
+        gl_Position = gl_in[i].gl_Position;
+        EmitVertex();
+    }
+    EndPrimitive();
+}
+)";
+    const char *frag = R"(
+#version 410 core
+out vec4 FragColor;
+void main() { FragColor = vec4(1.0); }
+)";
+    auto shader = std::make_shared<Shader>(vert, geom, frag);
+    EXPECT_NE(shader, nullptr);
+    EXPECT_NE(shader->get_id(), 0);
+}
+
+TEST_F(ShaderTest, LoadGeometryShaderFromGLSLFile) {
+    auto shader = Shader::from_glsl_file("test_geom_shader.glsl");
+    EXPECT_NE(shader, nullptr);
+    EXPECT_NE(shader->get_id(), 0);
+}
+
+TEST_F(ShaderTest, GeometryShaderInLibrary) {
+    auto shader = ShaderLibrary::load_glsl("geom_shader", "test_geom_shader.glsl");
+    EXPECT_NE(shader, nullptr);
+    EXPECT_TRUE(ShaderLibrary::exists("geom_shader"));
 }
 
 #endif
