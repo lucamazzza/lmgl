@@ -55,6 +55,10 @@ uniform DirectionalLight u_DirLights[4];
 uniform int u_NumPointLights;
 uniform PointLight u_PointLights[16];
 
+uniform sampler2D u_ShadowMap;
+uniform mat4 u_LightSpaceMatrix;
+uniform int u_UseShadows;
+
 const float PI = 3.14159265359;
 
 // PBR Functions
@@ -92,6 +96,25 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
 
 vec3 fresnelSchlick(float cosTheta, vec3 F0) {
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+}
+
+float calculate_shadow(vec4 frag_pos_light_space, vec3 normal, vec3 light_dir) {
+    vec3 proj_coords = frag_pos_light_space.xyz / frag_pos_light_space.w;
+    proj_coords = proj_coords * 0.5 + 0.5;
+    if (proj_coords.z > 1.0)
+        return 0.0;
+    float current_depth = proj_coords.z;
+    float bias = max(0.05 * (1.0 - dot(normal, light_dir)), 0.005);
+    float shadow = 0.0;
+    vec2 texel_size = 1.0 / textureSize(u_ShadowMap, 0);
+    for (int x = -1; x <= 1; ++x) {
+        for (int y = -1; y <= 1; ++y) {
+            float pcf_depth = texture(u_ShadowMap, proj_coords.xy + vec(x, y) * texel_size).r;
+            shadow += current_depth - bias > pcf_depth ? 1.0 : 0.0;
+        }
+    }
+    shadow /= 9.0;
+    return shadow;
 }
 
 void main() {
@@ -163,7 +186,9 @@ void main() {
         kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        float shadow = calculate_shadow(v_FragPosLightSpace, N, L);
+        Lo += (1.0 - shadow) * (kD * albedo / PI + specular) * radiance * NdotL;
+
     }
 
     // Point lights
@@ -188,9 +213,9 @@ void main() {
         kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        float shadow = calculate_shadow(v_FragPosLightSpace, N, L);
+        Lo += (1.0 - shadow) * (kD * albedo / PI + specular) * radiance * NdotL;
     }
-
     // Ambient lighting (simplified)
     vec3 ambient = vec3(0.03) * albedo * ao;
 

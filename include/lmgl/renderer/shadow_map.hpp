@@ -247,7 +247,7 @@ class ShadowRenderer {
      * @param shadow_map The cubemap shadow map to populate with depth information.
      */
     void render_point_shadow(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Light> light,
-                             std::shared_ptr<ShadowMap> shadow_map);
+                             std::shared_ptr<CubemapShadowMap> shadow_map);
 
     /*!
      * @brief Computes the light space matrix for a directional light.
