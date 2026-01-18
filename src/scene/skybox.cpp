@@ -162,7 +162,7 @@ void Skybox::render(std::shared_ptr<Camera> camera) {
     m_cubemap->bind(0);
     m_vao->bind();
     glDrawArrays(GL_TRIANGLES, 0, 36);
-    m_vao->bind();
+    m_vao->unbind();
     glDepthFunc(old_depth_func);
 }
 
