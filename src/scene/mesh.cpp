@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 
 #include <cmath>
+#include <limits>
 #include <memory>
 
 namespace lmgl {
@@ -16,6 +17,7 @@ Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> 
            std::shared_ptr<renderer::Shader> shader)
     : m_vertices(vertices), m_indices(indices), m_shader(shader), m_index_count(indices.size()) {
     setup_mesh();
+    calculate_bounds();
 }
 
 Mesh::Mesh(const std::shared_ptr<renderer::VertexArray> vao, const std::shared_ptr<renderer::Shader> shader,
@@ -33,6 +35,19 @@ void Mesh::setup_mesh() {
     m_vertex_array = std::make_shared<renderer::VertexArray>();
     m_vertex_array->add_vertex_buffer(vbo);
     m_vertex_array->set_index_buffer(ibo);
+}
+
+void Mesh::calculate_bounds() {
+    if (m_vertices.empty()) {
+        m_bounding_box = AABB();
+        m_bounding_sphere = BoundingSphere();
+        return;
+    }
+    m_bounding_box.min = glm::vec3(std::numeric_limits<float>::max());
+    m_bounding_box.max = glm::vec3(std::numeric_limits<float>::lowest());
+    for (const auto &vertex : m_vertices)
+        m_bounding_box.expand(vertex.position);
+    m_bounding_sphere = BoundingSphere::from_aabb(m_bounding_box);
 }
 
 void Mesh::bind() const {

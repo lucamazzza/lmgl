@@ -15,6 +15,7 @@
 
 #include "lmgl/renderer/shader.hpp"
 #include "lmgl/renderer/vertex_array.hpp"
+#include "lmgl/scene/frustum.hpp"
 #include "lmgl/scene/material.hpp"
 
 #include <memory>
@@ -198,6 +199,25 @@ class Mesh {
      * @param material The new material to set.
      */
     inline void set_material(std::shared_ptr<Material> material) { m_material = material; }
+
+    /*!
+     * @brief Getter for bounding box
+     *
+     * Provides access to the axis-aligned bounding box of the mesh.
+     *
+     * @return Constant reference to the AABB object.
+     */
+    inline const AABB &get_bounding_box() const { return m_bounding_box; }
+
+    /*!
+     * @brief Getter for bounding sphere
+     *
+     * Provides access to the bounding sphere of the mesh.
+     *
+     * @return Constant reference to the BoundingSphere object.
+     */
+    inline const BoundingSphere &get_bounding_sphere() const { return m_bounding_sphere; }
+
     // Factory Methods
 
     /*!
@@ -257,12 +277,25 @@ class Mesh {
     //! @brief Vector of indices defining the mesh geometry.
     std::vector<unsigned int> m_indices;
 
+    //! @brief Axis-aligned bounding box of the mesh.
+    AABB m_bounding_box;
+
+    //! @brief Bounding sphere of the mesh.
+    BoundingSphere m_bounding_sphere;
+
     /*!
      * @brief Sets up the mesh by creating the vertex array.
      *
      * Initializes the vertex array using the stored vertices and indices.
      */
     void setup_mesh();
+
+    /*!
+     * @brief Calculates the bounding box and bounding sphere of the mesh.
+     *
+     * Computes the axis-aligned bounding box and bounding sphere based on the mesh vertices.
+     */
+    void calculate_bounds();
 };
 
 } // namespace scene
