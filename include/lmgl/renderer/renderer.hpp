@@ -219,6 +219,24 @@ class Renderer {
                             const glm::mat4 &par_transform, std::vector<RenderItem> &out_items);
 
     /*!
+     * @brief Build the render queue with frustum culling.
+     *
+     * This method traverses the scene graph starting from the given node,
+     * applying transformations and collecting renderable meshes into
+     * the output render queue. It performs frustum culling to exclude
+     * meshes that are outside the camera's view frustum.
+     *
+     * @param node Shared pointer to the current scene node.
+     * @param camera Shared pointer to the camera used for distance calculations.
+     * @param par_transform Parent transformation matrix.
+     * @param out_items Vector to store the collected render items.
+     * @param frustum The view frustum used for culling.
+     */
+    void build_render_queue_culled(std::shared_ptr<scene::Node> node, std::shared_ptr<scene::Camera> camera,
+                                   const glm::mat4 &par_transform, std::vector<RenderItem> &out_items,
+                                   const scene::Frustum &frustum);
+
+    /*!
      * @brief Sort the render queue based on distance to the camera.
      *
      * This method sorts the render items in the render queue to optimize
@@ -279,7 +297,7 @@ class Renderer {
 
     //! Spot lights to render
     std::vector<std::shared_ptr<scene::Light>> m_spot_lights;
-    
+
     //! Default material for meshes without materials
     std::shared_ptr<scene::Material> m_default_material;
 };

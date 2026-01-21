@@ -64,27 +64,27 @@ void Frustum::update(const glm::mat4 &view_projection) {
     m_planes[Left].normal.x = view_projection[0][3] + view_projection[0][0];
     m_planes[Left].normal.y = view_projection[1][3] + view_projection[1][0];
     m_planes[Left].normal.z = view_projection[2][3] + view_projection[2][0];
-    m_planes[Left].distance = view_projection[3][3] + view_projection[3][0];
+    m_planes[Left].distance = -(view_projection[3][3] + view_projection[3][0]);
     m_planes[Right].normal.x = view_projection[0][3] - view_projection[0][0];
     m_planes[Right].normal.y = view_projection[1][3] - view_projection[1][0];
     m_planes[Right].normal.z = view_projection[2][3] - view_projection[2][0];
-    m_planes[Right].distance = view_projection[3][3] - view_projection[3][0];
+    m_planes[Right].distance = -(view_projection[3][3] - view_projection[3][0]);
     m_planes[Bottom].normal.x = view_projection[0][3] + view_projection[0][1];
     m_planes[Bottom].normal.y = view_projection[1][3] + view_projection[1][1];
     m_planes[Bottom].normal.z = view_projection[2][3] + view_projection[2][1];
-    m_planes[Bottom].distance = view_projection[3][3] + view_projection[3][1];
+    m_planes[Bottom].distance = -(view_projection[3][3] + view_projection[3][1]);
     m_planes[Top].normal.x = view_projection[0][3] - view_projection[0][1];
     m_planes[Top].normal.y = view_projection[1][3] - view_projection[1][1];
     m_planes[Top].normal.z = view_projection[2][3] - view_projection[2][1];
-    m_planes[Top].distance = view_projection[3][3] - view_projection[3][1];
+    m_planes[Top].distance = -(view_projection[3][3] - view_projection[3][1]);
     m_planes[Near].normal.x = view_projection[0][3] + view_projection[0][2];
     m_planes[Near].normal.y = view_projection[1][3] + view_projection[1][2];
     m_planes[Near].normal.z = view_projection[2][3] + view_projection[2][2];
-    m_planes[Near].distance = view_projection[3][3] + view_projection[3][2];
+    m_planes[Near].distance = -(view_projection[3][3] + view_projection[3][2]);
     m_planes[Far].normal.x = view_projection[0][3] - view_projection[0][2];
     m_planes[Far].normal.y = view_projection[1][3] - view_projection[1][2];
     m_planes[Far].normal.z = view_projection[2][3] - view_projection[2][2];
-    m_planes[Far].distance = view_projection[3][3] - view_projection[3][2];
+    m_planes[Far].distance = -(view_projection[3][3] - view_projection[3][2]);
     for (auto &plane : m_planes) {
         plane.normalize();
     }

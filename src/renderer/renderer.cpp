@@ -1,4 +1,5 @@
 #include "lmgl/renderer/renderer.hpp"
+#include "lmgl/scene/frustum.hpp"
 #include "lmgl/scene/light.hpp"
 #include "lmgl/scene/mesh.hpp"
 #include "lmgl/scene/node.hpp"
@@ -33,8 +34,10 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     m_draw_calls = 0;
     m_triangles_count = 0;
     m_render_queue.clear();
+    scene::Frustum frustum;
+    frustum.update(camera->get_view_projection_matrix());
     glm::mat4 identity(1.0f);
-    build_render_queue(scene->get_root(), camera, identity, m_render_queue);
+    build_render_queue_culled(scene->get_root(), camera, identity, m_render_queue, frustum);
     collect_lights(scene);
     sort_render_queue(m_render_queue);
     apply_render_mode();
@@ -108,6 +111,32 @@ void Renderer::build_render_queue(std::shared_ptr<scene::Node> node, std::shared
     }
     for (const auto &child : node->get_children()) {
         build_render_queue(child, camera, cur_transform, out_items);
+    }
+}
+
+void Renderer::build_render_queue_culled(std::shared_ptr<scene::Node> node, std::shared_ptr<scene::Camera> camera,
+                                         const glm::mat4 &par_transform, std::vector<RenderItem> &out_items,
+                                         const scene::Frustum &frustum) {
+    if (!node)
+        return;
+    glm::mat4 cur_transform = par_transform * node->get_local_transform();
+    auto mesh = node->get_mesh();
+    if (mesh) {
+        scene::BoundingSphere world_bounds = mesh->get_bounding_sphere().transform(cur_transform);
+        if (frustum.contains_sphere(world_bounds)) {
+            RenderItem item;
+            item.mesh = node->get_mesh();
+            item.transform = cur_transform;
+            glm::vec3 mesh_pos(cur_transform[3]);
+            glm::vec3 cam_pos(camera->get_position());
+            item.distance_to_camera = glm::length(cam_pos - mesh_pos);
+            item.is_transparent = false;
+            item.layer = RenderLayer::Opaque;
+            out_items.push_back(item);
+        }
+    }
+    for (const auto &child : node->get_children()) {
+        build_render_queue_culled(child, camera, cur_transform, out_items, frustum);
     }
 }
 
