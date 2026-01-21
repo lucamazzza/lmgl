@@ -6,12 +6,14 @@
 #include "lmgl/core/engine.hpp"
 #include "lmgl/renderer/renderer.hpp"
 #include "lmgl/renderer/shader.hpp"
+#include "lmgl/renderer/shadow_map.hpp"
 #include "lmgl/scene/camera.hpp"
 #include "lmgl/scene/mesh.hpp"
 #include "lmgl/scene/node.hpp"
 #include "lmgl/scene/scene.hpp"
 #include "lmgl/scene/material.hpp"
 #include "lmgl/scene/light.hpp"
+#include "lmgl/scene/skybox.hpp"
 
 #include <iostream>
 #include <memory>
@@ -31,10 +33,15 @@ int main() {
     std::cout << "  ✓ PBR Materials (metallic/roughness workflow)" << std::endl;
     std::cout << "  ✓ Multiple light types" << std::endl;
     std::cout << "  ✓ Real-time lighting" << std::endl;
+    std::cout << "  ✓ Frustum culling (automatic)" << std::endl;
+    std::cout << "  ✓ Skybox support" << std::endl;
+    std::cout << "  ✓ Shadow mapping" << std::endl;
     std::cout << "\nControls:" << std::endl;
     std::cout << "  ESC       - Exit" << std::endl;
     std::cout << "  1/2/3     - Render modes" << std::endl;
     std::cout << "  F         - Toggle fullscreen" << std::endl;
+    std::cout << "  S         - Toggle skybox" << std::endl;
+    std::cout << "  H         - Toggle shadows" << std::endl;
     std::cout << "  WASD      - Move camera" << std::endl;
     std::cout << "  Mouse     - Look around" << std::endl;
     std::cout << "========================\n" << std::endl;
@@ -44,6 +51,17 @@ int main() {
 
     // Create scene
     auto scene = std::make_shared<scene::Scene>("PBR Demo Scene");
+
+    // Try to load a skybox (will gracefully fail if files don't exist)
+    std::shared_ptr<scene::Skybox> skybox = nullptr;
+    auto cubemap = scene::Cubemap::from_equirectangular("sandbox/assets/skybox.hdr");
+    if (cubemap) {
+        skybox = std::make_shared<scene::Skybox>(cubemap);
+        skybox->set_exposure(1.0f);
+        std::cout << "Skybox loaded successfully!" << std::endl;
+    } else {
+        std::cout << "Skybox not loaded (missing assets/skybox.hdr)" << std::endl;
+    }
 
     // Create camera with aspect ratio from engine
     auto camera = std::make_shared<scene::Camera>(
@@ -57,6 +75,11 @@ int main() {
 
     // Create renderer
     auto renderer = std::make_unique<renderer::Renderer>();
+
+    // Create shadow map for directional light
+    auto shadow_renderer = std::make_unique<renderer::ShadowRenderer>();
+    auto shadow_map = std::make_shared<renderer::ShadowMap>(4096, 4096); // Higher resolution
+    std::cout << "Shadow map created (4096x4096)" << std::endl;
 
     // === Create Materials ===
 
@@ -154,6 +177,8 @@ int main() {
     float time = 0.0f;
     renderer::RenderMode current_mode = renderer::RenderMode::Solid;
     bool camera_free_look = false;
+    bool render_skybox = (skybox != nullptr);
+    bool render_shadows = false; // Disabled by default - needs shader integration
 
     // Camera movement
     glm::vec3 camera_pos = camera->get_position();
@@ -192,6 +217,18 @@ int main() {
         if (engine.is_key_just_pressed(core::Key::Key3)) {
             current_mode = renderer::RenderMode::Points;
             renderer->set_render_mode(current_mode);
+        }
+
+        if (engine.is_key_just_pressed(core::Key::S)) {
+            if (skybox) {
+                render_skybox = !render_skybox;
+                std::cout << "Skybox " << (render_skybox ? "enabled" : "disabled") << std::endl;
+            }
+        }
+
+        if (engine.is_key_just_pressed(core::Key::H)) {
+            render_shadows = !render_shadows;
+            std::cout << "Shadows " << (render_shadows ? "enabled" : "disabled") << std::endl;
         }
 
         // Camera movement (WASD)
@@ -266,7 +303,35 @@ int main() {
         emissive_node->set_position(point_light->get_position());
 
         // Render
+        glViewport(0, 0, engine.get_width(), engine.get_height());
         engine.clear(0.05f, 0.05f, 0.1f);
+        
+        // Shadow pass (if enabled)
+        glm::mat4 light_space_matrix(1.0f);
+        if (render_shadows) {
+            shadow_renderer->render_directional_shadow(scene, sun, shadow_map);
+            // Get light space matrix for shader - centered on scene with larger radius
+            light_space_matrix = shadow_renderer->get_light_space_matrix(sun, glm::vec3(0.0f, 2.0f, 0.0f), 20.0f);
+            
+            // Bind shadow map and set uniforms on PBR shader
+            pbr_shader->bind();
+            shadow_map->bind_texture(15); // Use texture slot 15 for shadows
+            pbr_shader->set_int("u_ShadowMap", 15);
+            pbr_shader->set_int("u_UseShadows", 1);
+            pbr_shader->set_mat4("u_LightSpaceMatrix", light_space_matrix);
+        } else {
+            // Disable shadows
+            pbr_shader->bind();
+            pbr_shader->set_int("u_UseShadows", 0);
+        }
+        
+        // Render skybox first (if enabled)
+        if (skybox && render_skybox) {
+            skybox->render(camera);
+        }
+        
+        // Render scene with frustum culling (automatic)
+        scene->update();
         renderer->render(scene, camera);
 
         // Update window title with stats

@@ -17,7 +17,7 @@ std::shared_ptr<Cubemap> Cubemap::from_faces(const std::vector<std::string> &fac
         std::cerr << "Cubemap requires 6 faces." << std::endl;
         return nullptr;
     }
-    auto cubemap = std::shared_ptr<Cubemap>();
+    auto cubemap = std::shared_ptr<Cubemap>(new Cubemap());
     if (!cubemap->load_faces(faces)) {
         return nullptr;
     }
@@ -25,7 +25,7 @@ std::shared_ptr<Cubemap> Cubemap::from_faces(const std::vector<std::string> &fac
 }
 
 std::shared_ptr<Cubemap> Cubemap::from_equirectangular(const std::string &path) {
-    auto cubemap = std::shared_ptr<Cubemap>();
+    auto cubemap = std::shared_ptr<Cubemap>(new Cubemap());
     if (!cubemap->load_equirectangular(path)) {
         return nullptr;
     }
@@ -53,7 +53,9 @@ bool Cubemap::load_faces(const std::vector<std::string> &faces) {
         } else {
             std::cerr << "ERROR: Failed to load cubemap face: " << faces[i] << std::endl;
             std::cerr << "Reason: " << stbi_failure_reason() << std::endl;
-            stbi_image_free(data);
+            // Clean up the GL texture before returning
+            glDeleteTextures(1, &m_renderer_id);
+            m_renderer_id = 0;
             return false;
         }
     }
@@ -107,6 +109,10 @@ bool Cubemap::load_equirectangular(const std::string &path) {
     if (!conversion_shader) {
         std::cerr << "ERROR: Failed to load equirectangular conversion shader" << std::endl;
         glDeleteTextures(1, &equirect_texture);
+        glDeleteTextures(1, &m_renderer_id);
+        glDeleteFramebuffers(1, &fbo);
+        glDeleteRenderbuffers(1, &rbo);
+        m_renderer_id = 0;
         return false;
     }
     glm::mat4 capture_projection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);

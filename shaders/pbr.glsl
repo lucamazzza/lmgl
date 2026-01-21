@@ -13,12 +13,14 @@ uniform mat4 u_View;
 uniform mat4 u_Projection;
 uniform mat4 u_MVP;
 uniform mat3 u_NormalMatrix;
+uniform mat4 u_LightSpaceMatrix;
 
 out vec3 v_FragPos;
 out vec3 v_Normal;
 out vec4 v_Color;
 out vec2 v_TexCoord;
 out mat3 v_TBN;
+out vec4 v_FragPosLightSpace;
 
 void main() {
     vec4 worldPos = u_Model * vec4(a_Position, 1.0);
@@ -30,6 +32,7 @@ void main() {
     vec3 B = normalize(u_NormalMatrix * a_Bitangent);
     vec3 N = normalize(v_Normal);
     v_TBN = mat3(T, B, N);
+    v_FragPosLightSpace = u_LightSpaceMatrix * worldPos;
     gl_Position = u_MVP * vec4(a_Position, 1.0);
 }
 
@@ -41,6 +44,7 @@ in vec3 v_Normal;
 in vec4 v_Color;
 in vec2 v_TexCoord;
 in mat3 v_TBN;
+in vec4 v_FragPosLightSpace;
 
 out vec4 FragColor;
 
@@ -91,6 +95,9 @@ uniform DirectionalLight u_DirLights[4];
 uniform int u_NumPointLights;
 uniform PointLight u_PointLights[16];
 
+uniform sampler2D u_ShadowMap;
+uniform int u_UseShadows;
+
 const float PI = 3.14159265359;
 
 // PBR Functions
@@ -128,6 +135,28 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
 
 vec3 fresnelSchlick(float cosTheta, vec3 F0) {
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+}
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
+    if (u_UseShadows == 0) return 0.0;
+    
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+    float closestDepth = texture(u_ShadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    // Reduced bias to prevent holes in shadows
+    float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.0005);
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(u_ShadowMap, 0);
+    for(int x = -1; x <= 1; ++x) {
+        for(int y = -1; y <= 1; ++y) {
+            float pcfDepth = texture(u_ShadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+        }
+    }
+    shadow /= 9.0;
+    if(projCoords.z > 1.0) shadow = 0.0;
+    return shadow;
 }
 
 void main() {
@@ -199,7 +228,8 @@ void main() {
         kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        float shadow = ShadowCalculation(v_FragPosLightSpace, N, L);
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
     }
 
     // Point lights

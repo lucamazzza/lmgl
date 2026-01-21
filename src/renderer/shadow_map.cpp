@@ -118,16 +118,35 @@ void ShadowRenderer::render_directional_shadow(std::shared_ptr<scene::Scene> sce
                                                std::shared_ptr<ShadowMap> shadow_map) {
     if (!scene || !light || !shadow_map)
         return;
-    glm::mat4 light_space_matrix = get_light_space_matrix(light, glm::vec3(0.0f), 10.0f);
+    
+    // Save GL state
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    GLint cull_face_mode;
+    glGetIntegerv(GL_CULL_FACE_MODE, &cull_face_mode);
+    
+    // Use larger radius and better centered for the scene
+    glm::mat4 light_space_matrix = get_light_space_matrix(light, glm::vec3(0.0f, 2.0f, 0.0f), 20.0f);
     shadow_map->bind();
     glCullFace(GL_FRONT);
     render_scene_depth(scene, light_space_matrix);
     shadow_map->unbind();
+    
+    // Restore GL state
+    glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+    glCullFace(cull_face_mode);
 }
 
 void ShadowRenderer::render_point_shadow(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Light> light,
                                          std::shared_ptr<CubemapShadowMap> shadow_map) {
     if (!scene || !light || !shadow_map) return;
+    
+    // Save GL state
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    GLint cull_face_mode;
+    glGetIntegerv(GL_CULL_FACE_MODE, &cull_face_mode);
+    
     glm::vec3 light_pos = light->get_position();
     float far_plane = light->get_range();
     glm::mat4 shadow_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, far_plane);
@@ -147,8 +166,11 @@ void ShadowRenderer::render_point_shadow(std::shared_ptr<scene::Scene> scene, st
     shadow_map->bind(0);
     glCullFace(GL_FRONT);
     render_scene_depth(scene, shadow_transforms[0]); // Pass first transform as placeholder
-    glCullFace(GL_BACK);
     shadow_map->unbind();
+    
+    // Restore GL state
+    glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+    glCullFace(cull_face_mode);
 }
 
 void ShadowRenderer::render_scene_depth(std::shared_ptr<scene::Scene> scene, const glm::mat4 &light_space_matrix) {
@@ -162,6 +184,9 @@ void ShadowRenderer::render_scene_depth(std::shared_ptr<scene::Scene> scene, con
         auto mesh = node->get_mesh();
         if (mesh) {
             m_depth_shader->set_mat4("u_Model", transform);
+            if (mesh->get_vertex_array()) {
+                mesh->get_vertex_array()->bind();
+            }
             mesh->render();
         }
         for (const auto& child : node->get_children()) {
