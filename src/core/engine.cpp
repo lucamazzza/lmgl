@@ -66,6 +66,7 @@ void Engine::run(std::function<void(float)> update_callback) {
         }
         update_input_state();
         glfwPollEvents();
+        glViewport(0, 0, m_width, m_height);
         update_callback(m_delta_time);
         glfwSwapBuffers(m_window);
         m_scroll_x = 0.0f;

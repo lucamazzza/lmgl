@@ -165,7 +165,26 @@ void ShadowRenderer::render_point_shadow(std::shared_ptr<scene::Scene> scene, st
     }
     shadow_map->bind(0);
     glCullFace(GL_FRONT);
-    render_scene_depth(scene, shadow_transforms[0]); // Pass first transform as placeholder
+    
+    // Render scene for all 6 cubemap faces using geometry shader
+    std::function<void(std::shared_ptr<scene::Node>, const glm::mat4&)> traverse;
+    traverse = [&](std::shared_ptr<scene::Node> node, const glm::mat4& parent_transform) {
+        if (!node) return;
+        glm::mat4 transform = parent_transform * node->get_local_transform();
+        auto mesh = node->get_mesh();
+        if (mesh) {
+            m_depth_cubemap_shader->set_mat4("u_Model", transform);
+            if (mesh->get_vertex_array()) {
+                mesh->get_vertex_array()->bind();
+            }
+            mesh->render();
+        }
+        for (const auto& child : node->get_children()) {
+            traverse(child, transform);
+        }
+    };
+    traverse(scene->get_root(), glm::mat4(1.0f));
+    
     shadow_map->unbind();
     
     // Restore GL state

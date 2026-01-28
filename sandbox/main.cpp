@@ -3,6 +3,7 @@
  * @brief LMGL Sandbox - PBR Materials & Lighting Demo
  */
 
+#include "lmgl/assets/model_loader.hpp"
 #include "lmgl/core/engine.hpp"
 #include "lmgl/renderer/renderer.hpp"
 #include "lmgl/renderer/shader.hpp"
@@ -23,7 +24,7 @@ int main() {
 
     // Initialize engine with aspect-ratio aware settings
     auto &engine = core::Engine::get_instance();
-    if (!engine.init(1280, 720, "LMGL - PBR & Lighting Demo", true, true)) {
+    if (!engine.init(1280, 720, "LMGL - PBR & Lighting Demo", true, false)) {
         std::cerr << "Failed to initialize engine!" << std::endl;
         return -1;
     }
@@ -154,6 +155,14 @@ int main() {
     ground_node->set_rotation(glm::vec3(-90.0f, 0.0f, 0.0f));
     scene->get_root()->add_child(ground_node);
 
+    auto options = assets::ModelLoadOptions();
+    options.optimize_meshes = true;
+    options.flip_uvs = true;
+    auto rifle = assets::ModelLoader::load("sandbox/assets/rifle.obj", pbr_shader, options);
+    rifle->set_position(glm::vec3(2.0f, 2.0f, -2.0f));
+    rifle->set_scale(0.05f);
+    scene->get_root()->add_child(rifle);
+
     // === Create Lights ===
 
     // Directional light (sun)
@@ -178,7 +187,7 @@ int main() {
     renderer::RenderMode current_mode = renderer::RenderMode::Solid;
     bool camera_free_look = false;
     bool render_skybox = (skybox != nullptr);
-    bool render_shadows = false; // Disabled by default - needs shader integration
+    bool render_shadows = true;
 
     // Camera movement
     glm::vec3 camera_pos = camera->get_position();
@@ -303,7 +312,6 @@ int main() {
         emissive_node->set_position(point_light->get_position());
 
         // Render
-        glViewport(0, 0, engine.get_width(), engine.get_height());
         engine.clear(0.05f, 0.05f, 0.1f);
         
         // Shadow pass (if enabled)
