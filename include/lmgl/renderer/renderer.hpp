@@ -288,6 +288,25 @@ class Renderer {
      */
     void bind_lights(std::shared_ptr<renderer::Shader> shader);
 
+    /*!
+     * @brief Binds a material if it differs from the last bound material.
+     *
+     * This method implements material caching to avoid redundant state changes.
+     * It only binds the material if it is different from the previously bound one.
+     *
+     * @param material The material to bind.
+     * @param shader The shader to use.
+     */
+    void bind_material(std::shared_ptr<scene::Material> material, std::shared_ptr<renderer::Shader> shader);
+
+    /*!
+     * @brief Clears the material cache.
+     *
+     * This method resets the cached material state, forcing the next
+     * material binding to occur regardless of the previous state.
+     */
+    void clear_material_cache();
+
   private:
     //! Directional lights to render.
     std::vector<std::shared_ptr<scene::Light>> m_directional_lights;
@@ -300,6 +319,9 @@ class Renderer {
 
     //! Default material for meshes without materials
     std::shared_ptr<scene::Material> m_default_material;
+
+    //! Cached material to minimize state changes
+    std::shared_ptr<scene::Material> m_last_bound_material;
 };
 
 } // namespace renderer

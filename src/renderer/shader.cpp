@@ -148,19 +148,6 @@ unsigned int Shader::create_program(unsigned int vert, unsigned int frag) {
         glDeleteProgram(program);
         return 0;
     }
-#ifndef NDEBUG
-    glValidateProgram(program);
-    glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
-    if (!success) {
-        int len;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
-        char *msg = new char[len];
-        glGetProgramInfoLog(program, len, &len, msg);
-        std::cerr << "ERROR: Shader program validation failed:" << std::endl;
-        std::cerr << msg << std::endl;
-        delete[] msg;
-    }
-#endif
     glDeleteShader(vert);
     glDeleteShader(frag);
     return program;
@@ -187,19 +174,6 @@ unsigned int Shader::create_program(unsigned int vert, unsigned int geom, unsign
         glDeleteProgram(program);
         return 0;
     }
-#ifndef NDEBUG
-    glValidateProgram(program);
-    glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
-    if (!success) {
-        int len;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
-        char *msg = new char[len];
-        glGetProgramInfoLog(program, len, &len, msg);
-        std::cerr << "ERROR: Shader program validation failed:" << std::endl;
-        std::cerr << msg << std::endl;
-        delete[] msg;
-    }
-#endif
     glDeleteShader(vert);
     glDeleteShader(geom);
     glDeleteShader(frag);

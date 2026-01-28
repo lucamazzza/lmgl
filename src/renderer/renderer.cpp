@@ -34,6 +34,7 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     m_draw_calls = 0;
     m_triangles_count = 0;
     m_render_queue.clear();
+    clear_material_cache();
     scene::Frustum frustum;
     frustum.update(camera->get_view_projection_matrix());
     glm::mat4 identity(1.0f);
@@ -142,15 +143,24 @@ void Renderer::build_render_queue_culled(std::shared_ptr<scene::Node> node, std:
 
 void Renderer::sort_render_queue(std::vector<RenderItem> &items) {
     std::sort(items.begin(), items.end(), [](const RenderItem &a, const RenderItem &b) {
-        auto shader_a = a.mesh->get_shader().get();
-        auto shader_b = b.mesh->get_shader().get();
+        if (static_cast<int>(a.layer) != static_cast<int>(b.layer)) {
+            return static_cast<int>(a.layer) < static_cast<int>(b.layer);
+        }
+        Shader *shader_a = a.mesh->get_shader().get();
+        Shader *shader_b = b.mesh->get_shader().get();
         if (shader_a != shader_b) {
             return shader_a < shader_b;
         }
-        if (a.is_transparent)
+        scene::Material *mat_a = a.mesh->get_material().get();
+        scene::Material *mat_b = b.mesh->get_material().get();
+        if (mat_a != mat_b) {
+            return mat_a < mat_b;
+        }
+        if (a.is_transparent) {
             return a.distance_to_camera > b.distance_to_camera;
-        else
+        } else {
             return a.distance_to_camera < b.distance_to_camera;
+        }
     });
 }
 
@@ -175,9 +185,9 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &t
     bind_lights(shader);
     auto material = mesh->get_material();
     if (material)
-        material->bind(shader);
+        bind_material(material, shader);
     else {
-        m_default_material->bind(shader);
+        bind_material(m_default_material, shader);
     }
     mesh->render();
     m_draw_calls++;
@@ -250,6 +260,17 @@ void Renderer::bind_lights(std::shared_ptr<renderer::Shader> shader) {
         shader->set_float(base + ".range", m_point_lights[i]->get_range());
     }
 }
+
+void Renderer::bind_material(std::shared_ptr<scene::Material> material, std::shared_ptr<renderer::Shader> shader) {
+    if (!material || !shader)
+        return;
+    if (material == m_last_bound_material)
+        return;
+    material->bind(shader);
+    m_last_bound_material = material;
+}
+
+void Renderer::clear_material_cache() { m_last_bound_material = nullptr; }
 
 } // namespace renderer
 
