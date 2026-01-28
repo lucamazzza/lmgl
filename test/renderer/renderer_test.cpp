@@ -230,6 +230,178 @@ TEST_F(RendererTest, FrustumCullingRendersMultipleVisibleObjects) {
     EXPECT_GT(renderer->get_draw_calls(), 0);
 }
 
+// Material Caching Tests
+
+TEST_F(RendererTest, MaterialCachingWithSameMaterial) {
+    auto shader = Shader::from_glsl_file("basic.glsl");
+    auto material = std::make_shared<scene::Material>("SharedMaterial");
+    material->set_albedo(glm::vec3(1.0f, 0.0f, 0.0f));
+    
+    // Create multiple meshes sharing the same material
+    for (int i = 0; i < 5; ++i) {
+        auto mesh = scene::Mesh::create_cube(shader);
+        mesh->set_material(material);
+        auto node = std::make_shared<scene::Node>("Cube" + std::to_string(i));
+        node->set_mesh(mesh);
+        node->set_position(glm::vec3(float(i * 2), 0.0f, 0.0f));
+        scene->get_root()->add_child(node);
+    }
+    
+    camera->set_position(glm::vec3(5.0f, 0.0f, 15.0f));
+    
+    // Render should work correctly with shared material
+    EXPECT_NO_THROW(renderer->render(scene, camera));
+    EXPECT_EQ(renderer->get_draw_calls(), 5);
+}
+
+TEST_F(RendererTest, MaterialCachingWithDifferentMaterials) {
+    auto shader = Shader::from_glsl_file("basic.glsl");
+    
+    // Create meshes with different materials
+    for (int i = 0; i < 5; ++i) {
+        auto material = std::make_shared<scene::Material>("Material" + std::to_string(i));
+        material->set_albedo(glm::vec3(float(i) * 0.2f, 0.5f, 1.0f));
+        material->set_metallic(float(i) * 0.2f);
+        material->set_roughness(0.5f);
+        
+        auto mesh = scene::Mesh::create_cube(shader);
+        mesh->set_material(material);
+        auto node = std::make_shared<scene::Node>("Cube" + std::to_string(i));
+        node->set_mesh(mesh);
+        node->set_position(glm::vec3(float(i * 2), 0.0f, 0.0f));
+        scene->get_root()->add_child(node);
+    }
+    
+    camera->set_position(glm::vec3(5.0f, 0.0f, 15.0f));
+    
+    EXPECT_NO_THROW(renderer->render(scene, camera));
+    EXPECT_EQ(renderer->get_draw_calls(), 5);
+}
+
+TEST_F(RendererTest, MaterialCachingWithMixedMaterials) {
+    auto shader = Shader::from_glsl_file("basic.glsl");
+    auto material1 = std::make_shared<scene::Material>("Material1");
+    material1->set_albedo(glm::vec3(1.0f, 0.0f, 0.0f));
+    
+    auto material2 = std::make_shared<scene::Material>("Material2");
+    material2->set_albedo(glm::vec3(0.0f, 1.0f, 0.0f));
+    
+    // Create meshes alternating between two materials
+    for (int i = 0; i < 10; ++i) {
+        auto mesh = scene::Mesh::create_cube(shader);
+        mesh->set_material(i % 2 == 0 ? material1 : material2);
+        auto node = std::make_shared<scene::Node>("Cube" + std::to_string(i));
+        node->set_mesh(mesh);
+        node->set_position(glm::vec3(float(i * 2 - 9), 0.0f, 0.0f));
+        scene->get_root()->add_child(node);
+    }
+    
+    camera->set_position(glm::vec3(0.0f, 0.0f, 25.0f));
+    camera->set_target(glm::vec3(0.0f, 0.0f, 0.0f));
+    
+    EXPECT_NO_THROW(renderer->render(scene, camera));
+    EXPECT_GT(renderer->get_draw_calls(), 0);
+}
+
+TEST_F(RendererTest, MaterialCachingWithNullMaterials) {
+    auto shader = Shader::from_glsl_file("basic.glsl");
+    
+    // Create meshes without materials (should use default)
+    for (int i = 0; i < 3; ++i) {
+        auto mesh = scene::Mesh::create_cube(shader);
+        // No material set - will use default
+        auto node = std::make_shared<scene::Node>("Cube" + std::to_string(i));
+        node->set_mesh(mesh);
+        node->set_position(glm::vec3(float(i * 2), 0.0f, 0.0f));
+        scene->get_root()->add_child(node);
+    }
+    
+    camera->set_position(glm::vec3(3.0f, 0.0f, 10.0f));
+    
+    // Should use default material for all and cache it
+    EXPECT_NO_THROW(renderer->render(scene, camera));
+    EXPECT_EQ(renderer->get_draw_calls(), 3);
+}
+
+TEST_F(RendererTest, MaterialCachingClearsBetweenFrames) {
+    auto shader = Shader::from_glsl_file("basic.glsl");
+    auto material = std::make_shared<scene::Material>("TestMaterial");
+    
+    auto mesh = scene::Mesh::create_cube(shader);
+    mesh->set_material(material);
+    auto node = std::make_shared<scene::Node>("Cube");
+    node->set_mesh(mesh);
+    scene->get_root()->add_child(node);
+    
+    camera->set_position(glm::vec3(0.0f, 0.0f, 5.0f));
+    
+    // Render first frame
+    renderer->render(scene, camera);
+    EXPECT_EQ(renderer->get_draw_calls(), 1);
+    
+    // Render second frame - cache should be cleared at start
+    renderer->render(scene, camera);
+    EXPECT_EQ(renderer->get_draw_calls(), 1);
+}
+
+TEST_F(RendererTest, MaterialCachingSortsByMaterial) {
+    auto shader = Shader::from_glsl_file("basic.glsl");
+    
+    // Create materials
+    auto materialA = std::make_shared<scene::Material>("MaterialA");
+    materialA->set_albedo(glm::vec3(1.0f, 0.0f, 0.0f));
+    
+    auto materialB = std::make_shared<scene::Material>("MaterialB");
+    materialB->set_albedo(glm::vec3(0.0f, 1.0f, 0.0f));
+    
+    // Add meshes in mixed order: A, B, A, B, A
+    // After sorting, should be grouped: A, A, A, B, B
+    std::vector<std::shared_ptr<scene::Material>> materials = {
+        materialA, materialB, materialA, materialB, materialA
+    };
+    
+    for (size_t i = 0; i < materials.size(); ++i) {
+        auto mesh = scene::Mesh::create_cube(shader);
+        mesh->set_material(materials[i]);
+        auto node = std::make_shared<scene::Node>("Cube" + std::to_string(i));
+        node->set_mesh(mesh);
+        node->set_position(glm::vec3(float(i * 2), 0.0f, 0.0f));
+        scene->get_root()->add_child(node);
+    }
+    
+    camera->set_position(glm::vec3(5.0f, 0.0f, 15.0f));
+    
+    // Should render all meshes, sorted by material
+    EXPECT_NO_THROW(renderer->render(scene, camera));
+    EXPECT_EQ(renderer->get_draw_calls(), 5);
+}
+
+TEST_F(RendererTest, MaterialCachingHandlesMaterialChangeBetweenFrames) {
+    auto shader = Shader::from_glsl_file("basic.glsl");
+    
+    auto material1 = std::make_shared<scene::Material>("Material1");
+    auto material2 = std::make_shared<scene::Material>("Material2");
+    
+    auto mesh = scene::Mesh::create_cube(shader);
+    mesh->set_material(material1);
+    auto node = std::make_shared<scene::Node>("Cube");
+    node->set_mesh(mesh);
+    scene->get_root()->add_child(node);
+    
+    camera->set_position(glm::vec3(0.0f, 0.0f, 5.0f));
+    
+    // Render with first material
+    renderer->render(scene, camera);
+    EXPECT_EQ(renderer->get_draw_calls(), 1);
+    
+    // Change material
+    mesh->set_material(material2);
+    
+    // Render with second material
+    renderer->render(scene, camera);
+    EXPECT_EQ(renderer->get_draw_calls(), 1);
+}
+
 } // namespace renderer
 
 } // namespace lmgl
