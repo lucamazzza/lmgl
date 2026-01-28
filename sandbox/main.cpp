@@ -30,18 +30,11 @@ int main() {
     }
 
     std::cout << "\n=== LMGL PBR Demo ===" << std::endl;
-    std::cout << "Features:" << std::endl;
-    std::cout << "  ✓ PBR Materials (metallic/roughness workflow)" << std::endl;
-    std::cout << "  ✓ Multiple light types" << std::endl;
-    std::cout << "  ✓ Real-time lighting" << std::endl;
-    std::cout << "  ✓ Frustum culling (automatic)" << std::endl;
-    std::cout << "  ✓ Skybox support" << std::endl;
-    std::cout << "  ✓ Shadow mapping" << std::endl;
     std::cout << "\nControls:" << std::endl;
     std::cout << "  ESC       - Exit" << std::endl;
     std::cout << "  1/2/3     - Render modes" << std::endl;
     std::cout << "  F         - Toggle fullscreen" << std::endl;
-    std::cout << "  S         - Toggle skybox" << std::endl;
+    std::cout << "  B         - Toggle skybox" << std::endl;
     std::cout << "  H         - Toggle shadows" << std::endl;
     std::cout << "  WASD      - Move camera" << std::endl;
     std::cout << "  Mouse     - Look around" << std::endl;
@@ -228,7 +221,7 @@ int main() {
             renderer->set_render_mode(current_mode);
         }
 
-        if (engine.is_key_just_pressed(core::Key::S)) {
+        if (engine.is_key_just_pressed(core::Key::B)) {
             if (skybox) {
                 render_skybox = !render_skybox;
                 std::cout << "Skybox " << (render_skybox ? "enabled" : "disabled") << std::endl;
