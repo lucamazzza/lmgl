@@ -52,6 +52,7 @@ add_library(lmgl STATIC
     include/lmgl/scene/camera.hpp
     include/lmgl/scene/frustum.hpp
     include/lmgl/scene/light.hpp
+    include/lmgl/scene/lod.hpp
     include/lmgl/scene/material.hpp
     include/lmgl/scene/mesh.hpp
     include/lmgl/scene/node.hpp
@@ -60,6 +61,7 @@ add_library(lmgl STATIC
     src/scene/camera.cpp
     src/scene/frustum.cpp
     src/scene/light.cpp
+    src/scene/lod.cpp
     src/scene/material.cpp
     src/scene/mesh.cpp
     src/scene/node.cpp
