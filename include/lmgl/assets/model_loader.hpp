@@ -128,6 +128,24 @@ class ModelLoader {
      * @return The directory part of the file path.
      */
     static std::string get_directory(const std::string &filepath);
+
+    /*!
+     * @brief Load a Level of Detail (LOD) model from multiple file paths.
+     *
+     * This function loads a Level of Detail (LOD) model from multiple file paths,
+     * each corresponding to a different level of detail. It constructs an LOD object
+     * that can switch between different models based on distance.
+     *
+     * @param file_paths A vector of file paths for the different LOD models.
+     * @param distances A vector of distances at which to switch between LOD models.
+     * @param shader A shared pointer to the shader to be used for rendering the LOD models.
+     * @param options Options for loading the models.
+     * @return A shared pointer to the loaded LOD object.
+     */
+    static std::shared_ptr<scene::LOD> load_lod(const std::vector<std::string> &file_paths,
+                                                const std::vector<float> &distances,
+                                                std::shared_ptr<renderer::Shader> shader,
+                                                const ModelLoadOptions &options = {});
 };
 
 } // namespace assets

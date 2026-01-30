@@ -17,9 +17,12 @@ std::shared_ptr<scene::Node> ModelLoader::load(const std::string &fpath, std::sh
                                                const ModelLoadOptions &options) {
     Assimp::Importer importer;
     unsigned int flags = 0;
-    if (options.triangulate) flags |= aiProcess_Triangulate;
-    if (options.flip_uvs) flags |= aiProcess_FlipUVs;
-    if (options.compute_tangents) flags |= aiProcess_CalcTangentSpace;
+    if (options.triangulate)
+        flags |= aiProcess_Triangulate;
+    if (options.flip_uvs)
+        flags |= aiProcess_FlipUVs;
+    if (options.compute_tangents)
+        flags |= aiProcess_CalcTangentSpace;
     if (options.optimize_meshes) {
         flags |= aiProcess_OptimizeMeshes;
         flags |= aiProcess_OptimizeGraph;
@@ -201,6 +204,23 @@ std::string ModelLoader::get_directory(const std::string &filepath) {
         return ".";
     }
     return filepath.substr(0, last_slash);
+}
+
+std::shared_ptr<scene::LOD> ModelLoader::load_lod(const std::vector<std::string> &file_paths,
+                                                  const std::vector<float> &distances,
+                                                  std::shared_ptr<renderer::Shader> shader,
+                                                  const ModelLoadOptions &options) {
+    if (file_paths.size() != distances.size())
+        return nullptr;
+    if (file_paths.empty())
+        return nullptr;
+    auto lod = std::make_shared<scene::LOD>();
+    for (size_t i = 0; i < file_paths.size(); ++i) {
+        auto node = load(file_paths[i], shader, options);
+        if (node && node->has_mesh())
+            lod->add_level(node->get_mesh(), distances[i]);
+    }
+    return lod->has_levels() ? lod : nullptr;
 }
 
 } // namespace assets
