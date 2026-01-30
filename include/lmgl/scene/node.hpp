@@ -15,6 +15,7 @@
 
 #include "lmgl/scene/light.hpp"
 #include "lmgl/scene/mesh.hpp"
+#include "lmgl/scene/lod.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -294,6 +295,38 @@ class Node : public std::enable_shared_from_this<Node> {
      */
     bool has_light() const { return m_light != nullptr; }
 
+    /*!
+     * @brief Set the LOD (Level of Detail) for the node.
+     *
+     * @param lod Shared pointer to the LOD object.
+     */
+    inline void set_lod(std::shared_ptr<LOD> lod) { m_lod = lod; };
+
+    /*!
+     * @brief Get the LOD (Level of Detail) associated with the node.
+     *
+     * @return Shared pointer to the LOD object.
+     */
+    inline std::shared_ptr<LOD> get_lod() const { return m_lod; }
+
+    /*!
+     * @brief Check if the node has an associated LOD with levels.
+     *
+     * @return Boolean indicating presence of a LOD with levels.
+     */
+    inline bool has_lod() const { return m_lod != nullptr && m_lod->has_levels(); }
+
+    /*!
+     * @brief Get the appropriate mesh for rendering based on camera position.
+     *
+     * Selects the appropriate mesh level of detail based on the distance
+     * from the camera to the node.
+     *
+     * @param camera_position Position of the camera in world space.
+     * @return Shared pointer to the selected Mesh object for rendering.
+     */
+    std::shared_ptr<Mesh> get_mesh_for_rendering(const glm::vec3 &camera_pos) const;
+
   private:
     //! @brief Node properties
     std::string m_name;
@@ -324,6 +357,9 @@ class Node : public std::enable_shared_from_this<Node> {
 
     //! @brief Light associated with the node
     std::shared_ptr<Light> m_light;
+
+    //! @brief LOD (Level of Detail) associated with the node
+    std::shared_ptr<LOD> m_lod;
 
     /*!
      * @brief Update the local transformation matrix.

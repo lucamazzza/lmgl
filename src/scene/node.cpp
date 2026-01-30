@@ -94,6 +94,14 @@ void Node::update_transform(const glm::mat4 &parent_transform) {
     }
 }
 
+std::shared_ptr<Mesh> Node::get_mesh_for_rendering(const glm::vec3 &camera_pos) const {
+    if (has_lod()) {
+        glm::vec3 world_pos = glm::vec3(m_world_transform[3]);
+        return m_lod->get_mesh(camera_pos, world_pos);
+    }
+    return m_mesh;
+}
+
 } // namespace scene
 
 } // namespace lmgl
