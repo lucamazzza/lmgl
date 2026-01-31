@@ -15,6 +15,7 @@ add_executable(Tests
     scene/camera_test.cpp
     scene/frustum_test.cpp
     scene/light_test.cpp
+    scene/lod_test.cpp
     scene/material_test.cpp
     scene/mesh_test.cpp
     scene/node_test.cpp
