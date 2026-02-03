@@ -18,6 +18,9 @@ Texture::Texture(int width, int height)
     init_texture_params();
 }
 
+Texture::Texture(unsigned int id, int width, int height)
+    : m_renderer_id(id), m_width(width), m_height(height) {}
+
 Texture::Texture(const std::string &path) : m_renderer_id(0), m_file_path(path), m_width(0), m_height(0) {
     // TODO: Make flip configurable
     stbi_set_flip_vertically_on_load(0);

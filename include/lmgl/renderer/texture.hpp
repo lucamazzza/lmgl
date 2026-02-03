@@ -39,6 +39,17 @@ class Texture {
     Texture(int width, int height);
 
     /*!
+     * @brief Constructor for creating an existing texture with specified width and height.
+     *
+     * Initializes an existing texture with the given dimensions.
+     *
+     * @param id The id of the existing renderer texture.
+     * @param width The width of the texture.
+     * @param height The height of the texture.
+     */
+    Texture(unsigned int id, int width, int height);
+
+    /*!
      * @brief Constructor for creating a texture from an image file.
      *
      * Loads the texture data from the specified file path.

@@ -39,8 +39,9 @@ class Framebuffer {
      *
      * @param width Width of the framebuffer.
      * @param height Height of the framebuffer.
+     * @param hdr Flag for High Dynamic Range image Rendering.
      */
-    Framebuffer(int width, int height);
+    Framebuffer(int width, int height, bool hdr = false);
 
     //! @brief Destructor for the Framebuffer.
     ~Framebuffer();
@@ -98,6 +99,9 @@ class Framebuffer {
 
     //! @brief Width and height of the framebuffer.
     int m_width, m_height;
+
+    //! @brief Flag for High Dynamic Range image rendering.
+    bool m_hdr;
 };
 
 } // namespace renderer
