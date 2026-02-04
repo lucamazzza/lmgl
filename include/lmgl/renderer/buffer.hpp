@@ -13,15 +13,15 @@
 #pragma once
 
 #include <cstddef>
-#include <vector>
-#include <string>
 #include <initializer_list>
+#include <string>
+#include <vector>
 
 namespace lmgl {
 
 namespace renderer {
 
-/*! 
+/*!
  * @brief Enumerates the various data types used in shaders.
  *
  * This enumeration defines the different types of data that can be used
@@ -30,15 +30,9 @@ namespace renderer {
  *
  * @note The sizes of these types are important for buffer layout calculations.
  */
-enum class ShaderDataType {
-    None = 0,
-    Float, Float2, Float3, Float4,
-    Mat3, Mat4,
-    Int, Int2, Int3, Int4,
-    Bool
-};
+enum class ShaderDataType { None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool };
 
-/*! 
+/*!
  * @brief Represents a single element in a buffer layout.
  *
  * This structure defines the properties of a buffer element, including its
@@ -67,7 +61,7 @@ struct BufferElement {
     //! @brief Default constructor.
     BufferElement() = default;
 
-    /*! 
+    /*!
      * @brief Parameterized constructor.
      *
      * Initializes a BufferElement with the specified type, name, and normalization flag.
@@ -77,9 +71,9 @@ struct BufferElement {
      * @param name Name of the buffer element.
      * @param normalized Indicates if the data is normalized (default is false).
      */
-    BufferElement(ShaderDataType type, const std::string& name, bool normalized = false);
+    BufferElement(ShaderDataType type, const std::string &name, bool normalized = false);
 
-    /*! 
+    /*!
      * @brief Get the number of components in the buffer element.
      *
      * This method returns the number of individual components that make up
@@ -90,7 +84,7 @@ struct BufferElement {
     unsigned int get_component_count() const;
 };
 
-/*! 
+/*!
  * @brief Defines the layout of a buffer, consisting of multiple buffer elements.
  *
  * This class manages a collection of BufferElement instances, calculating
@@ -100,12 +94,11 @@ struct BufferElement {
  * @note The stride is the total size of all elements in the layout.
  */
 class BufferLayout {
-public:
-
+  public:
     //! @brief Default constructor.
     BufferLayout() {}
-    
-    /*! 
+
+    /*!
      * @brief Parameterized constructor.
      *
      * Initializes the BufferLayout with a list of BufferElement instances.
@@ -113,9 +106,9 @@ public:
      *
      * @param elements Initializer list of BufferElement instances.
      */
-    BufferLayout(const std::initializer_list<BufferElement>& elements);
+    BufferLayout(const std::initializer_list<BufferElement> &elements);
 
-    /*! 
+    /*!
      * @brief Get the stride of the buffer layout.
      *
      * The stride represents the total size in bytes of all elements in the layout.
@@ -124,7 +117,7 @@ public:
      */
     inline unsigned int get_stride() const { return m_stride; }
 
-    /*! 
+    /*!
      * @brief Get the elements of the buffer layout.
      *
      * Returns a constant reference to the vector of BufferElement instances
@@ -132,9 +125,9 @@ public:
      *
      * @return Constant reference to the vector of BufferElement instances.
      */
-    inline const std::vector<BufferElement>& get_elements() const { return m_elements; }
+    inline const std::vector<BufferElement> &get_elements() const { return m_elements; }
 
-    /*! 
+    /*!
      * @brief Iterator support for the buffer layout elements.
      *
      * Provides begin and end iterators for both mutable and constant access
@@ -154,7 +147,7 @@ public:
      */
     std::vector<BufferElement>::iterator end();
 
-    /*! 
+    /*!
      * @brief Constant iterator support for the buffer layout elements.
      *
      * Provides begin and end iterators for constant access
@@ -164,7 +157,7 @@ public:
      */
     std::vector<BufferElement>::const_iterator begin() const;
 
-    /*! 
+    /*!
      * @brief Constant end iterator.
      *
      * Provides a constant iterator to the end of the BufferElement instances
@@ -174,9 +167,8 @@ public:
      */
     std::vector<BufferElement>::const_iterator end() const;
 
-private:
-
-    /*! 
+  private:
+    /*!
      * @brief Calculate offsets and stride for the buffer layout.
      *
      * This method computes the offset for each BufferElement based on
@@ -191,7 +183,7 @@ private:
     unsigned int m_stride = 0;
 };
 
-/*! 
+/*!
  * @brief Manages a vertex buffer in OpenGL.
  *
  * This class encapsulates the creation, binding, and management of a vertex buffer.
@@ -201,9 +193,8 @@ private:
  * @note The buffer is identified by a renderer ID assigned by OpenGL.
  */
 class VertexBuffer {
-public:
-
-    /*! 
+  public:
+    /*!
      * @brief Constructor for the VertexBuffer.
      *
      * Initializes the vertex buffer with the provided vertex data and size.
@@ -213,26 +204,26 @@ public:
      * @param size Size of the vertex data in bytes.
      * @param dynamic Indicates if the buffer is dynamic (default is false).
      */
-    VertexBuffer(const void* vertices, unsigned int size, bool dynamic = false);
+    VertexBuffer(const void *vertices, unsigned int size, bool dynamic = false);
 
     //! @brief Destructor for the VertexBuffer.
     ~VertexBuffer();
 
-    /*! 
+    /*!
      * @brief Bind the vertex buffer.
      *
      * Activates the vertex buffer for subsequent rendering operations.
      */
     void bind() const;
 
-    /*! 
+    /*!
      * @brief Unbind the vertex buffer.
      *
      * Deactivates the vertex buffer.
      */
     void unbind() const;
 
-    /*! 
+    /*!
      * @brief Set the data of the vertex buffer.
      *
      * Updates the contents of the vertex buffer with new data.
@@ -240,9 +231,9 @@ public:
      * @param data Pointer to the new vertex data.
      * @param size Size of the new vertex data in bytes.
      */
-    void set_data(const void* data, unsigned int size);
+    void set_data(const void *data, unsigned int size);
 
-    /*! 
+    /*!
      * @brief Set the layout of the vertex buffer.
      *
      * Assigns a BufferLayout to the vertex buffer, defining the structure
@@ -250,9 +241,9 @@ public:
      *
      * @param layout The BufferLayout to be assigned to the vertex buffer.
      */
-    void set_layout(const BufferLayout& layout);
+    void set_layout(const BufferLayout &layout);
 
-    /*! 
+    /*!
      * @brief Get the layout of the vertex buffer.
      *
      * Returns a constant reference to the BufferLayout that describes
@@ -260,10 +251,9 @@ public:
      *
      * @return Constant reference to the BufferLayout.
      */
-    const BufferLayout& get_layout() const;
+    const BufferLayout &get_layout() const;
 
-private:
-
+  private:
     //! @brief Layout of the vertex buffer.
     unsigned int m_renderer_id;
 
@@ -274,7 +264,7 @@ private:
     BufferLayout m_layout;
 };
 
-/*! 
+/*!
  * @brief Manages an index buffer in OpenGL.
  *
  * This class encapsulates the creation, binding, and management of an index buffer.
@@ -284,9 +274,8 @@ private:
  * @note The buffer is identified by a renderer ID assigned by OpenGL.
  */
 class IndexBuffer {
-public:
-
-    /*! 
+  public:
+    /*!
      * @brief Constructor for the IndexBuffer.
      *
      * Initializes the index buffer with the provided indices and count.
@@ -294,26 +283,26 @@ public:
      * @param indices Pointer to the index data.
      * @param count Number of indices.
      */
-    IndexBuffer(const unsigned int* indices, unsigned int count);
+    IndexBuffer(const unsigned int *indices, unsigned int count);
 
     //! @brief Destructor for the IndexBuffer.
     ~IndexBuffer();
 
-    /*! 
+    /*!
      * @brief Bind the index buffer.
      *
      * Activates the index buffer for subsequent rendering operations.
      */
     void bind() const;
 
-    /*! 
+    /*!
      * @brief Unbind the index buffer.
      *
      * Deactivates the index buffer.
      */
     void unbind() const;
 
-    /*! 
+    /*!
      * @brief Get the count of indices in the buffer.
      *
      * Returns the number of indices stored in the index buffer.
@@ -322,8 +311,7 @@ public:
      */
     inline unsigned int get_count() const { return m_count; }
 
-private:
-
+  private:
     //! @brief Renderer ID assigned by OpenGL.
     unsigned int m_renderer_id;
 

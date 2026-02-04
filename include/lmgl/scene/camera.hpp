@@ -26,15 +26,11 @@ namespace scene {
  * for tasks like mouse picking.
  */
 class Camera {
-public:
-
+  public:
     /*!
      * @brief Projection mode for the camera.
      */
-    enum class ProjectionMode {
-        Perspective,
-        Orthographic
-    };
+    enum class ProjectionMode { Perspective, Orthographic };
 
     /*!
      * @brief Constructor for the Camera class.
@@ -81,7 +77,10 @@ public:
      *
      * @param position New position vector.
      */
-    inline void set_position(const glm::vec3& position) { m_position = position; m_view_dirty = true; }
+    inline void set_position(const glm::vec3 &position) {
+        m_position = position;
+        m_view_dirty = true;
+    }
 
     /*!
      * @brief Set the camera target/look-at point.
@@ -90,7 +89,10 @@ public:
      *
      * @param target Target position vector.
      */
-    inline void set_target(const glm::vec3& target) { m_target = target; m_view_dirty = true; }
+    inline void set_target(const glm::vec3 &target) {
+        m_target = target;
+        m_view_dirty = true;
+    }
 
     /*!
      * @brief Set the camera's up vector.
@@ -99,28 +101,31 @@ public:
      *
      * @param up Up direction vector (default: (0, 1, 0)).
      */
-    inline void set_up(const glm::vec3& up) { m_up = up; m_view_dirty = true; }
+    inline void set_up(const glm::vec3 &up) {
+        m_up = up;
+        m_view_dirty = true;
+    }
 
     /*!
      * @brief Get the camera position.
      *
      * @return Current position of the camera.
      */
-    inline const glm::vec3& get_position() const { return m_position; }
+    inline const glm::vec3 &get_position() const { return m_position; }
 
     /*!
      * @brief Get the camera target.
      *
      * @return Current target/look-at point.
      */
-    inline const glm::vec3& get_target() const { return m_target; }
+    inline const glm::vec3 &get_target() const { return m_target; }
 
     /*!
      * @brief Get the camera up vector.
      *
      * @return Current up direction vector.
      */
-    inline const glm::vec3& get_up() const { return m_up; }
+    inline const glm::vec3 &get_up() const { return m_up; }
 
     /*!
      * @brief Get the view matrix.
@@ -130,7 +135,7 @@ public:
      *
      * @return View matrix.
      */
-    const glm::mat4& get_view_matrix() const;
+    const glm::mat4 &get_view_matrix() const;
 
     /*!
      * @brief Get the projection matrix.
@@ -139,7 +144,7 @@ public:
      *
      * @return Projection matrix.
      */
-    inline const glm::mat4& get_projection_matrix() const { return m_projection; }
+    inline const glm::mat4 &get_projection_matrix() const { return m_projection; }
 
     /*!
      * @brief Get the combined view-projection matrix.
@@ -171,7 +176,24 @@ public:
      */
     inline ProjectionMode get_projection_mode() const { return m_mode; }
 
-private:
+    /*!
+     * @brief Get the current aspect ratio.
+     *
+     * @return The current aspect ratio.
+     */
+    inline float get_aspect() const { return m_aspect; }
+
+    /*!
+     * @brief Set a new aspect ratio.
+     *
+     * Updates the aspect ratio and recalculates the projection matrix
+     * if the camera is in perspective mode.
+     *
+     * @param aspect The new aspect ratio
+     */
+    void set_aspect(float aspect);
+
+  private:
 
     //! @brief Camera position in world space.
     glm::vec3 m_position;

@@ -17,10 +17,17 @@ endif()
 add_subdirectory(external/glfw)
 add_subdirectory(external/glm)
 add_subdirectory(external/googletest)
+add_subdirectory(external/assimp)
 
 find_package(OpenGL REQUIRED)
 
 add_library(lmgl STATIC 
+    # assets
+    include/lmgl/assets/texture_library.hpp
+    include/lmgl/assets/model_loader.hpp
+    src/assets/texture_library.cpp
+    src/assets/model_loader.cpp
+
     # core
     include/lmgl/core/engine.hpp
     src/core/engine.cpp
@@ -30,26 +37,36 @@ add_library(lmgl STATIC
     include/lmgl/renderer/framebuffer.hpp
     include/lmgl/renderer/renderer.hpp
     include/lmgl/renderer/shader.hpp
+    include/lmgl/renderer/shadow_map.hpp
     include/lmgl/renderer/texture.hpp
     include/lmgl/renderer/vertex_array.hpp
     src/renderer/buffer.cpp
     src/renderer/framebuffer.cpp
     src/renderer/renderer.cpp
     src/renderer/shader.cpp
+    src/renderer/shadow_map.cpp
     src/renderer/texture.cpp
     src/renderer/vertex_array.cpp
 
     # scene
     include/lmgl/scene/camera.hpp
-    #include/lmgl/scene/light.hpp
+    include/lmgl/scene/frustum.hpp
+    include/lmgl/scene/light.hpp
+    include/lmgl/scene/lod.hpp
+    include/lmgl/scene/material.hpp
     include/lmgl/scene/mesh.hpp
     include/lmgl/scene/node.hpp
     include/lmgl/scene/scene.hpp
+    include/lmgl/scene/skybox.hpp
     src/scene/camera.cpp
-    #src/scene/light.cpp
+    src/scene/frustum.cpp
+    src/scene/light.cpp
+    src/scene/lod.cpp
+    src/scene/material.cpp
     src/scene/mesh.cpp
     src/scene/node.cpp
     src/scene/scene.cpp
+    src/scene/skybox.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -60,13 +77,9 @@ if(HEADLESS)
     target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
 endif()
 
-if(HEADLESS)
-    target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
-endif()
-
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
-target_link_libraries(lmgl PUBLIC glfw glm::glm ${OPENGL_LIBRARY})
+target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY})
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")

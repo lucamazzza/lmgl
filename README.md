@@ -2,12 +2,13 @@
 
 <img src="https://capsule-render.vercel.app/api?type=venom&color=782b90&height=200&section=header&text=lmgl&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=Modern%20OpenGL%20Engine%20Library&descAlignY=61&descAlign=50"/>
 
+
 </p>
 
 <p align='center'>
 
 <img src="https://img.shields.io/badge/4.1-235586A4?style=for-the-badge&logo=opengl&logoColor=%235586A4&labelColor=%23ffffff&color=%235586A4&logoSize=auto"/>
-<img src="https://img.shields.io/badge/20-%23044f88?style=for-the-badge&logo=cplusplus&logoColor=%23044f88&labelColor=%23ffffff&color=%23044f88"/>
+<img src="https://img.shields.io/badge/17-%23044f88?style=for-the-badge&logo=cplusplus&logoColor=%23044f88&labelColor=%23ffffff&color=%23044f88"/>
 <img src="https://img.shields.io/github/actions/workflow/status/lucamazzza/lmgl/.github%2Fworkflows%2Fcmake_multiplatform.yml?style=for-the-badge&logo=cmake&logoSize=auto&label=%20"/>
 <img src="https://img.shields.io/github/v/release/lucamazzza/lmgl?include_prereleases&sort=date&display_name=release&style=for-the-badge&label=%20"/>
 
@@ -51,7 +52,12 @@ The code is documented using *Doxygen*, that is automatically deployed on
 [this page](https://lucamazzza.github.io/lmgl), and is constantly updated for 
 every version released.
 
-<br>
+If something goes wrong...
+--------------------------
+
+Check that:
+* All the needed dependencies are included as submodule
+* Your compiler supports C++17
 
 <hr>
 <p align="center">
