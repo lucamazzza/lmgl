@@ -124,10 +124,12 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     m_postprocess_shader->set_float("u_Exposure", m_exposure);
     m_postprocess_shader->set_float("u_Gamma", m_gamma);
     m_postprocess_shader->set_int("u_BloomEnabled", m_bloom_enabled ? 1 : 0);
+    m_framebuffer->get_color_attachment()->bind(0);
     if (m_bloom_enabled) {
         m_postprocess_shader->set_float("u_BloomIntensity", m_bloom_intensity);
-        m_framebuffer->get_color_attachment()->bind(0);
         m_blur_framebuffer[0]->get_color_attachment()->bind(1);
+    } else {
+        m_postprocess_shader->set_float("u_BloomIntensity", 0.0f);
     }
     if (m_screen_quad->get_vertex_array())
         m_screen_quad->get_vertex_array()->bind();
