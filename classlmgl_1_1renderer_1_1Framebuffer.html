@@ -111,9 +111,9 @@ $(function(){initNavTree('classlmgl_1_1renderer_1_1Framebuffer.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a04ee63651a329222d360777891e4363a" id="r_a04ee63651a329222d360777891e4363a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04ee63651a329222d360777891e4363a">Framebuffer</a> (int width, int height)</td></tr>
-<tr class="memdesc:a04ee63651a329222d360777891e4363a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the <a class="el" href="classlmgl_1_1renderer_1_1Framebuffer.html" title="Framebuffer class for off-screen rendering.">Framebuffer</a>.  <br /></td></tr>
-<tr class="separator:a04ee63651a329222d360777891e4363a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2dee9c79800f83f1e7f2ed8573c87a1" id="r_af2dee9c79800f83f1e7f2ed8573c87a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2dee9c79800f83f1e7f2ed8573c87a1">Framebuffer</a> (int width, int height, bool hdr=false)</td></tr>
+<tr class="memdesc:af2dee9c79800f83f1e7f2ed8573c87a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the <a class="el" href="classlmgl_1_1renderer_1_1Framebuffer.html" title="Framebuffer class for off-screen rendering.">Framebuffer</a>.  <br /></td></tr>
+<tr class="separator:af2dee9c79800f83f1e7f2ed8573c87a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed39eef1364b64b11f98423421e2453d" id="r_aed39eef1364b64b11f98423421e2453d"><td class="memItemLeft" align="right" valign="top"><a id="aed39eef1364b64b11f98423421e2453d" name="aed39eef1364b64b11f98423421e2453d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~Framebuffer</b> ()</td></tr>
 <tr class="memdesc:aed39eef1364b64b11f98423421e2453d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="classlmgl_1_1renderer_1_1Framebuffer.html" title="Framebuffer class for off-screen rendering.">Framebuffer</a>. <br /></td></tr>
@@ -136,8 +136,8 @@ Public Member Functions</h2></td></tr>
 <p>This class encapsulates the creation and management of an OpenGL framebuffer, including color and depth attachments.</p>
 <dl class="section note"><dt>Note</dt><dd>The framebuffer can be resized and bound/unbound for rendering. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a04ee63651a329222d360777891e4363a" name="a04ee63651a329222d360777891e4363a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04ee63651a329222d360777891e4363a">&#9670;&#160;</a></span>Framebuffer()</h2>
+<a id="af2dee9c79800f83f1e7f2ed8573c87a1" name="af2dee9c79800f83f1e7f2ed8573c87a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2dee9c79800f83f1e7f2ed8573c87a1">&#9670;&#160;</a></span>Framebuffer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,7 +150,12 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>height</em></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>height</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>hdr</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -161,6 +166,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">width</td><td>Width of the framebuffer. </td></tr>
     <tr><td class="paramname">height</td><td>Height of the framebuffer. </td></tr>
+    <tr><td class="paramname">hdr</td><td>Flag for High Dynamic Range image Rendering. </td></tr>
   </table>
   </dd>
 </dl>

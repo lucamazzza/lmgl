@@ -115,6 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abb526742fed9ac702038912e748a6510" id="r_abb526742fed9ac702038912e748a6510"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb526742fed9ac702038912e748a6510">Shader</a> (const std::string &amp;vert, const std::string &amp;frag)</td></tr>
 <tr class="memdesc:abb526742fed9ac702038912e748a6510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a shader program from vertex and fragment shader source code.  <br /></td></tr>
 <tr class="separator:abb526742fed9ac702038912e748a6510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad00bdef5a74d989eae069389b8d62c9e" id="r_ad00bdef5a74d989eae069389b8d62c9e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad00bdef5a74d989eae069389b8d62c9e">Shader</a> (const std::string &amp;vert, const std::string &amp;geom, const std::string &amp;frag)</td></tr>
+<tr class="memdesc:ad00bdef5a74d989eae069389b8d62c9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a shader program with vertex, geometry, and fragment shaders.  <br /></td></tr>
+<tr class="separator:ad00bdef5a74d989eae069389b8d62c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8516706c4d1286e948f534bec8161fb5" id="r_a8516706c4d1286e948f534bec8161fb5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8516706c4d1286e948f534bec8161fb5">~Shader</a> ()</td></tr>
 <tr class="memdesc:a8516706c4d1286e948f534bec8161fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> class.  <br /></td></tr>
 <tr class="separator:a8516706c4d1286e948f534bec8161fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,6 +160,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:adaba3e90b277ee73a48140e6624572d4" id="r_adaba3e90b277ee73a48140e6624572d4"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adaba3e90b277ee73a48140e6624572d4">from_vf_files</a> (const std::string &amp;vert, const std::string &amp;frag)</td></tr>
 <tr class="memdesc:adaba3e90b277ee73a48140e6624572d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> instance from vertex and fragment shader files.  <br /></td></tr>
 <tr class="separator:adaba3e90b277ee73a48140e6624572d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66b1e6445dc3b7e13c1960c9ad6897b3" id="r_a66b1e6445dc3b7e13c1960c9ad6897b3"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66b1e6445dc3b7e13c1960c9ad6897b3">from_vgf_files</a> (const std::string &amp;vert, const std::string &amp;geom, const std::string &amp;frag)</td></tr>
+<tr class="memdesc:a66b1e6445dc3b7e13c1960c9ad6897b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> instance from vertex, geometry, and fragment shader files.  <br /></td></tr>
+<tr class="separator:a66b1e6445dc3b7e13c1960c9ad6897b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9075bd087c28e815438de54964c90ea" id="r_ae9075bd087c28e815438de54964c90ea"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9075bd087c28e815438de54964c90ea">from_glsl_file</a> (const std::string &amp;glsl)</td></tr>
 <tr class="memdesc:ae9075bd087c28e815438de54964c90ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> instance from a single GLSL file.  <br /></td></tr>
 <tr class="separator:ae9075bd087c28e815438de54964c90ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,7 +172,7 @@ Static Public Member Functions</h2></td></tr>
 <p>The <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> class encapsulates the functionality to create, compile, and manage shader programs consisting of vertex and fragment shaders. It provides an interface for loading shader source code, compiling it, and linking it into a usable program for rendering graphics. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abb526742fed9ac702038912e748a6510" name="abb526742fed9ac702038912e748a6510"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb526742fed9ac702038912e748a6510">&#9670;&#160;</a></span>Shader()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abb526742fed9ac702038912e748a6510">&#9670;&#160;</a></span>Shader() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,6 +195,42 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">vertex_src</td><td>The source code for the vertex shader. </td></tr>
+    <tr><td class="paramname">fragment_src</td><td>The source code for the fragment shader. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad00bdef5a74d989eae069389b8d62c9e" name="ad00bdef5a74d989eae069389b8d62c9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad00bdef5a74d989eae069389b8d62c9e">&#9670;&#160;</a></span>Shader() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lmgl::renderer::Shader::Shader </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>vert</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>geom</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>frag</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a shader program with vertex, geometry, and fragment shaders. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vertex_src</td><td>The source code for the vertex shader. </td></tr>
+    <tr><td class="paramname">geometry_src</td><td>The source code for the geometry shader. </td></tr>
     <tr><td class="paramname">fragment_src</td><td>The source code for the fragment shader. </td></tr>
   </table>
   </dd>
@@ -261,7 +303,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates a <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> instance from a single GLSL file. </p>
-<p>Reads the shader source code from the specified GLSL file, which contains both vertex and fragment shader code, compiles them, and links them into a shader program.</p>
+<p>Reads the shader source code from the specified GLSL file, which contains both vertex and fragment shader code, compiles them, and links them into a shader program. Also supports optional geometry shader with #shader geometry directive.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">glsl</td><td>The file path to the GLSL shader source code. </td></tr>
@@ -304,6 +346,51 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">vert</td><td>The file path to the vertex shader source code. </td></tr>
+    <tr><td class="paramname">frag</td><td>The file path to the fragment shader source code. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A shared pointer to the created <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> instance. </dd></dl>
+
+</div>
+</div>
+<a id="a66b1e6445dc3b7e13c1960c9ad6897b3" name="a66b1e6445dc3b7e13c1960c9ad6897b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66b1e6445dc3b7e13c1960c9ad6897b3">&#9670;&#160;</a></span>from_vgf_files()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt; lmgl::renderer::Shader::from_vgf_files </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>vert</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>geom</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>frag</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="classlmgl_1_1renderer_1_1Shader.html" title="Represents a shader program used in rendering.">Shader</a> instance from vertex, geometry, and fragment shader files. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vert</td><td>The file path to the vertex shader source code. </td></tr>
+    <tr><td class="paramname">geom</td><td>The file path to the geometry shader source code. </td></tr>
     <tr><td class="paramname">frag</td><td>The file path to the fragment shader source code. </td></tr>
   </table>
   </dd>

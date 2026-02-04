@@ -152,6 +152,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1ec55258642a0a319df15e865be74cb6" id="r_a1ec55258642a0a319df15e865be74cb6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ec55258642a0a319df15e865be74cb6">has_vert_data</a> () const</td></tr>
 <tr class="memdesc:a1ec55258642a0a319df15e865be74cb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the mesh has vertex data.  <br /></td></tr>
 <tr class="separator:a1ec55258642a0a319df15e865be74cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35724354897aef30188c017b409a57ce" id="r_a35724354897aef30188c017b409a57ce"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Material.html">Material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35724354897aef30188c017b409a57ce">get_material</a> () const</td></tr>
+<tr class="memdesc:a35724354897aef30188c017b409a57ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the material associated with the mesh.  <br /></td></tr>
+<tr class="separator:a35724354897aef30188c017b409a57ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2542bd648191d3b78fb8e0b149758baa" id="r_a2542bd648191d3b78fb8e0b149758baa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2542bd648191d3b78fb8e0b149758baa">set_material</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Material.html">Material</a> &gt; material)</td></tr>
+<tr class="memdesc:a2542bd648191d3b78fb8e0b149758baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the material associated to the mesh.  <br /></td></tr>
+<tr class="separator:a2542bd648191d3b78fb8e0b149758baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bd6710920d5486d15d562876e228fe3" id="r_a8bd6710920d5486d15d562876e228fe3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlmgl_1_1scene_1_1AABB.html">AABB</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bd6710920d5486d15d562876e228fe3">get_bounding_box</a> () const</td></tr>
+<tr class="memdesc:a8bd6710920d5486d15d562876e228fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for bounding box.  <br /></td></tr>
+<tr class="separator:a8bd6710920d5486d15d562876e228fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11267fd9fc7b4ef1006f58fb8a50dacd" id="r_a11267fd9fc7b4ef1006f58fb8a50dacd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlmgl_1_1scene_1_1BoundingSphere.html">BoundingSphere</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11267fd9fc7b4ef1006f58fb8a50dacd">get_bounding_sphere</a> () const</td></tr>
+<tr class="memdesc:a11267fd9fc7b4ef1006f58fb8a50dacd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for bounding sphere.  <br /></td></tr>
+<tr class="separator:a11267fd9fc7b4ef1006f58fb8a50dacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -402,6 +414,64 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8bd6710920d5486d15d562876e228fe3" name="a8bd6710920d5486d15d562876e228fe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bd6710920d5486d15d562876e228fe3">&#9670;&#160;</a></span>get_bounding_box()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structlmgl_1_1scene_1_1AABB.html">AABB</a> &amp; lmgl::scene::Mesh::get_bounding_box </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter for bounding box. </p>
+<p>Provides access to the axis-aligned bounding box of the mesh.</p>
+<dl class="section return"><dt>Returns</dt><dd>Constant reference to the <a class="el" href="structlmgl_1_1scene_1_1AABB.html" title="Axis-Aligned Bounding Box (AABB) structure.">AABB</a> object. </dd></dl>
+
+</div>
+</div>
+<a id="a11267fd9fc7b4ef1006f58fb8a50dacd" name="a11267fd9fc7b4ef1006f58fb8a50dacd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11267fd9fc7b4ef1006f58fb8a50dacd">&#9670;&#160;</a></span>get_bounding_sphere()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structlmgl_1_1scene_1_1BoundingSphere.html">BoundingSphere</a> &amp; lmgl::scene::Mesh::get_bounding_sphere </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter for bounding sphere. </p>
+<p>Provides access to the bounding sphere of the mesh.</p>
+<dl class="section return"><dt>Returns</dt><dd>Constant reference to the <a class="el" href="structlmgl_1_1scene_1_1BoundingSphere.html" title="Bounding Sphere structure.">BoundingSphere</a> object. </dd></dl>
+
+</div>
+</div>
 <a id="af24cd422fb28acb57ac76f78f9a74469" name="af24cd422fb28acb57ac76f78f9a74469"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af24cd422fb28acb57ac76f78f9a74469">&#9670;&#160;</a></span>get_index_count()</h2>
 
@@ -457,6 +527,34 @@ Static Public Member Functions</h2></td></tr>
 <p>Getter for indices. </p>
 <p>Provides access to the vector of indices defining the mesh geometry.</p>
 <dl class="section return"><dt>Returns</dt><dd>Constant reference to the vector of unsigned int indices. </dd></dl>
+
+</div>
+</div>
+<a id="a35724354897aef30188c017b409a57ce" name="a35724354897aef30188c017b409a57ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35724354897aef30188c017b409a57ce">&#9670;&#160;</a></span>get_material()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Material.html">Material</a> &gt; lmgl::scene::Mesh::get_material </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve the material associated with the mesh. </p>
+<dl class="section return"><dt>Returns</dt><dd>the material associated to the mesh. </dd></dl>
 
 </div>
 </div>
@@ -593,6 +691,39 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Renders the mesh. </p>
 <p>Issues the draw call to render the mesh using the associated vertex array and shader. </p>
+
+</div>
+</div>
+<a id="a2542bd648191d3b78fb8e0b149758baa" name="a2542bd648191d3b78fb8e0b149758baa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2542bd648191d3b78fb8e0b149758baa">&#9670;&#160;</a></span>set_material()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::scene::Mesh::set_material </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Material.html">Material</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>material</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the material associated to the mesh. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">material</td><td>The new material to set. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

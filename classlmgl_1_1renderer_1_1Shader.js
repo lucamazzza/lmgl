@@ -1,6 +1,7 @@
 var classlmgl_1_1renderer_1_1Shader =
 [
     [ "Shader", "classlmgl_1_1renderer_1_1Shader.html#abb526742fed9ac702038912e748a6510", null ],
+    [ "Shader", "classlmgl_1_1renderer_1_1Shader.html#ad00bdef5a74d989eae069389b8d62c9e", null ],
     [ "~Shader", "classlmgl_1_1renderer_1_1Shader.html#a8516706c4d1286e948f534bec8161fb5", null ],
     [ "bind", "classlmgl_1_1renderer_1_1Shader.html#a0f3f642d45075446255408197404d93d", null ],
     [ "get_id", "classlmgl_1_1renderer_1_1Shader.html#a8ee974076ffc9c0bab0583925a55613e", null ],

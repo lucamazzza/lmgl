@@ -162,6 +162,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5a2042ed1d3aa1b57520962fa97493d4" id="r_a5a2042ed1d3aa1b57520962fa97493d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a3a45067f3d21d5699d75bb8f2b863cf6">ProjectionMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a2042ed1d3aa1b57520962fa97493d4">get_projection_mode</a> () const</td></tr>
 <tr class="memdesc:a5a2042ed1d3aa1b57520962fa97493d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current projection mode.  <br /></td></tr>
 <tr class="separator:a5a2042ed1d3aa1b57520962fa97493d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a590c48581489a9ecc7e9b6f096138030" id="r_a590c48581489a9ecc7e9b6f096138030"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a590c48581489a9ecc7e9b6f096138030">get_aspect</a> () const</td></tr>
+<tr class="memdesc:a590c48581489a9ecc7e9b6f096138030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current aspect ratio.  <br /></td></tr>
+<tr class="separator:a590c48581489a9ecc7e9b6f096138030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87bf92081c259180347fd79965598b3" id="r_ab87bf92081c259180347fd79965598b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab87bf92081c259180347fd79965598b3">set_aspect</a> (float aspect)</td></tr>
+<tr class="memdesc:ab87bf92081c259180347fd79965598b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a new aspect ratio.  <br /></td></tr>
+<tr class="separator:ab87bf92081c259180347fd79965598b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a camera for viewing the 3D scene. </p>
@@ -211,6 +217,34 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a590c48581489a9ecc7e9b6f096138030" name="a590c48581489a9ecc7e9b6f096138030"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a590c48581489a9ecc7e9b6f096138030">&#9670;&#160;</a></span>get_aspect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lmgl::scene::Camera::get_aspect </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the current aspect ratio. </p>
+<dl class="section return"><dt>Returns</dt><dd>The current aspect ratio. </dd></dl>
+
+</div>
+</div>
 <a id="abe0cce927970decbc72bde2573dfa15e" name="abe0cce927970decbc72bde2573dfa15e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe0cce927970decbc72bde2573dfa15e">&#9670;&#160;</a></span>get_position()</h2>
 
@@ -391,6 +425,32 @@ Public Member Functions</h2></td></tr>
 <p>Get the combined view-projection matrix. </p>
 <p>Returns the product of projection and view matrices.</p>
 <dl class="section return"><dt>Returns</dt><dd>View-projection matrix. </dd></dl>
+
+</div>
+</div>
+<a id="ab87bf92081c259180347fd79965598b3" name="ab87bf92081c259180347fd79965598b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab87bf92081c259180347fd79965598b3">&#9670;&#160;</a></span>set_aspect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::scene::Camera::set_aspect </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>aspect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set a new aspect ratio. </p>
+<p>Updates the aspect ratio and recalculates the projection matrix if the camera is in perspective mode.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aspect</td><td>The new aspect ratio </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

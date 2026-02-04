@@ -112,27 +112,107 @@ $(function(){initNavTree('classlmgl_1_1core_1_1Engine.html',''); initResizable(t
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab85d9de0483e543fa5b6def1534d9710" id="r_ab85d9de0483e543fa5b6def1534d9710"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab85d9de0483e543fa5b6def1534d9710">init</a> (int w, int h, std::string title)</td></tr>
-<tr class="memdesc:ab85d9de0483e543fa5b6def1534d9710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the engine with the specified window dimensions and title.  <br /></td></tr>
-<tr class="separator:ab85d9de0483e543fa5b6def1534d9710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96800a1bd9cf9a8d60b346777eae0a5b" id="r_a96800a1bd9cf9a8d60b346777eae0a5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96800a1bd9cf9a8d60b346777eae0a5b">init</a> (int w, int h, std::string title, bool resizable=true, bool vsync=true)</td></tr>
+<tr class="memdesc:a96800a1bd9cf9a8d60b346777eae0a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the engine with the specified window dimensions and title.  <br /></td></tr>
+<tr class="separator:a96800a1bd9cf9a8d60b346777eae0a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7e5a904956971d62cb8f0eef4c8fc84" id="r_ad7e5a904956971d62cb8f0eef4c8fc84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7e5a904956971d62cb8f0eef4c8fc84">run</a> (std::function&lt; void(float)&gt; update_callback)</td></tr>
 <tr class="memdesc:ad7e5a904956971d62cb8f0eef4c8fc84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the main application loop.  <br /></td></tr>
 <tr class="separator:ad7e5a904956971d62cb8f0eef4c8fc84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa62359dc01047f830feba550edc40f9b" id="r_aa62359dc01047f830feba550edc40f9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa62359dc01047f830feba550edc40f9b">free</a> ()</td></tr>
 <tr class="memdesc:aa62359dc01047f830feba550edc40f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free resources and clean up the engine.  <br /></td></tr>
 <tr class="separator:aa62359dc01047f830feba550edc40f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9b4132d43dea96eff0ecd8e9c474983" id="r_ad9b4132d43dea96eff0ecd8e9c474983"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9b4132d43dea96eff0ecd8e9c474983">clear</a> (float r, float g, float b, float a=1.0f)</td></tr>
-<tr class="memdesc:ad9b4132d43dea96eff0ecd8e9c474983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the screen.  <br /></td></tr>
-<tr class="separator:ad9b4132d43dea96eff0ecd8e9c474983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a216f1503ae84966920def1a3cbfe5868" id="r_a216f1503ae84966920def1a3cbfe5868"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a216f1503ae84966920def1a3cbfe5868">is_running</a> () const</td></tr>
 <tr class="memdesc:a216f1503ae84966920def1a3cbfe5868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the engine is still running.  <br /></td></tr>
 <tr class="separator:a216f1503ae84966920def1a3cbfe5868"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad56306a691b927c4a36f4047ef718c0c" id="r_ad56306a691b927c4a36f4047ef718c0c"><td class="memItemLeft" align="right" valign="top"><a id="ad56306a691b927c4a36f4047ef718c0c" name="ad56306a691b927c4a36f4047ef718c0c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>shutdown</b> ()</td></tr>
+<tr class="memdesc:ad56306a691b927c4a36f4047ef718c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shuts the engine down and closes the window. <br /></td></tr>
+<tr class="separator:ad56306a691b927c4a36f4047ef718c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9b4132d43dea96eff0ecd8e9c474983" id="r_ad9b4132d43dea96eff0ecd8e9c474983"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9b4132d43dea96eff0ecd8e9c474983">clear</a> (float r, float g, float b, float a=1.0f)</td></tr>
+<tr class="memdesc:ad9b4132d43dea96eff0ecd8e9c474983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the screen.  <br /></td></tr>
+<tr class="separator:ad9b4132d43dea96eff0ecd8e9c474983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b7d3a3fcc65adc88e4c10abd493d929" id="r_a9b7d3a3fcc65adc88e4c10abd493d929"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b7d3a3fcc65adc88e4c10abd493d929">set_vsync</a> (<a class="el" href="engine_8hpp.html#a78667c4986a977f2dd79b72bba4e67f6">VSyncMode</a> mode)</td></tr>
+<tr class="memdesc:a9b7d3a3fcc65adc88e4c10abd493d929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set VSync mode.  <br /></td></tr>
+<tr class="separator:a9b7d3a3fcc65adc88e4c10abd493d929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cd62f4f79b37cc29f5371f83349205d" id="r_a1cd62f4f79b37cc29f5371f83349205d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cd62f4f79b37cc29f5371f83349205d">get_width</a> () const</td></tr>
+<tr class="memdesc:a1cd62f4f79b37cc29f5371f83349205d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the window's width.  <br /></td></tr>
+<tr class="separator:a1cd62f4f79b37cc29f5371f83349205d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8a3c8d13949869ec5e9517c59081251" id="r_ad8a3c8d13949869ec5e9517c59081251"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8a3c8d13949869ec5e9517c59081251">get_height</a> () const</td></tr>
+<tr class="memdesc:ad8a3c8d13949869ec5e9517c59081251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the window's height.  <br /></td></tr>
+<tr class="separator:ad8a3c8d13949869ec5e9517c59081251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1f5f74d62a3f7d2b0e89f05c15c0e6b" id="r_af1f5f74d62a3f7d2b0e89f05c15c0e6b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1f5f74d62a3f7d2b0e89f05c15c0e6b">get_aspect_ratio</a> () const</td></tr>
+<tr class="memdesc:af1f5f74d62a3f7d2b0e89f05c15c0e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the aspect ratio of the window (width/height).  <br /></td></tr>
+<tr class="separator:af1f5f74d62a3f7d2b0e89f05c15c0e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b7c87c8122e6d9a7ad6ad75692b6ab" id="r_a96b7c87c8122e6d9a7ad6ad75692b6ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96b7c87c8122e6d9a7ad6ad75692b6ab">set_size</a> (int width, int height)</td></tr>
+<tr class="memdesc:a96b7c87c8122e6d9a7ad6ad75692b6ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the window to a new size.  <br /></td></tr>
+<tr class="separator:a96b7c87c8122e6d9a7ad6ad75692b6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a204003e4f3bf8dc9e65060594de9fcee" id="r_a204003e4f3bf8dc9e65060594de9fcee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a204003e4f3bf8dc9e65060594de9fcee">set_title</a> (const std::string &amp;title)</td></tr>
+<tr class="memdesc:a204003e4f3bf8dc9e65060594de9fcee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the window title to a new string.  <br /></td></tr>
+<tr class="separator:a204003e4f3bf8dc9e65060594de9fcee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac83cbfd72d59350af4c306d5da50f5c5" id="r_ac83cbfd72d59350af4c306d5da50f5c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac83cbfd72d59350af4c306d5da50f5c5">set_fullscreen</a> (bool fullscreen)</td></tr>
+<tr class="memdesc:ac83cbfd72d59350af4c306d5da50f5c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggles fullscreen mode.  <br /></td></tr>
+<tr class="separator:ac83cbfd72d59350af4c306d5da50f5c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaeb0cb9bb06fe6ea4368f0dcb0d8b55" id="r_afaeb0cb9bb06fe6ea4368f0dcb0d8b55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afaeb0cb9bb06fe6ea4368f0dcb0d8b55">is_fullscreen</a> () const</td></tr>
+<tr class="memdesc:afaeb0cb9bb06fe6ea4368f0dcb0d8b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the window is in fullscreen mode.  <br /></td></tr>
+<tr class="separator:afaeb0cb9bb06fe6ea4368f0dcb0d8b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eba160837fa0833bbfdbbe2455b642e" id="r_a8eba160837fa0833bbfdbbe2455b642e"><td class="memItemLeft" align="right" valign="top"><a id="a8eba160837fa0833bbfdbbe2455b642e" name="a8eba160837fa0833bbfdbbe2455b642e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>maximize</b> ()</td></tr>
+<tr class="memdesc:a8eba160837fa0833bbfdbbe2455b642e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximizes the window to occupy the entirety of the screen. <br /></td></tr>
+<tr class="separator:a8eba160837fa0833bbfdbbe2455b642e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a72f24b11dc88914e43c0bfeae991c5" id="r_a9a72f24b11dc88914e43c0bfeae991c5"><td class="memItemLeft" align="right" valign="top"><a id="a9a72f24b11dc88914e43c0bfeae991c5" name="a9a72f24b11dc88914e43c0bfeae991c5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>minimize</b> ()</td></tr>
+<tr class="memdesc:a9a72f24b11dc88914e43c0bfeae991c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimizes the window. <br /></td></tr>
+<tr class="separator:a9a72f24b11dc88914e43c0bfeae991c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbf0c3da322e37c80a5a96dbb09e548e" id="r_adbf0c3da322e37c80a5a96dbb09e548e"><td class="memItemLeft" align="right" valign="top"><a id="adbf0c3da322e37c80a5a96dbb09e548e" name="adbf0c3da322e37c80a5a96dbb09e548e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>restore</b> ()</td></tr>
+<tr class="memdesc:adbf0c3da322e37c80a5a96dbb09e548e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores the window from minimized/maximized state. <br /></td></tr>
+<tr class="separator:adbf0c3da322e37c80a5a96dbb09e548e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745f8414b87fbce4f9f985dbef5e709f" id="r_a745f8414b87fbce4f9f985dbef5e709f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a745f8414b87fbce4f9f985dbef5e709f">is_key_pressed</a> (<a class="el" href="engine_8hpp.html#a3a57a4eed75bf5e22e91d8eeddacc01e">Key</a> key) const</td></tr>
+<tr class="memdesc:a745f8414b87fbce4f9f985dbef5e709f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a key is currently pressed.  <br /></td></tr>
+<tr class="separator:a745f8414b87fbce4f9f985dbef5e709f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af48dde52529a49123d2b75e9c97d1cfd" id="r_af48dde52529a49123d2b75e9c97d1cfd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af48dde52529a49123d2b75e9c97d1cfd">is_key_just_pressed</a> (<a class="el" href="engine_8hpp.html#a3a57a4eed75bf5e22e91d8eeddacc01e">Key</a> key) const</td></tr>
+<tr class="memdesc:af48dde52529a49123d2b75e9c97d1cfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a key was just pressed this frame.  <br /></td></tr>
+<tr class="separator:af48dde52529a49123d2b75e9c97d1cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87fdd675b3b1ff08c727d6d8aa92e5fc" id="r_a87fdd675b3b1ff08c727d6d8aa92e5fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87fdd675b3b1ff08c727d6d8aa92e5fc">is_key_just_released</a> (<a class="el" href="engine_8hpp.html#a3a57a4eed75bf5e22e91d8eeddacc01e">Key</a> key) const</td></tr>
+<tr class="memdesc:a87fdd675b3b1ff08c727d6d8aa92e5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a key was just released this frame.  <br /></td></tr>
+<tr class="separator:a87fdd675b3b1ff08c727d6d8aa92e5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbe184fc68c97fe0b795f30ae47e08ca" id="r_acbe184fc68c97fe0b795f30ae47e08ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbe184fc68c97fe0b795f30ae47e08ca">is_mouse_button_pressed</a> (<a class="el" href="engine_8hpp.html#abf2c762be1a3834145cee2fa706dd564">MouseButton</a> button) const</td></tr>
+<tr class="memdesc:acbe184fc68c97fe0b795f30ae47e08ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a mouse button is pressed.  <br /></td></tr>
+<tr class="separator:acbe184fc68c97fe0b795f30ae47e08ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f095161a5406037a9e9f80ce83322f" id="r_a27f095161a5406037a9e9f80ce83322f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27f095161a5406037a9e9f80ce83322f">get_mouse_x</a> () const</td></tr>
+<tr class="memdesc:a27f095161a5406037a9e9f80ce83322f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the x position of the mouse in the window.  <br /></td></tr>
+<tr class="separator:a27f095161a5406037a9e9f80ce83322f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2611d319c63ced37212f5a5a1f8953f" id="r_ae2611d319c63ced37212f5a5a1f8953f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2611d319c63ced37212f5a5a1f8953f">get_mouse_y</a> () const</td></tr>
+<tr class="memdesc:ae2611d319c63ced37212f5a5a1f8953f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the y position of the mouse in the window.  <br /></td></tr>
+<tr class="separator:ae2611d319c63ced37212f5a5a1f8953f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8744f9afe3e4f2ef623325c37acca448" id="r_a8744f9afe3e4f2ef623325c37acca448"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8744f9afe3e4f2ef623325c37acca448">get_mouse_delta</a> (double &amp;dx, double &amp;dy) const</td></tr>
+<tr class="memdesc:a8744f9afe3e4f2ef623325c37acca448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the mouse position change (delta) between the last frame and the current frame.  <br /></td></tr>
+<tr class="separator:a8744f9afe3e4f2ef623325c37acca448"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56d5a495a397cca3db34c6a1b970a82" id="r_aa56d5a495a397cca3db34c6a1b970a82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa56d5a495a397cca3db34c6a1b970a82">set_mouse_position</a> (double x, double y)</td></tr>
+<tr class="memdesc:aa56d5a495a397cca3db34c6a1b970a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse position to a (x,y) coordinate.  <br /></td></tr>
+<tr class="separator:aa56d5a495a397cca3db34c6a1b970a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c85a893a31cd7af50af0aea91e8019" id="r_ab0c85a893a31cd7af50af0aea91e8019"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0c85a893a31cd7af50af0aea91e8019">set_cursor_mode</a> (<a class="el" href="engine_8hpp.html#af144db8d6d11cba6308b94d5aa43361c">CursorMode</a> mode)</td></tr>
+<tr class="memdesc:ab0c85a893a31cd7af50af0aea91e8019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new cursor mode to the engine.  <br /></td></tr>
+<tr class="separator:ab0c85a893a31cd7af50af0aea91e8019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a235b6ee26a3af303d776e55157e1be56" id="r_a235b6ee26a3af303d776e55157e1be56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a235b6ee26a3af303d776e55157e1be56">get_scroll_offset</a> (double &amp;xoffs, double &amp;yoffs) const</td></tr>
+<tr class="memdesc:a235b6ee26a3af303d776e55157e1be56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the offset of scroll on x and y axes since the last frame.  <br /></td></tr>
+<tr class="separator:a235b6ee26a3af303d776e55157e1be56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c9386a47f7760fb65eb735864b30fe2" id="r_a2c9386a47f7760fb65eb735864b30fe2"><td class="memItemLeft" align="right" valign="top">GLFWwindow *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c9386a47f7760fb65eb735864b30fe2">get_window</a> () const</td></tr>
 <tr class="memdesc:a2c9386a47f7760fb65eb735864b30fe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the GLFW window associated with the engine.  <br /></td></tr>
 <tr class="separator:a2c9386a47f7760fb65eb735864b30fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfdb65a871b630cf9ca683aff81e7a4d" id="r_adfdb65a871b630cf9ca683aff81e7a4d"><td class="memItemLeft" align="right" valign="top"><a id="adfdb65a871b630cf9ca683aff81e7a4d" name="adfdb65a871b630cf9ca683aff81e7a4d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_resize_callback</b> (std::function&lt; void(int, int)&gt; callback)</td></tr>
+<tr class="memdesc:adfdb65a871b630cf9ca683aff81e7a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the callback responsible for window resizing. <br /></td></tr>
+<tr class="separator:adfdb65a871b630cf9ca683aff81e7a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6ab2a0e4c3a52754ba558eac2a720c2" id="r_af6ab2a0e4c3a52754ba558eac2a720c2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6ab2a0e4c3a52754ba558eac2a720c2">get_delta_time</a> () const</td></tr>
 <tr class="memdesc:af6ab2a0e4c3a52754ba558eac2a720c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the delta time between the current and last frame.  <br /></td></tr>
 <tr class="separator:af6ab2a0e4c3a52754ba558eac2a720c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f3430615beff533027ab9eb21d91529" id="r_a5f3430615beff533027ab9eb21d91529"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f3430615beff533027ab9eb21d91529">get_time</a> () const</td></tr>
+<tr class="memdesc:a5f3430615beff533027ab9eb21d91529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the total time elapsed since the engine's start.  <br /></td></tr>
+<tr class="separator:a5f3430615beff533027ab9eb21d91529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacbb23639cdd8a71d9c94314cf4d5871" id="r_aacbb23639cdd8a71d9c94314cf4d5871"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aacbb23639cdd8a71d9c94314cf4d5871">get_fps</a> () const</td></tr>
+<tr class="memdesc:aacbb23639cdd8a71d9c94314cf4d5871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the current FPS count.  <br /></td></tr>
+<tr class="separator:aacbb23639cdd8a71d9c94314cf4d5871"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -208,11 +288,34 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af1f5f74d62a3f7d2b0e89f05c15c0e6b" name="af1f5f74d62a3f7d2b0e89f05c15c0e6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1f5f74d62a3f7d2b0e89f05c15c0e6b">&#9670;&#160;</a></span>get_aspect_ratio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lmgl::core::Engine::get_aspect_ratio </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the aspect ratio of the window (width/height). </p>
+<dl class="section return"><dt>Returns</dt><dd>the aspect ratio of the window. </dd></dl>
+
+</div>
+</div>
 <a id="af6ab2a0e4c3a52754ba558eac2a720c2" name="af6ab2a0e4c3a52754ba558eac2a720c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af6ab2a0e4c3a52754ba558eac2a720c2">&#9670;&#160;</a></span>get_delta_time()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">float lmgl::core::Engine::get_delta_time </td>
@@ -221,11 +324,72 @@ Static Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get the delta time between the current and last frame. </p>
 <p>This value is useful for frame-independent movement and animations.</p>
-<dl class="section return"><dt>Returns</dt><dd>Delta time in seconds. </dd></dl>
+<p>@returnDelta time in seconds. </p>
+
+</div>
+</div>
+<a id="aacbb23639cdd8a71d9c94314cf4d5871" name="aacbb23639cdd8a71d9c94314cf4d5871"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacbb23639cdd8a71d9c94314cf4d5871">&#9670;&#160;</a></span>get_fps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lmgl::core::Engine::get_fps </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the current FPS count. </p>
+<dl class="section return"><dt>Returns</dt><dd>The current FPS count. </dd></dl>
+
+</div>
+</div>
+<a id="ad8a3c8d13949869ec5e9517c59081251" name="ad8a3c8d13949869ec5e9517c59081251"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8a3c8d13949869ec5e9517c59081251">&#9670;&#160;</a></span>get_height()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int lmgl::core::Engine::get_height </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the window's height. </p>
+<dl class="section return"><dt>Returns</dt><dd>the window height. </dd></dl>
 
 </div>
 </div>
@@ -258,11 +422,186 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8744f9afe3e4f2ef623325c37acca448" name="a8744f9afe3e4f2ef623325c37acca448"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8744f9afe3e4f2ef623325c37acca448">&#9670;&#160;</a></span>get_mouse_delta()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::get_mouse_delta </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;</td>          <td class="paramname"><span class="paramname"><em>dx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;</td>          <td class="paramname"><span class="paramname"><em>dy</em></span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the mouse position change (delta) between the last frame and the current frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dx</td><td>return parameter for the mouse position delta on the x axis </td></tr>
+    <tr><td class="paramname">dy</td><td>return parameter for the mouse position delta on the y axis </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a27f095161a5406037a9e9f80ce83322f" name="a27f095161a5406037a9e9f80ce83322f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27f095161a5406037a9e9f80ce83322f">&#9670;&#160;</a></span>get_mouse_x()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double lmgl::core::Engine::get_mouse_x </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the x position of the mouse in the window. </p>
+<dl class="section return"><dt>Returns</dt><dd>The x position of the mouse in the window. </dd></dl>
+
+</div>
+</div>
+<a id="ae2611d319c63ced37212f5a5a1f8953f" name="ae2611d319c63ced37212f5a5a1f8953f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2611d319c63ced37212f5a5a1f8953f">&#9670;&#160;</a></span>get_mouse_y()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double lmgl::core::Engine::get_mouse_y </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the y position of the mouse in the window. </p>
+<dl class="section return"><dt>Returns</dt><dd>The y position of the mouse in the window. </dd></dl>
+
+</div>
+</div>
+<a id="a235b6ee26a3af303d776e55157e1be56" name="a235b6ee26a3af303d776e55157e1be56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a235b6ee26a3af303d776e55157e1be56">&#9670;&#160;</a></span>get_scroll_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::get_scroll_offset </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;</td>          <td class="paramname"><span class="paramname"><em>xoffs</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;</td>          <td class="paramname"><span class="paramname"><em>yoffs</em></span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the offset of scroll on x and y axes since the last frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xoffs</td><td>the offset of scroll on the x axis since the last frame </td></tr>
+    <tr><td class="paramname">yoffs</td><td>the offset of scroll on the y axis since the last frame </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5f3430615beff533027ab9eb21d91529" name="a5f3430615beff533027ab9eb21d91529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f3430615beff533027ab9eb21d91529">&#9670;&#160;</a></span>get_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lmgl::core::Engine::get_time </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the total time elapsed since the engine's start. </p>
+<dl class="section return"><dt>Returns</dt><dd>The total time elapsed since the engine's start. </dd></dl>
+
+</div>
+</div>
+<a id="a1cd62f4f79b37cc29f5371f83349205d" name="a1cd62f4f79b37cc29f5371f83349205d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cd62f4f79b37cc29f5371f83349205d">&#9670;&#160;</a></span>get_width()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int lmgl::core::Engine::get_width </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the window's width. </p>
+<dl class="section return"><dt>Returns</dt><dd>the window width. </dd></dl>
+
+</div>
+</div>
 <a id="a2c9386a47f7760fb65eb735864b30fe2" name="a2c9386a47f7760fb65eb735864b30fe2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c9386a47f7760fb65eb735864b30fe2">&#9670;&#160;</a></span>get_window()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">GLFWwindow * lmgl::core::Engine::get_window </td>
@@ -271,6 +610,11 @@ Static Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get the GLFW window associated with the engine. </p>
@@ -279,8 +623,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab85d9de0483e543fa5b6def1534d9710" name="ab85d9de0483e543fa5b6def1534d9710"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab85d9de0483e543fa5b6def1534d9710">&#9670;&#160;</a></span>init()</h2>
+<a id="a96800a1bd9cf9a8d60b346777eae0a5b" name="a96800a1bd9cf9a8d60b346777eae0a5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96800a1bd9cf9a8d60b346777eae0a5b">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -298,7 +642,17 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>title</em></span>&#160;)</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>title</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>resizable</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>vsync</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -314,6 +668,138 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if initialization was successful, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="afaeb0cb9bb06fe6ea4368f0dcb0d8b55" name="afaeb0cb9bb06fe6ea4368f0dcb0d8b55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaeb0cb9bb06fe6ea4368f0dcb0d8b55">&#9670;&#160;</a></span>is_fullscreen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lmgl::core::Engine::is_fullscreen </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the window is in fullscreen mode. </p>
+<dl class="section return"><dt>Returns</dt><dd>the fullsscreen state (true/false). </dd></dl>
+
+</div>
+</div>
+<a id="af48dde52529a49123d2b75e9c97d1cfd" name="af48dde52529a49123d2b75e9c97d1cfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af48dde52529a49123d2b75e9c97d1cfd">&#9670;&#160;</a></span>is_key_just_pressed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lmgl::core::Engine::is_key_just_pressed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="engine_8hpp.html#a3a57a4eed75bf5e22e91d8eeddacc01e">Key</a></td>          <td class="paramname"><span class="paramname"><em>key</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if a key was just pressed this frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the key to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether the key was just pressed this frame or not. </dd></dl>
+
+</div>
+</div>
+<a id="a87fdd675b3b1ff08c727d6d8aa92e5fc" name="a87fdd675b3b1ff08c727d6d8aa92e5fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87fdd675b3b1ff08c727d6d8aa92e5fc">&#9670;&#160;</a></span>is_key_just_released()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lmgl::core::Engine::is_key_just_released </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="engine_8hpp.html#a3a57a4eed75bf5e22e91d8eeddacc01e">Key</a></td>          <td class="paramname"><span class="paramname"><em>key</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if a key was just released this frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the key to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether the key was just released this frame or not. </dd></dl>
+
+</div>
+</div>
+<a id="a745f8414b87fbce4f9f985dbef5e709f" name="a745f8414b87fbce4f9f985dbef5e709f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a745f8414b87fbce4f9f985dbef5e709f">&#9670;&#160;</a></span>is_key_pressed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lmgl::core::Engine::is_key_pressed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="engine_8hpp.html#a3a57a4eed75bf5e22e91d8eeddacc01e">Key</a></td>          <td class="paramname"><span class="paramname"><em>key</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if a key is currently pressed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the key to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether the key is currently pressed or not. </dd></dl>
+
+</div>
+</div>
+<a id="acbe184fc68c97fe0b795f30ae47e08ca" name="acbe184fc68c97fe0b795f30ae47e08ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbe184fc68c97fe0b795f30ae47e08ca">&#9670;&#160;</a></span>is_mouse_button_pressed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lmgl::core::Engine::is_mouse_button_pressed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="engine_8hpp.html#abf2c762be1a3834145cee2fa706dd564">MouseButton</a></td>          <td class="paramname"><span class="paramname"><em>button</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if a mouse button is pressed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">button</td><td>the mouse button to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether the mouse button is pressed or not. </dd></dl>
 
 </div>
 </div>
@@ -358,6 +844,167 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">update_callback</td><td>A function to be called each frame with delta time. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab0c85a893a31cd7af50af0aea91e8019" name="ab0c85a893a31cd7af50af0aea91e8019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0c85a893a31cd7af50af0aea91e8019">&#9670;&#160;</a></span>set_cursor_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::set_cursor_mode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="engine_8hpp.html#af144db8d6d11cba6308b94d5aa43361c">CursorMode</a></td>          <td class="paramname"><span class="paramname"><em>mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets a new cursor mode to the engine. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>the new cursor mode to set </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac83cbfd72d59350af4c306d5da50f5c5" name="ac83cbfd72d59350af4c306d5da50f5c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac83cbfd72d59350af4c306d5da50f5c5">&#9670;&#160;</a></span>set_fullscreen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::set_fullscreen </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>fullscreen</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Toggles fullscreen mode. </p>
+<p>Fullscreen mode forces the window to render as fullscreen, overriding system controls.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fullscreen</td><td>the new fullscreen state (true/false) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa56d5a495a397cca3db34c6a1b970a82" name="aa56d5a495a397cca3db34c6a1b970a82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56d5a495a397cca3db34c6a1b970a82">&#9670;&#160;</a></span>set_mouse_position()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::set_mouse_position </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the mouse position to a (x,y) coordinate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the new x coordinate component of the mouse position </td></tr>
+    <tr><td class="paramname">y</td><td>the new y coordinate component of the mouse position </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a96b7c87c8122e6d9a7ad6ad75692b6ab" name="a96b7c87c8122e6d9a7ad6ad75692b6ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96b7c87c8122e6d9a7ad6ad75692b6ab">&#9670;&#160;</a></span>set_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::set_size </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>width</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>height</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the window to a new size. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>the new window width </td></tr>
+    <tr><td class="paramname">height</td><td>the new window height </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a204003e4f3bf8dc9e65060594de9fcee" name="a204003e4f3bf8dc9e65060594de9fcee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a204003e4f3bf8dc9e65060594de9fcee">&#9670;&#160;</a></span>set_title()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::set_title </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>title</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the window title to a new string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">title</td><td>the new title to set. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9b7d3a3fcc65adc88e4c10abd493d929" name="a9b7d3a3fcc65adc88e4c10abd493d929"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b7d3a3fcc65adc88e4c10abd493d929">&#9670;&#160;</a></span>set_vsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::core::Engine::set_vsync </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="engine_8hpp.html#a78667c4986a977f2dd79b72bba4e67f6">VSyncMode</a></td>          <td class="paramname"><span class="paramname"><em>mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set VSync mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>The VSync mode to set </td></tr>
   </table>
   </dd>
 </dl>

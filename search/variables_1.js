@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name_0',['name',['../structlmgl_1_1renderer_1_1BufferElement.html#a313cb5a3b3af110834599c2e82c43b28',1,'lmgl::renderer::BufferElement']]],
-  ['normal_1',['normal',['../structlmgl_1_1scene_1_1Vertex.html#a5e78c5f651b340eacf51b74a646088d0',1,'lmgl::scene::Vertex']]],
-  ['normalized_2',['normalized',['../structlmgl_1_1renderer_1_1BufferElement.html#aa567385fde57f0c2e413cc0f63a9c11d',1,'lmgl::renderer::BufferElement']]]
+  ['center_0',['center',['../structlmgl_1_1scene_1_1BoundingSphere.html#abf84df2b72426a879fd78aa247ed78df',1,'lmgl::scene::BoundingSphere']]],
+  ['color_1',['color',['../structlmgl_1_1scene_1_1Vertex.html#a93b2f38e7d05a6cbeaafa4172f7e402c',1,'lmgl::scene::Vertex']]],
+  ['compute_5ftangents_2',['compute_tangents',['../structlmgl_1_1assets_1_1ModelLoadOptions.html#a759f89b2e4a1431dede0436550dd7d5b',1,'lmgl::assets::ModelLoadOptions']]]
 ];

@@ -126,6 +126,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a22323d1614244090bd2b42f1b43a9cc3" id="r_a22323d1614244090bd2b42f1b43a9cc3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22323d1614244090bd2b42f1b43a9cc3">set_name</a> (const std::string &amp;name)</td></tr>
 <tr class="memdesc:a22323d1614244090bd2b42f1b43a9cc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the scene.  <br /></td></tr>
 <tr class="separator:a22323d1614244090bd2b42f1b43a9cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad82a4eccf2ddb6739a5660d26e5c1d73" id="r_ad82a4eccf2ddb6739a5660d26e5c1d73"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad82a4eccf2ddb6739a5660d26e5c1d73">get_lights</a> () const</td></tr>
+<tr class="memdesc:ad82a4eccf2ddb6739a5660d26e5c1d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all the lights in the scene.  <br /></td></tr>
+<tr class="separator:ad82a4eccf2ddb6739a5660d26e5c1d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02b4bf0b2f20d3ee3841738609c8c012" id="r_a02b4bf0b2f20d3ee3841738609c8c012"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02b4bf0b2f20d3ee3841738609c8c012">add_light</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt; light)</td></tr>
+<tr class="memdesc:a02b4bf0b2f20d3ee3841738609c8c012"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a light in the scene.  <br /></td></tr>
+<tr class="separator:a02b4bf0b2f20d3ee3841738609c8c012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad768d887a3b28d9e0b0832f63e037c8c" id="r_ad768d887a3b28d9e0b0832f63e037c8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad768d887a3b28d9e0b0832f63e037c8c">remove_light</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt; light)</td></tr>
+<tr class="memdesc:ad768d887a3b28d9e0b0832f63e037c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a light from the scene.  <br /></td></tr>
+<tr class="separator:ad768d887a3b28d9e0b0832f63e037c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7603f20dc11d9e1e3fa5ff68299d954" id="r_af7603f20dc11d9e1e3fa5ff68299d954"><td class="memItemLeft" align="right" valign="top"><a id="af7603f20dc11d9e1e3fa5ff68299d954" name="af7603f20dc11d9e1e3fa5ff68299d954"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clear_lights</b> ()</td></tr>
+<tr class="memdesc:af7603f20dc11d9e1e3fa5ff68299d954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all lights from the scene. <br /></td></tr>
+<tr class="separator:af7603f20dc11d9e1e3fa5ff68299d954"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff6e89a910ca43a6b40b83b60122d15b" id="r_aff6e89a910ca43a6b40b83b60122d15b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff6e89a910ca43a6b40b83b60122d15b">set_skybox</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Skybox.html">Skybox</a> &gt; skybox)</td></tr>
+<tr class="memdesc:aff6e89a910ca43a6b40b83b60122d15b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the skybox for the scene.  <br /></td></tr>
+<tr class="separator:aff6e89a910ca43a6b40b83b60122d15b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4514d565129190452bdcb679ac63008" id="r_ad4514d565129190452bdcb679ac63008"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Skybox.html">Skybox</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4514d565129190452bdcb679ac63008">get_skybox</a> () const</td></tr>
+<tr class="memdesc:ad4514d565129190452bdcb679ac63008"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the skybox of the scene.  <br /></td></tr>
+<tr class="separator:ad4514d565129190452bdcb679ac63008"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a 3D scene graph with a root node. </p>
@@ -158,6 +177,59 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a02b4bf0b2f20d3ee3841738609c8c012" name="a02b4bf0b2f20d3ee3841738609c8c012"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02b4bf0b2f20d3ee3841738609c8c012">&#9670;&#160;</a></span>add_light()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::scene::Scene::add_light </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>light</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a light in the scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">light</td><td>the light to add. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad82a4eccf2ddb6739a5660d26e5c1d73" name="ad82a4eccf2ddb6739a5660d26e5c1d73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad82a4eccf2ddb6739a5660d26e5c1d73">&#9670;&#160;</a></span>get_lights()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt; &gt; lmgl::scene::Scene::get_lights </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns all the lights in the scene. </p>
+<dl class="section return"><dt>Returns</dt><dd>Vector containing all the lights introduced into the scene. </dd></dl>
+
+</div>
+</div>
 <a id="a63e20788daf69c73d84d3229ce30beb7" name="a63e20788daf69c73d84d3229ce30beb7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63e20788daf69c73d84d3229ce30beb7">&#9670;&#160;</a></span>get_name()</h2>
 
@@ -216,6 +288,59 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad4514d565129190452bdcb679ac63008" name="ad4514d565129190452bdcb679ac63008"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4514d565129190452bdcb679ac63008">&#9670;&#160;</a></span>get_skybox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Skybox.html">Skybox</a> &gt; lmgl::scene::Scene::get_skybox </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the skybox of the scene. </p>
+<dl class="section return"><dt>Returns</dt><dd>The skybox (or nullptr if none). </dd></dl>
+
+</div>
+</div>
+<a id="ad768d887a3b28d9e0b0832f63e037c8c" name="ad768d887a3b28d9e0b0832f63e037c8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad768d887a3b28d9e0b0832f63e037c8c">&#9670;&#160;</a></span>remove_light()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::scene::Scene::remove_light </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>light</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes a light from the scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">light</td><td>the light to remove. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a22323d1614244090bd2b42f1b43a9cc3" name="a22323d1614244090bd2b42f1b43a9cc3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22323d1614244090bd2b42f1b43a9cc3">&#9670;&#160;</a></span>set_name()</h2>
 
@@ -244,6 +369,39 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>New name for the scene. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aff6e89a910ca43a6b40b83b60122d15b" name="aff6e89a910ca43a6b40b83b60122d15b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff6e89a910ca43a6b40b83b60122d15b">&#9670;&#160;</a></span>set_skybox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::scene::Scene::set_skybox </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Skybox.html">Skybox</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>skybox</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the skybox for the scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">skybox</td><td>The skybox to set (or nullptr to remove). </td></tr>
   </table>
   </dd>
 </dl>

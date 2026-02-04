@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['framebuffer_0',['Framebuffer',['../classlmgl_1_1renderer_1_1Framebuffer.html',1,'lmgl::renderer']]]
+  ['engine_0',['Engine',['../classlmgl_1_1core_1_1Engine.html',1,'lmgl::core']]]
 ];

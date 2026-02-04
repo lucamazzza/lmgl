@@ -1,12 +1,8 @@
 var searchData=
 [
-  ['remove_5fchild_0',['remove_child',['../classlmgl_1_1scene_1_1Node.html#a8b66fdd280a2c270ff6f33d9f5decff7',1,'lmgl::scene::Node']]],
-  ['render_1',['render',['../classlmgl_1_1renderer_1_1Renderer.html#abf76999a9af51132150c295d233b31e1',1,'lmgl::renderer::Renderer::render()'],['../classlmgl_1_1scene_1_1Mesh.html#ab3da8e1836681dc9bbadda10567d6a59',1,'lmgl::scene::Mesh::render()']]],
-  ['renderer_2',['Renderer',['../classlmgl_1_1renderer_1_1Renderer.html',1,'lmgl::renderer::Renderer'],['../classlmgl_1_1renderer_1_1Renderer.html#ac0a6f92725349066edffa95733c693bf',1,'lmgl::renderer::Renderer::Renderer()']]],
-  ['renderer_2ehpp_3',['renderer.hpp',['../renderer_8hpp.html',1,'']]],
-  ['renderlayer_4',['RenderLayer',['../namespacelmgl_1_1renderer.html#abb2cb9b0179041d51d5ea3a244f8f4b1',1,'lmgl::renderer']]],
-  ['rendermode_5',['RenderMode',['../namespacelmgl_1_1renderer.html#a07a28ea1fa7ba1f0c814ba1d557f00ff',1,'lmgl::renderer']]],
-  ['resize_6',['resize',['../classlmgl_1_1renderer_1_1Framebuffer.html#a0059426da84909086feb0b02053dff68',1,'lmgl::renderer::Framebuffer::resize()'],['../classlmgl_1_1renderer_1_1Texture.html#a091a86c67a7b3364a142e9f5c7f7a3c7',1,'lmgl::renderer::Texture::resize()']]],
-  ['rotate_7',['rotate',['../classlmgl_1_1scene_1_1Node.html#a9e4c45866316fa241c4f51395ac58786',1,'lmgl::scene::Node']]],
-  ['run_8',['run',['../classlmgl_1_1core_1_1Engine.html#ad7e5a904956971d62cb8f0eef4c8fc84',1,'lmgl::core::Engine']]]
+  ['plane_0',['Plane',['../structlmgl_1_1scene_1_1Plane.html',1,'lmgl::scene::Plane'],['../structlmgl_1_1scene_1_1Plane.html#a56d25fbcbf8eca5a594cabdc44fcff9d',1,'lmgl::scene::Plane::Plane()'],['../structlmgl_1_1scene_1_1Plane.html#a2d252119b614e0cecf45d76aa653a3c5',1,'lmgl::scene::Plane::Plane(const glm::vec3 &amp;normal, float distance)'],['../structlmgl_1_1scene_1_1Plane.html#a207a578d8c1d41b5e863dc2b789e62f7',1,'lmgl::scene::Plane::Plane(const glm::vec3 &amp;point, const glm::vec3 &amp;normal)']]],
+  ['planeindex_1',['PlaneIndex',['../classlmgl_1_1scene_1_1Frustum.html#ae362e7a07599a0decb9fa677aa93e999',1,'lmgl::scene::Frustum']]],
+  ['point_2',['Point',['../namespacelmgl_1_1scene.html#a51415f72d8b6c6c64537e40f801847c1a2a3cd5946cfd317eb99c3d32e35e2d4c',1,'lmgl::scene']]],
+  ['position_3',['position',['../structlmgl_1_1scene_1_1Vertex.html#a13d5a6d4cc73ce11d8da5449f9ed4eb5',1,'lmgl::scene::Vertex']]],
+  ['projectionmode_4',['ProjectionMode',['../classlmgl_1_1scene_1_1Camera.html#a3a45067f3d21d5699d75bb8f2b863cf6',1,'lmgl::scene::Camera']]]
 ];

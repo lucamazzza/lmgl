@@ -196,6 +196,28 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adc78c77b809875466f5f259c5198d324" id="r_adc78c77b809875466f5f259c5198d324"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc78c77b809875466f5f259c5198d324">set_name</a> (const std::string &amp;name)</td></tr>
 <tr class="memdesc:adc78c77b809875466f5f259c5198d324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the node.  <br /></td></tr>
 <tr class="separator:adc78c77b809875466f5f259c5198d324"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a416b89f5ac1577ba73df07c0dd6bf23a" id="r_a416b89f5ac1577ba73df07c0dd6bf23a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a416b89f5ac1577ba73df07c0dd6bf23a">get_light</a> () const</td></tr>
+<tr class="memdesc:a416b89f5ac1577ba73df07c0dd6bf23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the light associated with the node.  <br /></td></tr>
+<tr class="separator:a416b89f5ac1577ba73df07c0dd6bf23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad05066bc2961ac25c260ee2f5875dfcc" id="r_ad05066bc2961ac25c260ee2f5875dfcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad05066bc2961ac25c260ee2f5875dfcc">set_light</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt; light)</td></tr>
+<tr class="memdesc:ad05066bc2961ac25c260ee2f5875dfcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the light associated with the node.  <br /></td></tr>
+<tr class="separator:ad05066bc2961ac25c260ee2f5875dfcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace40a6567570130598b7d711e5db27e5" id="r_ace40a6567570130598b7d711e5db27e5"><td class="memItemLeft" align="right" valign="top"><a id="ace40a6567570130598b7d711e5db27e5" name="ace40a6567570130598b7d711e5db27e5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_light</b> () const</td></tr>
+<tr class="memdesc:ace40a6567570130598b7d711e5db27e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if node has a light. <br /></td></tr>
+<tr class="separator:ace40a6567570130598b7d711e5db27e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69c9559499a8ce25b0b5f53aa9a2d668" id="r_a69c9559499a8ce25b0b5f53aa9a2d668"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69c9559499a8ce25b0b5f53aa9a2d668">set_lod</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1LOD.html">LOD</a> &gt; lod)</td></tr>
+<tr class="memdesc:a69c9559499a8ce25b0b5f53aa9a2d668"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> (Level of Detail) for the node.  <br /></td></tr>
+<tr class="separator:a69c9559499a8ce25b0b5f53aa9a2d668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bd94ebb3c41fe247043e84f529a5e85" id="r_a8bd94ebb3c41fe247043e84f529a5e85"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1LOD.html">LOD</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bd94ebb3c41fe247043e84f529a5e85">get_lod</a> () const</td></tr>
+<tr class="memdesc:a8bd94ebb3c41fe247043e84f529a5e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> (Level of Detail) associated with the node.  <br /></td></tr>
+<tr class="separator:a8bd94ebb3c41fe247043e84f529a5e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39ccc03a964fdbfb14739779d4334221" id="r_a39ccc03a964fdbfb14739779d4334221"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39ccc03a964fdbfb14739779d4334221">has_lod</a> () const</td></tr>
+<tr class="memdesc:a39ccc03a964fdbfb14739779d4334221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the node has an associated <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> with levels.  <br /></td></tr>
+<tr class="separator:a39ccc03a964fdbfb14739779d4334221"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab32c18aefbb915416efdefaa42841090" id="r_ab32c18aefbb915416efdefaa42841090"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Mesh.html">Mesh</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab32c18aefbb915416efdefaa42841090">get_mesh_for_rendering</a> (const glm::vec3 &amp;camera_pos) const</td></tr>
+<tr class="memdesc:ab32c18aefbb915416efdefaa42841090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the appropriate mesh for rendering based on camera position.  <br /></td></tr>
+<tr class="separator:ab32c18aefbb915416efdefaa42841090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a node in a scene graph. </p>
@@ -325,6 +347,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a416b89f5ac1577ba73df07c0dd6bf23a" name="a416b89f5ac1577ba73df07c0dd6bf23a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a416b89f5ac1577ba73df07c0dd6bf23a">&#9670;&#160;</a></span>get_light()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt; lmgl::scene::Node::get_light </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the light associated with the node. </p>
+<dl class="section return"><dt>Returns</dt><dd>the light associated with the node. </dd></dl>
+
+</div>
+</div>
 <a id="a167eae3a130f0f4fd51d09c1fffb074b" name="a167eae3a130f0f4fd51d09c1fffb074b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a167eae3a130f0f4fd51d09c1fffb074b">&#9670;&#160;</a></span>get_local_transform()</h2>
 
@@ -354,6 +404,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8bd94ebb3c41fe247043e84f529a5e85" name="a8bd94ebb3c41fe247043e84f529a5e85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bd94ebb3c41fe247043e84f529a5e85">&#9670;&#160;</a></span>get_lod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1LOD.html">LOD</a> &gt; lmgl::scene::Node::get_lod </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> (Level of Detail) associated with the node. </p>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to the <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> object. </dd></dl>
+
+</div>
+</div>
 <a id="af10da09149480ccd91a7b0eaa4306b1a" name="af10da09149480ccd91a7b0eaa4306b1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af10da09149480ccd91a7b0eaa4306b1a">&#9670;&#160;</a></span>get_mesh()</h2>
 
@@ -380,6 +458,33 @@ Public Member Functions</h2></td></tr>
 <p>Get the mesh associated with the node. </p>
 <p>Provides access to the <a class="el" href="classlmgl_1_1scene_1_1Mesh.html" title="Represents a 3D mesh with associated vertex array and shader.">Mesh</a> object held by the node.</p>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to the <a class="el" href="classlmgl_1_1scene_1_1Mesh.html" title="Represents a 3D mesh with associated vertex array and shader.">Mesh</a> object. </dd></dl>
+
+</div>
+</div>
+<a id="ab32c18aefbb915416efdefaa42841090" name="ab32c18aefbb915416efdefaa42841090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab32c18aefbb915416efdefaa42841090">&#9670;&#160;</a></span>get_mesh_for_rendering()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Mesh.html">Mesh</a> &gt; lmgl::scene::Node::get_mesh_for_rendering </td>
+          <td>(</td>
+          <td class="paramtype">const glm::vec3 &amp;</td>          <td class="paramname"><span class="paramname"><em>camera_pos</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the appropriate mesh for rendering based on camera position. </p>
+<p>Selects the appropriate mesh level of detail based on the distance from the camera to the node.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">camera_position</td><td>Position of the camera in world space. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to the selected <a class="el" href="classlmgl_1_1scene_1_1Mesh.html" title="Represents a 3D mesh with associated vertex array and shader.">Mesh</a> object for rendering. </dd></dl>
 
 </div>
 </div>
@@ -557,6 +662,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a39ccc03a964fdbfb14739779d4334221" name="a39ccc03a964fdbfb14739779d4334221"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39ccc03a964fdbfb14739779d4334221">&#9670;&#160;</a></span>has_lod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lmgl::scene::Node::has_lod </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the node has an associated <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> with levels. </p>
+<dl class="section return"><dt>Returns</dt><dd>Boolean indicating presence of a <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> with levels. </dd></dl>
+
+</div>
+</div>
 <a id="aba6660e34718fd0ddf429c6009b17ce2" name="aba6660e34718fd0ddf429c6009b17ce2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba6660e34718fd0ddf429c6009b17ce2">&#9670;&#160;</a></span>has_mesh()</h2>
 
@@ -668,6 +801,72 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">angle</td><td>Rotation angle in radians. </td></tr>
     <tr><td class="paramname">axis</td><td>Axis of rotation as a glm::vec3. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad05066bc2961ac25c260ee2f5875dfcc" name="ad05066bc2961ac25c260ee2f5875dfcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad05066bc2961ac25c260ee2f5875dfcc">&#9670;&#160;</a></span>set_light()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::scene::Node::set_light </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Light.html">Light</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>light</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the light associated with the node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">light</td><td>The new light associated with the node </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a69c9559499a8ce25b0b5f53aa9a2d668" name="a69c9559499a8ce25b0b5f53aa9a2d668"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c9559499a8ce25b0b5f53aa9a2d668">&#9670;&#160;</a></span>set_lod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lmgl::scene::Node::set_lod </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1LOD.html">LOD</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>lod</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> (Level of Detail) for the node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lod</td><td>Shared pointer to the <a class="el" href="classlmgl_1_1scene_1_1LOD.html" title="Level of Detail (LOD) management class.">LOD</a> object. </td></tr>
   </table>
   </dd>
 </dl>

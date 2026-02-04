@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['color_0',['color',['../structlmgl_1_1scene_1_1Vertex.html#a93b2f38e7d05a6cbeaafa4172f7e402c',1,'lmgl::scene::Vertex']]]
+  ['bitangent_0',['bitangent',['../structlmgl_1_1scene_1_1Vertex.html#a72e0feb0c0299c82a3680b490f2baa03',1,'lmgl::scene::Vertex']]]
 ];

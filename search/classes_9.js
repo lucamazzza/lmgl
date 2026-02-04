@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['texture_0',['Texture',['../classlmgl_1_1renderer_1_1Texture.html',1,'lmgl::renderer']]]
+  ['plane_0',['Plane',['../structlmgl_1_1scene_1_1Plane.html',1,'lmgl::scene']]]
 ];

@@ -1,8 +1,27 @@
 var searchData=
 [
-  ['name_0',['name',['../structlmgl_1_1renderer_1_1BufferElement.html#a313cb5a3b3af110834599c2e82c43b28',1,'lmgl::renderer::BufferElement']]],
-  ['node_1',['Node',['../classlmgl_1_1scene_1_1Node.html',1,'lmgl::scene::Node'],['../classlmgl_1_1scene_1_1Node.html#a02053a3873dc156c81efa48b7b7a8ef5',1,'lmgl::scene::Node::Node()']]],
-  ['node_2ehpp_2',['node.hpp',['../node_8hpp.html',1,'']]],
-  ['normal_3',['normal',['../structlmgl_1_1scene_1_1Vertex.html#a5e78c5f651b340eacf51b74a646088d0',1,'lmgl::scene::Vertex']]],
-  ['normalized_4',['normalized',['../structlmgl_1_1renderer_1_1BufferElement.html#aa567385fde57f0c2e413cc0f63a9c11d',1,'lmgl::renderer::BufferElement']]]
+  ['m_5fcasts_5fshadows_0',['m_casts_shadows',['../classlmgl_1_1scene_1_1Light.html#af5544d6698dbae8ae4cabc878a9ba1f8',1,'lmgl::scene::Light']]],
+  ['m_5fcolor_1',['m_color',['../classlmgl_1_1scene_1_1Light.html#a7159e524c0b43866971013e75941ac7c',1,'lmgl::scene::Light']]],
+  ['m_5fdirection_2',['m_direction',['../classlmgl_1_1scene_1_1Light.html#a9027df7a772c7a408c5f5eea6840bf0c',1,'lmgl::scene::Light']]],
+  ['m_5finner_5fcone_3',['m_inner_cone',['../classlmgl_1_1scene_1_1Light.html#a45a09411864cd8f85686b4ec2558e572',1,'lmgl::scene::Light']]],
+  ['m_5fintensity_4',['m_intensity',['../classlmgl_1_1scene_1_1Light.html#a4e6abdd991a5478c03588dd9d786ed2f',1,'lmgl::scene::Light']]],
+  ['m_5fouter_5fcone_5',['m_outer_cone',['../classlmgl_1_1scene_1_1Light.html#ad4f06fd04b2cce50b28c7cd8940a1c9c',1,'lmgl::scene::Light']]],
+  ['m_5fposition_6',['m_position',['../classlmgl_1_1scene_1_1Light.html#aa033f051859184312d63b95116e3daec',1,'lmgl::scene::Light']]],
+  ['m_5frange_7',['m_range',['../classlmgl_1_1scene_1_1Light.html#a94e316e062cc7994f2d4d6d485c6a649',1,'lmgl::scene::Light']]],
+  ['m_5ftype_8',['m_type',['../classlmgl_1_1scene_1_1Light.html#a8da2fea84be5e9e8f9b548f64443b3c7',1,'lmgl::scene::Light']]],
+  ['material_9',['Material',['../classlmgl_1_1scene_1_1Material.html',1,'lmgl::scene::Material'],['../classlmgl_1_1scene_1_1Material.html#a7d60aa0a8788868b590402447da19437',1,'lmgl::scene::Material::Material()']]],
+  ['material_2ehpp_10',['material.hpp',['../material_8hpp.html',1,'']]],
+  ['max_11',['max',['../structlmgl_1_1scene_1_1AABB.html#a09fd5149f685f513819eb66f5967af80',1,'lmgl::scene::AABB']]],
+  ['max_5fdistance_5fsq_12',['max_distance_sq',['../structlmgl_1_1scene_1_1LODLevel.html#ac87027fac78c0db9d5b83d1793239714',1,'lmgl::scene::LODLevel']]],
+  ['maximize_13',['maximize',['../classlmgl_1_1core_1_1Engine.html#a8eba160837fa0833bbfdbbe2455b642e',1,'lmgl::core::Engine']]],
+  ['merge_14',['merge',['../structlmgl_1_1scene_1_1AABB.html#a88037579a2ffbd212f866ffa580a656a',1,'lmgl::scene::AABB']]],
+  ['mesh_15',['Mesh',['../classlmgl_1_1scene_1_1Mesh.html',1,'lmgl::scene::Mesh'],['../classlmgl_1_1scene_1_1Mesh.html#ac24c98168befd6bb6f9dfe13e6b3b5ee',1,'lmgl::scene::Mesh::Mesh(const std::vector&lt; Vertex &gt; &amp;vert, const std::vector&lt; unsigned int &gt; &amp;indices, std::shared_ptr&lt; renderer::Shader &gt; shader)'],['../classlmgl_1_1scene_1_1Mesh.html#a069ce39420f39bd874fb15e51a21e92f',1,'lmgl::scene::Mesh::Mesh(std::shared_ptr&lt; renderer::VertexArray &gt; vao, std::shared_ptr&lt; renderer::Shader &gt; shader, unsigned int idx_count)']]],
+  ['mesh_16',['mesh',['../structlmgl_1_1scene_1_1LODLevel.html#a4b63c7535178b0a580afd653144a4226',1,'lmgl::scene::LODLevel']]],
+  ['mesh_2ehpp_17',['mesh.hpp',['../mesh_8hpp.html',1,'']]],
+  ['min_18',['min',['../structlmgl_1_1scene_1_1AABB.html#a4f9dbcfd47116c83e0d58ff405dc45ad',1,'lmgl::scene::AABB']]],
+  ['minimize_19',['minimize',['../classlmgl_1_1core_1_1Engine.html#a9a72f24b11dc88914e43c0bfeae991c5',1,'lmgl::core::Engine']]],
+  ['model_5floader_2ehpp_20',['model_loader.hpp',['../model__loader_8hpp.html',1,'']]],
+  ['modelloader_21',['ModelLoader',['../classlmgl_1_1assets_1_1ModelLoader.html',1,'lmgl::assets']]],
+  ['modelloadoptions_22',['ModelLoadOptions',['../structlmgl_1_1assets_1_1ModelLoadOptions.html',1,'lmgl::assets']]],
+  ['mousebutton_23',['MouseButton',['../engine_8hpp.html#abf2c762be1a3834145cee2fa706dd564',1,'lmgl::core']]]
 ];

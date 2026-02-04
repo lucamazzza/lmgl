@@ -37,8 +37,8 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Enumerations", "functions_enum.html", null ]
       ] ]
@@ -52,7 +52,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classlmgl_1_1scene_1_1Node.html#a67356a9c5d7779594bbf494c772f1575"
+"classlmgl_1_1renderer_1_1VertexArray.html#a932c45c8e5bce1703246bee706222fdc",
+"classlmgl_1_1scene_1_1Mesh.html#a669dc3133ff321a5ed94db889497889e",
+"functions_s.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

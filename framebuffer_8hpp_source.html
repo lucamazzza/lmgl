@@ -115,10 +115,9 @@ $(function(){initNavTree('framebuffer_8hpp_source.html',''); initResizable(true)
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacelmgl_1_1renderer.html">renderer</a> {</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span></div>
 <div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classlmgl_1_1renderer_1_1Framebuffer.html">   32</a></span><span class="keyword">class </span><a class="code hl_function" href="classlmgl_1_1renderer_1_1Framebuffer.html#a04ee63651a329222d360777891e4363a">Framebuffer</a> {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_function" href="classlmgl_1_1renderer_1_1Framebuffer.html#a04ee63651a329222d360777891e4363a">Framebuffer</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classlmgl_1_1renderer_1_1Framebuffer.html">   32</a></span><span class="keyword">class </span><a class="code hl_function" href="classlmgl_1_1renderer_1_1Framebuffer.html#af2dee9c79800f83f1e7f2ed8573c87a1">Framebuffer</a> {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_function" href="classlmgl_1_1renderer_1_1Framebuffer.html#af2dee9c79800f83f1e7f2ed8573c87a1">Framebuffer</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">bool</span> hdr = <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_function" href="classlmgl_1_1renderer_1_1Framebuffer.html#aed39eef1364b64b11f98423421e2453d">~Framebuffer</a>();</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span></div>
@@ -130,31 +129,32 @@ $(function(){initNavTree('framebuffer_8hpp_source.html',''); initResizable(true)
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classlmgl_1_1renderer_1_1Framebuffer.html#a44a941e025ab5db6293915ca857785dc">   81</a></span>    <span class="keyword">inline</span> std::shared_ptr&lt;Texture&gt; <a class="code hl_function" href="classlmgl_1_1renderer_1_1Framebuffer.html#a44a941e025ab5db6293915ca857785dc">get_color_attachment</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_texture_attachment; }</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordtype">void</span> invalidate();</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_renderer_id;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_depth_attachment;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    std::shared_ptr&lt;Texture&gt; m_texture_attachment;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">int</span> m_width, m_height;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>};</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">void</span> invalidate();</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_renderer_id;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_depth_attachment;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    std::shared_ptr&lt;Texture&gt; m_texture_attachment;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordtype">int</span> m_width, m_height;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordtype">bool</span> m_hdr;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>};</div>
 </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>} <span class="comment">// namespace renderer</span></div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>} <span class="comment">// namespace lmgl</span></div>
-<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a0059426da84909086feb0b02053dff68"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a0059426da84909086feb0b02053dff68">lmgl::renderer::Framebuffer::resize</a></div><div class="ttdeci">void resize(int width, int height)</div><div class="ttdoc">Resize the framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:47</div></div>
-<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a04ee63651a329222d360777891e4363a"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a04ee63651a329222d360777891e4363a">lmgl::renderer::Framebuffer::Framebuffer</a></div><div class="ttdeci">Framebuffer(int width, int height)</div><div class="ttdoc">Constructor for the Framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:9</div></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>} <span class="comment">// namespace renderer</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>} <span class="comment">// namespace lmgl</span></div>
+<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a0059426da84909086feb0b02053dff68"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a0059426da84909086feb0b02053dff68">lmgl::renderer::Framebuffer::resize</a></div><div class="ttdeci">void resize(int width, int height)</div><div class="ttdoc">Resize the framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:59</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a44a941e025ab5db6293915ca857785dc"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a44a941e025ab5db6293915ca857785dc">lmgl::renderer::Framebuffer::get_color_attachment</a></div><div class="ttdeci">std::shared_ptr&lt; Texture &gt; get_color_attachment() const</div><div class="ttdoc">Get the color attachment texture.</div><div class="ttdef"><b>Definition</b> framebuffer.hpp:81</div></div>
-<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a6d22aac032b531c175031849d8cd5e6a"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a6d22aac032b531c175031849d8cd5e6a">lmgl::renderer::Framebuffer::unbind</a></div><div class="ttdeci">void unbind() const</div><div class="ttdoc">Unbind the framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:43</div></div>
-<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a8967221e9d441c5e904be1a077b5feb8"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a8967221e9d441c5e904be1a077b5feb8">lmgl::renderer::Framebuffer::bind</a></div><div class="ttdeci">void bind() const</div><div class="ttdoc">Bind the framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:38</div></div>
-<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_aed39eef1364b64b11f98423421e2453d"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#aed39eef1364b64b11f98423421e2453d">lmgl::renderer::Framebuffer::~Framebuffer</a></div><div class="ttdeci">~Framebuffer()</div><div class="ttdoc">Destructor for the Framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:14</div></div>
+<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a6d22aac032b531c175031849d8cd5e6a"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a6d22aac032b531c175031849d8cd5e6a">lmgl::renderer::Framebuffer::unbind</a></div><div class="ttdeci">void unbind() const</div><div class="ttdoc">Unbind the framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:57</div></div>
+<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_a8967221e9d441c5e904be1a077b5feb8"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#a8967221e9d441c5e904be1a077b5feb8">lmgl::renderer::Framebuffer::bind</a></div><div class="ttdeci">void bind() const</div><div class="ttdoc">Bind the framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:52</div></div>
+<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_aed39eef1364b64b11f98423421e2453d"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#aed39eef1364b64b11f98423421e2453d">lmgl::renderer::Framebuffer::~Framebuffer</a></div><div class="ttdeci">~Framebuffer()</div><div class="ttdoc">Destructor for the Framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:15</div></div>
+<div class="ttc" id="aclasslmgl_1_1renderer_1_1Framebuffer_html_af2dee9c79800f83f1e7f2ed8573c87a1"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Framebuffer.html#af2dee9c79800f83f1e7f2ed8573c87a1">lmgl::renderer::Framebuffer::Framebuffer</a></div><div class="ttdeci">Framebuffer(int width, int height, bool hdr=false)</div><div class="ttdoc">Constructor for the Framebuffer.</div><div class="ttdef"><b>Definition</b> framebuffer.cpp:10</div></div>
 <div class="ttc" id="anamespacelmgl_1_1renderer_html"><div class="ttname"><a href="namespacelmgl_1_1renderer.html">lmgl::renderer</a></div><div class="ttdoc">Namespace for rendering-related classes and functions.</div><div class="ttdef"><b>Definition</b> buffer.cpp:9</div></div>
-<div class="ttc" id="anamespacelmgl_html"><div class="ttname"><a href="namespacelmgl.html">lmgl</a></div><div class="ttdoc">Namespace for the LMGL project.</div><div class="ttdef"><b>Definition</b> engine.cpp:5</div></div>
+<div class="ttc" id="anamespacelmgl_html"><div class="ttname"><a href="namespacelmgl.html">lmgl</a></div><div class="ttdoc">Forward declarations for Assimp Material structure.</div><div class="ttdef"><b>Definition</b> model_loader.cpp:12</div></div>
 <div class="ttc" id="atexture_8hpp_html"><div class="ttname"><a href="texture_8hpp.html">texture.hpp</a></div><div class="ttdoc">Texture class for managing OpenGL textures.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
