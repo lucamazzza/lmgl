@@ -33,6 +33,7 @@ int main() {
     std::cout << "\nControls:" << std::endl;
     std::cout << "  ESC       - Exit" << std::endl;
     std::cout << "  1/2/3     - Render modes" << std::endl;
+    std::cout << "  7/8/9     - Tone Map modes" << std::endl;
     std::cout << "  F         - Toggle fullscreen" << std::endl;
     std::cout << "  B         - Toggle skybox" << std::endl;
     std::cout << "  H         - Toggle shadows" << std::endl;
@@ -47,11 +48,11 @@ int main() {
     auto scene = std::make_shared<scene::Scene>("PBR Demo Scene");
 
     // Try to load a skybox (will gracefully fail if files don't exist)
-    std::shared_ptr<scene::Skybox> skybox = nullptr;
     auto cubemap = scene::Cubemap::from_equirectangular("sandbox/assets/skybox.hdr");
     if (cubemap) {
-        skybox = std::make_shared<scene::Skybox>(cubemap);
+        auto skybox = std::make_shared<scene::Skybox>(cubemap);
         skybox->set_exposure(1.0f);
+        scene->set_skybox(skybox);
         std::cout << "Skybox loaded successfully!" << std::endl;
     } else {
         std::cout << "Skybox not loaded (missing assets/skybox.hdr)" << std::endl;
@@ -69,6 +70,7 @@ int main() {
 
     // Create renderer
     auto renderer = std::make_unique<renderer::Renderer>();
+    renderer->set_tone_map_mode(1); // reinhard
 
     // Create shadow map for directional light
     auto shadow_renderer = std::make_unique<renderer::ShadowRenderer>();
@@ -179,7 +181,8 @@ int main() {
     float time = 0.0f;
     renderer::RenderMode current_mode = renderer::RenderMode::Solid;
     bool camera_free_look = false;
-    bool render_skybox = (skybox != nullptr);
+    auto skybox_ref = scene->get_skybox(); // Store reference for toggling
+    bool render_skybox = (skybox_ref != nullptr);
     bool render_shadows = true;
 
     // Camera movement
@@ -190,6 +193,7 @@ int main() {
     // Handle window resize
     engine.set_resize_callback([&](int width, int height) {
         camera->set_aspect(engine.get_aspect_ratio());
+        renderer->resize(width, height);
         std::cout << "Window resized: " << width << "x" << height 
                   << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
     });
@@ -220,10 +224,19 @@ int main() {
             current_mode = renderer::RenderMode::Points;
             renderer->set_render_mode(current_mode);
         }
-
+        if (engine.is_key_just_pressed(core::Key::Key7)) {
+            renderer->set_tone_map_mode(0);
+        }
+        if (engine.is_key_just_pressed(core::Key::Key8)) {
+            renderer->set_tone_map_mode(1);
+        }
+        if (engine.is_key_just_pressed(core::Key::Key9)) {
+            renderer->set_tone_map_mode(2);
+        }
         if (engine.is_key_just_pressed(core::Key::B)) {
-            if (skybox) {
+            if (skybox_ref) {
                 render_skybox = !render_skybox;
+                scene->set_skybox(render_skybox ? skybox_ref : nullptr);
                 std::cout << "Skybox " << (render_skybox ? "enabled" : "disabled") << std::endl;
             }
         }
@@ -324,11 +337,6 @@ int main() {
             // Disable shadows
             pbr_shader->bind();
             pbr_shader->set_int("u_UseShadows", 0);
-        }
-        
-        // Render skybox first (if enabled)
-        if (skybox && render_skybox) {
-            skybox->render(camera);
         }
         
         // Render scene with frustum culling (automatic)

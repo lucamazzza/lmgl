@@ -26,11 +26,16 @@ Renderer::Renderer()
     m_default_material->set_roughness(0.5f);
     m_default_material->set_ao(1.0f);
     m_default_material->set_emissive(glm::vec3(0.0f));
+    m_framebuffer = std::make_unique<Framebuffer>(1280, 720, true);
+    m_postprocess_shader = Shader::from_glsl_file("shaders/postprocess.glsl");
+    m_screen_quad = scene::Mesh::create_quad(m_postprocess_shader, 2.0f, 2.0f);
 }
 
 void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> camera) {
     if (!scene || !camera)
         return;
+    m_framebuffer->bind();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_draw_calls = 0;
     m_triangles_count = 0;
     m_render_queue.clear();
@@ -42,9 +47,38 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     collect_lights(scene);
     sort_render_queue(m_render_queue);
     apply_render_mode();
+    
+    // Render scene to framebuffer
+    m_framebuffer->bind();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    // Render skybox first (if present)
+    if (scene->get_skybox()) {
+        scene->get_skybox()->render(camera);
+    }
+    
     for (const auto &item : m_render_queue) {
         render_mesh(item.mesh, item.transform, camera);
     }
+    
+    // Post-process pass
+    m_framebuffer->unbind();
+    glViewport(0, 0, m_window_width, m_window_height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);
+    
+    m_postprocess_shader->bind();
+    m_postprocess_shader->set_int("u_ScreenTexture", 0);
+    m_postprocess_shader->set_int("u_ToneMapMode", m_tone_map_mode);
+    m_postprocess_shader->set_float("u_Exposure", m_exposure);
+    m_postprocess_shader->set_float("u_Gamma", m_gamma);
+    m_framebuffer->get_color_attachment()->bind(0);
+    if (m_screen_quad->get_vertex_array())
+        m_screen_quad->get_vertex_array()->bind();
+    m_screen_quad->render();
+    m_postprocess_shader->unbind();
+    
+    if (m_depth_test_enabled) glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::set_render_mode(RenderMode mode) { m_render_mode = mode; }
@@ -271,6 +305,12 @@ void Renderer::bind_material(std::shared_ptr<scene::Material> material, std::sha
 }
 
 void Renderer::clear_material_cache() { m_last_bound_material = nullptr; }
+
+void Renderer::resize(int width, int height) {
+    m_window_width = width;
+    m_window_height = height;
+    if (m_framebuffer) m_framebuffer->resize(width, height);
+}
 
 } // namespace renderer
 

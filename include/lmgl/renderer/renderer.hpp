@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include "lmgl/renderer/framebuffer.hpp"
 #include "lmgl/scene/camera.hpp"
 #include "lmgl/scene/mesh.hpp"
 #include "lmgl/scene/node.hpp"
@@ -155,6 +156,47 @@ class Renderer {
      * @return Number of triangles rendered.
      */
     inline unsigned int get_triangles_count() const { return m_triangles_count; }
+
+    /*!
+     * @brief Resizes the framebuffer to specific width and height.
+     *
+     * @param width The width to resize to.
+     * @param height The height to resize to.
+     */
+    void resize(int width, int height);
+
+    /*!
+     * @brief Sets the tone map mode.
+     *
+     * The tone map modes are:
+     *     - 0 = none;
+     *     - 1 = reinhard;
+     *     - 2 = aces.
+     *
+     * @param mode The tone map mode.
+     */
+    inline void set_tone_map_mode(int mode) { m_tone_map_mode = mode; }
+
+    /*!
+     * @brief Sets the exposure of the tone map.
+     *
+     * @param exposure The exposure float value.
+     */
+    inline void set_exposure(float exposure) { m_exposure = exposure; }
+
+    /*!
+     * @brief Sets the gamma of the tone map.
+     *
+     * @param gamma The gamma float value.
+     */
+    inline void set_gamma(float gamma) { m_gamma = gamma; }
+
+    /*!
+     * @brief Enables post processing effects based on tone map mode and exposure/gamma.
+     *
+     * @param enabled Whether the postprocessing effects are enabled.
+     */
+    void enable_post_processing(bool enabled);
 
   private:
     //! @brief Current rendering mode.
@@ -322,6 +364,28 @@ class Renderer {
 
     //! Cached material to minimize state changes
     std::shared_ptr<scene::Material> m_last_bound_material;
+
+    //! Framebuffer for postprocess effects
+    std::unique_ptr<Framebuffer> m_framebuffer;
+
+    //! Shader for postprocess effects
+    std::shared_ptr<Shader> m_postprocess_shader;
+
+    //! Screen quad mesh
+    std::shared_ptr<scene::Mesh> m_screen_quad;
+
+    //! Tone map mode (0 = none, 1 = reinhard, 2 = aces [default])
+    int m_tone_map_mode = 2;
+
+    //! Tonemap exposure
+    float m_exposure = 1.0f;
+
+    //! Tonemap gamma
+    float m_gamma = 2.2f;
+
+    //! Window width and height for viewport
+    int m_window_width = 1280;
+    int m_window_height = 720;
 };
 
 } // namespace renderer

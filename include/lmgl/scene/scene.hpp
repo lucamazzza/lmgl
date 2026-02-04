@@ -14,6 +14,7 @@
 
 #include "lmgl/scene/light.hpp"
 #include "lmgl/scene/node.hpp"
+#include "lmgl/scene/skybox.hpp"
 
 #include <memory>
 #include <string>
@@ -107,6 +108,20 @@ class Scene {
      */
     void clear_lights();
 
+    /*!
+     * @brief Set the skybox for the scene.
+     *
+     * @param skybox The skybox to set (or nullptr to remove).
+     */
+    inline void set_skybox(std::shared_ptr<Skybox> skybox) { m_skybox = skybox; }
+
+    /*!
+     * @brief Get the skybox of the scene.
+     *
+     * @return The skybox (or nullptr if none).
+     */
+    inline std::shared_ptr<Skybox> get_skybox() const { return m_skybox; }
+
   private:
     //! @brief Name of the scene.
     std::string m_name;
@@ -116,6 +131,9 @@ class Scene {
 
     //! @brief Lights in the scene.
     std::vector<std::shared_ptr<Light>> m_lights;
+
+    //! @brief Skybox for the scene.
+    std::shared_ptr<Skybox> m_skybox;
 };
 
 } // namespace scene
