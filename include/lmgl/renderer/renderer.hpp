@@ -198,6 +198,29 @@ class Renderer {
      */
     void enable_post_processing(bool enabled);
 
+    /*!
+     * @brief Enable or disable bloom effect.
+     *
+     * @param enabled True to enable bloom, false otherwise.
+     */
+    inline void set_bloom_enabled(bool enabled) { m_bloom_enabled = enabled; }
+
+    /*!
+     * @brief Sets the bloom brightness threshold.
+     *
+     * Only pixels brighter than this value will bloom.
+     *
+     * @param threshold Brightness threshold (default 1.0f).
+     */
+    inline void set_bloom_threshold(float threshold) { m_bloom_threshold = threshold; }
+
+    /*!
+     * @brief Sets the bloom intensity/strength.
+     *
+     * @param intensity Bloom intensity (default 0.5f).
+     */
+    inline void set_bloom_intensity(float intensity) { m_bloom_intensity = intensity; }
+
   private:
     //! @brief Current rendering mode.
     RenderMode m_render_mode;
@@ -216,6 +239,64 @@ class Renderer {
 
     //! @brief Flags for depth testing, face culling, and blending.
     bool m_blending_enabled;
+
+    //! Directional lights to render.
+    std::vector<std::shared_ptr<scene::Light>> m_directional_lights;
+
+    //! Point lights to render
+    std::vector<std::shared_ptr<scene::Light>> m_point_lights;
+
+    //! Spot lights to render
+    std::vector<std::shared_ptr<scene::Light>> m_spot_lights;
+
+    //! Default material for meshes without materials
+    std::shared_ptr<scene::Material> m_default_material;
+
+    //! Cached material to minimize state changes
+    std::shared_ptr<scene::Material> m_last_bound_material;
+
+    //! Framebuffer for postprocess effects
+    std::unique_ptr<Framebuffer> m_framebuffer;
+
+    //! Bright pass extraction framebuffer
+    std::unique_ptr<Framebuffer> m_bright_framebuffer;
+
+    //! Ping-Pong framebuffers for blur
+    std::unique_ptr<Framebuffer> m_blur_framebuffer[2];
+
+    //! Shader for postprocess effects
+    std::shared_ptr<Shader> m_postprocess_shader;
+
+    //! Shader for bright pass extraction
+    std::shared_ptr<Shader> m_bright_pass_shader;
+
+    //! Shader for Gaussian blur
+    std::shared_ptr<Shader> m_blur_shader;
+
+    //! Screen quad mesh
+    std::shared_ptr<scene::Mesh> m_screen_quad;
+
+    //! Tone map mode (0 = none, 1 = reinhard, 2 = aces [default])
+    int m_tone_map_mode = 2;
+
+    //! Tonemap exposure
+    float m_exposure = 1.0f;
+
+    //! Tonemap gamma
+    float m_gamma = 2.2f;
+
+    //! Window width and height for viewport
+    int m_window_width = 1280;
+    int m_window_height = 720;
+
+    //! Flag to enable/disable bloom effect
+    bool m_bloom_enabled = true;
+
+    //! Bloom theshold
+    float m_bloom_threshold = 1.0f;
+
+    //! Bloom intensity
+    float m_bloom_intensity = 0.5f;
 
     /*!
      * @brief Structure representing an item to be rendered.
@@ -348,44 +429,6 @@ class Renderer {
      * material binding to occur regardless of the previous state.
      */
     void clear_material_cache();
-
-  private:
-    //! Directional lights to render.
-    std::vector<std::shared_ptr<scene::Light>> m_directional_lights;
-
-    //! Point lights to render
-    std::vector<std::shared_ptr<scene::Light>> m_point_lights;
-
-    //! Spot lights to render
-    std::vector<std::shared_ptr<scene::Light>> m_spot_lights;
-
-    //! Default material for meshes without materials
-    std::shared_ptr<scene::Material> m_default_material;
-
-    //! Cached material to minimize state changes
-    std::shared_ptr<scene::Material> m_last_bound_material;
-
-    //! Framebuffer for postprocess effects
-    std::unique_ptr<Framebuffer> m_framebuffer;
-
-    //! Shader for postprocess effects
-    std::shared_ptr<Shader> m_postprocess_shader;
-
-    //! Screen quad mesh
-    std::shared_ptr<scene::Mesh> m_screen_quad;
-
-    //! Tone map mode (0 = none, 1 = reinhard, 2 = aces [default])
-    int m_tone_map_mode = 2;
-
-    //! Tonemap exposure
-    float m_exposure = 1.0f;
-
-    //! Tonemap gamma
-    float m_gamma = 2.2f;
-
-    //! Window width and height for viewport
-    int m_window_width = 1280;
-    int m_window_height = 720;
 };
 
 } // namespace renderer

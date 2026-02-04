@@ -20,9 +20,12 @@ in vec2 v_TexCoord;
 out vec4 FragColor;
 
 uniform sampler2D u_ScreenTexture;
+uniform sampler2D u_BloomTexture;
 uniform int u_ToneMapMode; // 0 = none, 1 = reinhard, 2 = aces
 uniform float u_Exposure;
 uniform float u_Gamma;
+uniform int u_BloomEnabled;
+uniform float u_BloomIntensity;
 
 vec3 reinhard(vec3 color) {
     return color / (color + vec3(1.0));
@@ -39,6 +42,10 @@ vec3 aces(vec3 color) {
 
 void main() {
     vec3 color = texture(u_ScreenTexture, v_TexCoord).rgb;
+    if (u_BloomEnabled == 1) {
+        vec3 bloom = texture(u_BloomTexture, v_TexCoord).rgb;
+        color += bloom * u_BloomIntensity;
+    }
     color *= u_Exposure;
     if (u_ToneMapMode == 1) {
         color = reinhard(color);

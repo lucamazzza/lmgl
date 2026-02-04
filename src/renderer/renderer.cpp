@@ -28,6 +28,11 @@ Renderer::Renderer()
     m_default_material->set_emissive(glm::vec3(0.0f));
     m_framebuffer = std::make_unique<Framebuffer>(1280, 720, true);
     m_postprocess_shader = Shader::from_glsl_file("shaders/postprocess.glsl");
+    m_bright_pass_shader = Shader::from_glsl_file("shaders/bright_pass.glsl");
+    m_blur_shader = Shader::from_glsl_file("shaders/blur.glsl");
+    m_bright_framebuffer = std::make_unique<Framebuffer>(1280, 720, true);
+    m_blur_framebuffer[0] = std::make_unique<Framebuffer>(1280, 720, true);
+    m_blur_framebuffer[1] = std::make_unique<Framebuffer>(1280, 720, true);
     m_screen_quad = scene::Mesh::create_quad(m_postprocess_shader, 2.0f, 2.0f);
 }
 
@@ -47,37 +52,87 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     collect_lights(scene);
     sort_render_queue(m_render_queue);
     apply_render_mode();
-    
+
     // Render scene to framebuffer
     m_framebuffer->bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     // Render skybox first (if present)
     if (scene->get_skybox()) {
         scene->get_skybox()->render(camera);
     }
-    
+
     for (const auto &item : m_render_queue) {
         render_mesh(item.mesh, item.transform, camera);
     }
-    
+
     // Post-process pass
     m_framebuffer->unbind();
     glViewport(0, 0, m_window_width, m_window_height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
-    
+
+    // Bloom effect
+    if (m_bloom_enabled) {
+
+        // Extract bright pixels
+        m_bright_framebuffer->bind();
+        glClear(GL_COLOR_BUFFER_BIT);
+        m_bright_pass_shader->bind();
+        m_bright_pass_shader->set_int("u_Texture", 0);
+        m_bright_pass_shader->set_float("u_Threshold", m_bloom_threshold);
+        m_framebuffer->get_color_attachment()->bind(0);
+        if (m_screen_quad->get_vertex_array())
+            m_screen_quad->get_vertex_array()->bind();
+        m_screen_quad->render();
+        m_bright_pass_shader->unbind();
+
+        // Gaussian blur
+        bool horizontal = true;
+        int blur_passes = 10; // 5 iterations horizontal + 5 vertical
+        float weights[5] = {0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f};
+        m_blur_shader->bind();
+        m_blur_shader->set_float("u_Weights[0]", weights[0]);
+        m_blur_shader->set_float("u_Weights[1]", weights[1]);
+        m_blur_shader->set_float("u_Weights[2]", weights[2]);
+        m_blur_shader->set_float("u_Weights[3]", weights[3]);
+        m_blur_shader->set_float("u_Weights[4]", weights[4]);
+        for (int i = 0; i < blur_passes; i++) {
+            m_blur_framebuffer[horizontal ? 1 : 0]->bind();
+            glClear(GL_COLOR_BUFFER_BIT);
+            if (i == 0) {
+                m_bright_framebuffer->get_color_attachment()->bind(0);
+            } else {
+                m_blur_framebuffer[horizontal ? 0 : 1]->get_color_attachment()->bind(0);
+            }
+            m_blur_shader->set_int("u_Horizontal", horizontal ? 1 : 0);
+            m_blur_shader->set_int("u_Texture", 0);
+            if (m_screen_quad->get_vertex_array())
+                m_screen_quad->get_vertex_array()->bind();
+            m_screen_quad->render();
+            horizontal = !horizontal;
+        }
+        m_blur_shader->unbind();
+    }
+
+    // Final composite with tone mapping
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_postprocess_shader->bind();
     m_postprocess_shader->set_int("u_ScreenTexture", 0);
+    m_postprocess_shader->set_int("u_BloomTexture", 1);
     m_postprocess_shader->set_int("u_ToneMapMode", m_tone_map_mode);
     m_postprocess_shader->set_float("u_Exposure", m_exposure);
     m_postprocess_shader->set_float("u_Gamma", m_gamma);
-    m_framebuffer->get_color_attachment()->bind(0);
+    m_postprocess_shader->set_int("u_BloomEnabled", m_bloom_enabled ? 1 : 0);
+    if (m_bloom_enabled) {
+        m_postprocess_shader->set_float("u_BloomIntensity", m_bloom_intensity);
+        m_framebuffer->get_color_attachment()->bind(0);
+        m_blur_framebuffer[0]->get_color_attachment()->bind(1);
+    }
     if (m_screen_quad->get_vertex_array())
         m_screen_quad->get_vertex_array()->bind();
     m_screen_quad->render();
     m_postprocess_shader->unbind();
-    
     if (m_depth_test_enabled) glEnable(GL_DEPTH_TEST);
 }
 
@@ -310,6 +365,9 @@ void Renderer::resize(int width, int height) {
     m_window_width = width;
     m_window_height = height;
     if (m_framebuffer) m_framebuffer->resize(width, height);
+    if (m_bright_framebuffer) m_bright_framebuffer->resize(width, height);
+    if (m_blur_framebuffer[0]) m_blur_framebuffer[0]->resize(width, height);
+    if (m_blur_framebuffer[1]) m_blur_framebuffer[1]->resize(width, height);
 }
 
 } // namespace renderer

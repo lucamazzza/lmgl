@@ -240,12 +240,16 @@ int main() {
                 std::cout << "Skybox " << (render_skybox ? "enabled" : "disabled") << std::endl;
             }
         }
-
         if (engine.is_key_just_pressed(core::Key::H)) {
             render_shadows = !render_shadows;
             std::cout << "Shadows " << (render_shadows ? "enabled" : "disabled") << std::endl;
         }
-
+        if (engine.is_key_just_pressed(core::Key::N)) {
+            static bool bloom = true;
+            bloom = !bloom;
+            renderer->set_bloom_enabled(bloom);
+            std::cout << "Bloom " << (bloom ? "enabled" : "disabled") << std::endl;
+        }
         // Camera movement (WASD)
         float cam_speed = 5.0f * dt;
         glm::vec3 forward = glm::normalize(camera->get_target() - camera_pos);
