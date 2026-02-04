@@ -68,6 +68,10 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
 
     // Post-process pass
     m_framebuffer->unbind();
+    
+    // Reset to solid fill mode for post-processing
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    
     glViewport(0, 0, m_window_width, m_window_height);
     glDisable(GL_DEPTH_TEST);
 
