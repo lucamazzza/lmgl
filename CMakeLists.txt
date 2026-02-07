@@ -67,6 +67,9 @@ add_library(lmgl STATIC
     src/scene/node.cpp
     src/scene/scene.cpp
     src/scene/skybox.cpp
+
+    # ui
+    include/lmgl/ui/ui_element.hpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
