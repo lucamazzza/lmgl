@@ -69,6 +69,7 @@ add_library(lmgl STATIC
     src/scene/skybox.cpp
 
     # ui
+    include/lmgl/ui/canvas.hpp
     include/lmgl/ui/ui_element.hpp
 )
 

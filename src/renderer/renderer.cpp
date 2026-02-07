@@ -26,13 +26,13 @@ Renderer::Renderer()
     m_default_material->set_roughness(0.5f);
     m_default_material->set_ao(1.0f);
     m_default_material->set_emissive(glm::vec3(0.0f));
-    m_framebuffer = std::make_unique<Framebuffer>(1280, 720, true);
+    m_framebuffer = std::make_unique<Framebuffer>(1920, 1080, true);
     m_postprocess_shader = Shader::from_glsl_file("shaders/postprocess.glsl");
     m_bright_pass_shader = Shader::from_glsl_file("shaders/bright_pass.glsl");
     m_blur_shader = Shader::from_glsl_file("shaders/blur.glsl");
-    m_bright_framebuffer = std::make_unique<Framebuffer>(1280, 720, true);
-    m_blur_framebuffer[0] = std::make_unique<Framebuffer>(1280, 720, true);
-    m_blur_framebuffer[1] = std::make_unique<Framebuffer>(1280, 720, true);
+    m_bright_framebuffer = std::make_unique<Framebuffer>(1920, 1080, true);
+    m_blur_framebuffer[0] = std::make_unique<Framebuffer>(1920, 1080, true);
+    m_blur_framebuffer[1] = std::make_unique<Framebuffer>(1920, 1080, true);
     m_screen_quad = scene::Mesh::create_quad(m_postprocess_shader, 2.0f, 2.0f);
 }
 
