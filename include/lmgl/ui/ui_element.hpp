@@ -176,14 +176,14 @@ class UIElement : public std::enable_shared_from_this<UIElement> {
      *
      * @param child Shared pointer to the child element.
      */
-    void add_child(const std::shared_ptr<UIElement> &child);
+    void add_child(const std::shared_ptr<UIElement> child);
 
     /*!
      * @brief Remove a child UI element.
      *
      * @param child Shared pointer to the child element.
      */
-    void remove_child(const std::shared_ptr<UIElement> &child);
+    void remove_child(const std::shared_ptr<UIElement> child);
 
     /*!
      * @brief Get all child UI elements.
