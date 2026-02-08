@@ -41,7 +41,7 @@ void Canvas::render() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
     for (const auto &item : render_items) {
-        item->render(static_cast<float>(m_width), static_cast<float>(m_height));
+        item->render(static_cast<float>(m_width), static_cast<float>(m_height), m_projection);
     }
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);

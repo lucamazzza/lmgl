@@ -71,8 +71,12 @@ add_library(lmgl STATIC
     # ui
     include/lmgl/ui/canvas.hpp
     include/lmgl/ui/ui_element.hpp
+    include/lmgl/ui/panel.hpp
+    include/lmgl/ui/image.hpp
     src/ui/canvas.cpp
     src/ui/ui_element.cpp
+    src/ui/panel.cpp
+    src/ui/image.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

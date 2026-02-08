@@ -10,7 +10,7 @@ class MockUIElement : public UIElement {
   public:
     MockUIElement(const std::string &name = "MockElement") : UIElement(name), render_called(false) {}
 
-    void render(float canvas_width, float canvas_height) override {
+    void render(float canvas_width, float canvas_height, const glm::mat4 &projection) override {
         render_called = true;
         last_canvas_width = canvas_width;
         last_canvas_height = canvas_height;

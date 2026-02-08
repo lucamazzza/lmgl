@@ -206,8 +206,9 @@ class UIElement : public std::enable_shared_from_this<UIElement> {
      *
      * @param canvas_width Width of the canvas in pixels.
      * @param canvas_height Height of the canvas in pixels.
+     * @param projection Projection matrix for UI rendering.
      */
-    virtual void render(float canvas_width, float canvas_height) = 0;
+    virtual void render(float canvas_width, float canvas_height, const glm::mat4 &projection) = 0;
 
   protected:
     //! @brief Name of the UI element
