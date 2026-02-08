@@ -71,6 +71,7 @@ add_library(lmgl STATIC
     # ui
     include/lmgl/ui/canvas.hpp
     include/lmgl/ui/ui_element.hpp
+    src/ui/canvas.cpp
     src/ui/ui_element.cpp
 )
 
