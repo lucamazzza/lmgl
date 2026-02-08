@@ -21,6 +21,8 @@ add_executable(Tests
     scene/node_test.cpp
     scene/scene_test.cpp
     scene/skybox_test.cpp
+
+    ui/ui_element_canvas_test.cpp
 )
 
 target_link_libraries(Tests PRIVATE lmgl GTest::gtest_main)
