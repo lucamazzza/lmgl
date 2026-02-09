@@ -13,6 +13,7 @@
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 namespace lmgl {
 
@@ -29,6 +30,11 @@ void Panel::initialize_resources() {
         return;
 
     s_shader = renderer::Shader::from_glsl_file("shaders/ui_panel.glsl");
+    
+    if (!s_shader) {
+        std::cerr << "ERROR: Failed to load Panel shader!" << std::endl;
+        return;
+    }
 
     float quad_vertices[] = {
         0.0f, 0.0f,

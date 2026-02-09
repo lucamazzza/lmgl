@@ -20,6 +20,7 @@ add_subdirectory(external/googletest)
 add_subdirectory(external/assimp)
 
 find_package(OpenGL REQUIRED)
+find_package(Freetype REQUIRED)
 
 add_library(lmgl STATIC 
     # assets
@@ -73,15 +74,20 @@ add_library(lmgl STATIC
     include/lmgl/ui/ui_element.hpp
     include/lmgl/ui/panel.hpp
     include/lmgl/ui/image.hpp
+    include/lmgl/ui/font.hpp
+    include/lmgl/ui/text.hpp
     src/ui/canvas.cpp
     src/ui/ui_element.cpp
     src/ui/panel.cpp
     src/ui/image.cpp
+    src/ui/font.cpp
+    src/ui/text.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(lmgl PUBLIC external/glad/include)
 target_include_directories(lmgl PRIVATE external/stb)
+target_include_directories(lmgl PUBLIC ${FREETYPE_INCLUDE_DIRS})
 
 if(HEADLESS)
     target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
@@ -89,7 +95,7 @@ endif()
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
-target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY})
+target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY} ${FREETYPE_LIBRARIES})
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")

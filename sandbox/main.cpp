@@ -15,6 +15,10 @@
 #include "lmgl/scene/material.hpp"
 #include "lmgl/scene/light.hpp"
 #include "lmgl/scene/skybox.hpp"
+#include "lmgl/ui/canvas.hpp"
+#include "lmgl/ui/panel.hpp"
+#include "lmgl/ui/text.hpp"
+#include "lmgl/ui/font.hpp"
 
 #include <iostream>
 #include <memory>
@@ -29,17 +33,79 @@ int main() {
         return -1;
     }
 
-    std::cout << "\n=== LMGL PBR Demo ===" << std::endl;
-    std::cout << "\nControls:" << std::endl;
-    std::cout << "  ESC       - Exit" << std::endl;
-    std::cout << "  1/2/3     - Render modes" << std::endl;
-    std::cout << "  7/8/9     - Tone Map modes" << std::endl;
-    std::cout << "  F         - Toggle fullscreen" << std::endl;
-    std::cout << "  B         - Toggle skybox" << std::endl;
-    std::cout << "  H         - Toggle shadows" << std::endl;
-    std::cout << "  WASD      - Move camera" << std::endl;
-    std::cout << "  Mouse     - Look around" << std::endl;
-    std::cout << "========================\n" << std::endl;
+    // Create UI Canvas
+    auto canvas = std::make_shared<ui::Canvas>(1280, 720);
+
+    // Load font
+    auto &font_mgr = ui::FontManager::get();
+    auto ui_font = font_mgr.load("ui_font", "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 20);
+    auto ui_font_small = font_mgr.load("ui_font_small", "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 16);
+
+    if (!ui_font || !ui_font_small) {
+        std::cerr << "Warning: Failed to load UI fonts, UI overlay disabled" << std::endl;
+    } else {
+        std::cout << "UI fonts loaded successfully!" << std::endl;
+    }
+
+    // Create title text
+    auto title_text = std::make_shared<ui::Text>("LMGL PBR Demo", "TitleText");
+    if (ui_font) {
+        title_text->set_font(ui_font);
+        title_text->set_color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        title_text->set_position(glm::vec2(20.0f, 20.0f));
+        title_text->set_anchor(ui::Anchor::TopLeft);
+        title_text->set_render_order(1);
+        canvas->add_element(title_text);
+    }
+
+    // Create FPS counter text
+    auto fps_text = std::make_shared<ui::Text>("FPS: 0", "FPSText");
+    if (ui_font_small) {
+        fps_text->set_font(ui_font_small);
+        fps_text->set_color(glm::vec4(0.8f, 1.0f, 0.8f, 1.0f));
+        fps_text->set_position(glm::vec2(20.0f, 50.0f));
+        fps_text->set_anchor(ui::Anchor::TopLeft);
+        fps_text->set_render_order(1);
+        canvas->add_element(fps_text);
+    }
+
+    // Create controls help text
+    auto controls_text = std::make_shared<ui::Text>("Controls:", "ControlsText");
+    if (ui_font_small) {
+        controls_text->set_font(ui_font_small);
+        controls_text->set_color(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
+        controls_text->set_position(glm::vec2(20.0f, 90.0f));
+        controls_text->set_anchor(ui::Anchor::TopLeft);
+        controls_text->set_render_order(1);
+        canvas->add_element(controls_text);
+    }
+
+    // Individual control lines
+    std::vector<std::shared_ptr<ui::Text>> control_lines;
+    std::vector<std::string> control_texts = {
+        "1/2/3 - Render Mode",
+        "7/8/9 - Tone Map",
+        "B - Toggle Skybox",
+        "H - Toggle Shadows",
+        "U - Toggle UI",
+        "WASD - Move Camera",
+        "Right Mouse - Free Look"
+    };
+
+    float y_offset = 110.0f;
+    for (const auto &text : control_texts) {
+        auto line = std::make_shared<ui::Text>(text, "ControlLine");
+        if (ui_font_small) {
+            line->set_font(ui_font_small);
+            line->set_color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+            line->set_position(glm::vec2(30.0f, y_offset));
+            line->set_anchor(ui::Anchor::TopLeft);
+            line->set_render_order(1);
+            canvas->add_element(line);
+            control_lines.push_back(line);
+        }
+        y_offset += 18.0f;
+    }
 
     // Load PBR shader
     auto pbr_shader = renderer::Shader::from_glsl_file("shaders/pbr.glsl");
@@ -184,6 +250,7 @@ int main() {
     auto skybox_ref = scene->get_skybox(); // Store reference for toggling
     bool render_skybox = (skybox_ref != nullptr);
     bool render_shadows = true;
+    bool show_ui = true;
 
     // Camera movement
     glm::vec3 camera_pos = camera->get_position();
@@ -194,6 +261,7 @@ int main() {
     engine.set_resize_callback([&](int width, int height) {
         camera->set_aspect(engine.get_aspect_ratio());
         renderer->resize(width, height);
+        canvas->resize(width, height);
         std::cout << "Window resized: " << width << "x" << height 
                   << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
     });
@@ -243,6 +311,11 @@ int main() {
         if (engine.is_key_just_pressed(core::Key::H)) {
             render_shadows = !render_shadows;
             std::cout << "Shadows " << (render_shadows ? "enabled" : "disabled") << std::endl;
+        }
+        if (engine.is_key_just_pressed(core::Key::U)) {
+            show_ui = !show_ui;
+            canvas->set_visible(show_ui);
+            std::cout << "UI overlay " << (show_ui ? "enabled" : "disabled") << std::endl;
         }
         if (engine.is_key_just_pressed(core::Key::N)) {
             static bool bloom = true;
@@ -346,6 +419,12 @@ int main() {
         // Render scene with frustum culling (automatic)
         scene->update();
         renderer->render(scene, camera);
+
+        // Update and render UI
+        if (ui_font && fps_text) {
+            fps_text->set_text("FPS: " + std::to_string(static_cast<int>(engine.get_fps())));
+        }
+        canvas->render();
 
         // Update window title with stats
         static float title_timer = 0.0f;

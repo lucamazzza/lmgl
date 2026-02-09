@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <algorithm>
+#include <iostream>
 
 namespace lmgl {
 
@@ -37,6 +38,8 @@ void Canvas::render() {
         return;
     std::vector<std::shared_ptr<UIElement>> render_items;
     collect_render_items(render_items);
+    
+    glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
@@ -45,6 +48,7 @@ void Canvas::render() {
     }
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 }
 
 void Canvas::update_projection() {
