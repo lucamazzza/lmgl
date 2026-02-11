@@ -14,6 +14,7 @@
 #pragma once
 
 #include "lmgl/renderer/framebuffer.hpp"
+#include "lmgl/renderer/shadow_map.hpp"
 #include "lmgl/scene/camera.hpp"
 #include "lmgl/scene/mesh.hpp"
 #include "lmgl/scene/node.hpp"
@@ -221,6 +222,17 @@ class Renderer {
      */
     inline void set_bloom_intensity(float intensity) { m_bloom_intensity = intensity; }
 
+    /*!
+     * @brief Configure shadow rendering for the scene.
+     *
+     * Call this before rendering to automatically handle shadow maps.
+     * The renderer will create shadow maps for directional lights if enabled.
+     *
+     * @param scene The scene to render shadows for.
+     * @param shader The PBR shader to bind shadow uniforms to.
+     */
+    void setup_shadows(std::shared_ptr<scene::Scene> scene, std::shared_ptr<Shader> shader);
+
   private:
     //! @brief Current rendering mode.
     RenderMode m_render_mode;
@@ -297,6 +309,12 @@ class Renderer {
 
     //! Bloom intensity
     float m_bloom_intensity = 0.5f;
+
+    //! Shadow map for directional light (lazy initialized)
+    std::shared_ptr<ShadowMap> m_shadow_map;
+
+    //! Shadow renderer (lazy initialized)
+    std::unique_ptr<ShadowRenderer> m_shadow_renderer;
 
     /*!
      * @brief Structure representing an item to be rendered.

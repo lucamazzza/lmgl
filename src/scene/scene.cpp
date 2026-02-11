@@ -23,6 +23,10 @@ void Scene::remove_light(std::shared_ptr<Light> light) {
 
 void Scene::clear_lights() { m_lights.clear(); }
 
+void Scene::set_shadows_enabled(bool enabled) { m_shadows_enabled = enabled; }
+
+void Scene::set_shadow_resolution(int resolution) { m_shadow_resolution = resolution; }
+
 } // namespace scene
 
 } // namespace lmgl

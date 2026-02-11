@@ -7,18 +7,16 @@
 #include "lmgl/core/engine.hpp"
 #include "lmgl/renderer/renderer.hpp"
 #include "lmgl/renderer/shader.hpp"
-#include "lmgl/renderer/shadow_map.hpp"
 #include "lmgl/scene/camera.hpp"
+#include "lmgl/scene/light.hpp"
+#include "lmgl/scene/material.hpp"
 #include "lmgl/scene/mesh.hpp"
 #include "lmgl/scene/node.hpp"
 #include "lmgl/scene/scene.hpp"
-#include "lmgl/scene/material.hpp"
-#include "lmgl/scene/light.hpp"
 #include "lmgl/scene/skybox.hpp"
 #include "lmgl/ui/canvas.hpp"
-#include "lmgl/ui/panel.hpp"
-#include "lmgl/ui/text.hpp"
 #include "lmgl/ui/font.hpp"
+#include "lmgl/ui/text.hpp"
 
 #include <iostream>
 #include <memory>
@@ -60,16 +58,9 @@ int main() {
 
     // Individual control lines
     std::vector<std::shared_ptr<ui::Text>> control_lines;
-    std::vector<std::string> control_texts = {
-        "1-3  Render Mode",
-        "7-9  Tone Map",
-        "B    Toggle Skybox",
-        "H    Toggle Shadows",
-        "U    Toggle UI",
-        "N    Toggle Bloom",
-        "WASD Move Camera",
-        "RC   Free Look"
-    };
+    std::vector<std::string> control_texts = {"1-3  Render Mode",    "7-9  Tone Map",  "B    Toggle Skybox",
+                                              "H    Toggle Shadows", "U    Toggle UI", "N    Toggle Bloom",
+                                              "WASD Move Camera",    "RC   Free Look"};
 
     float y_offset = -130.0f;
     for (const auto &text : control_texts) {
@@ -93,7 +84,7 @@ int main() {
     auto scene = std::make_shared<scene::Scene>("PBR Demo Scene");
 
     // Try to load a skybox (will gracefully fail if files don't exist)
-    auto cubemap = scene::Cubemap::from_equirectangular("sandbox/assets/skybox.hdr");
+    auto cubemap = scene::Cubemap::from_equirectangular("examples/assets/skybox.hdr");
     if (cubemap) {
         auto skybox = std::make_shared<scene::Skybox>(cubemap);
         skybox->set_exposure(1.0f);
@@ -104,23 +95,13 @@ int main() {
     }
 
     // Create camera with aspect ratio from engine
-    auto camera = std::make_shared<scene::Camera>(
-        60.0f, 
-        engine.get_aspect_ratio(), 
-        0.1f, 
-        100.0f
-    );
+    auto camera = std::make_shared<scene::Camera>(60.0f, engine.get_aspect_ratio(), 0.1f, 100.0f);
     camera->set_position(glm::vec3(0.0f, 2.0f, 8.0f));
     camera->set_target(glm::vec3(0.0f, 0.0f, 0.0f));
 
     // Create renderer
     auto renderer = std::make_unique<renderer::Renderer>();
     renderer->set_tone_map_mode(1); // reinhard
-
-    // Create shadow map for directional light
-    auto shadow_renderer = std::make_unique<renderer::ShadowRenderer>();
-    auto shadow_map = std::make_shared<renderer::ShadowMap>(4096, 4096); // Higher resolution
-    std::cout << "Shadow map created (4096x4096)" << std::endl;
 
     // === Create Materials ===
 
@@ -198,7 +179,7 @@ int main() {
     auto options = assets::ModelLoadOptions();
     options.optimize_meshes = true;
     options.flip_uvs = true;
-    auto rifle = assets::ModelLoader::load("sandbox/assets/rifle.obj", pbr_shader, options);
+    auto rifle = assets::ModelLoader::load("examples/assets/rifle.obj", pbr_shader, options);
     rifle->set_position(glm::vec3(2.0f, 2.0f, -2.0f));
     rifle->set_scale(0.05f);
     scene->get_root()->add_child(rifle);
@@ -206,19 +187,12 @@ int main() {
     // === Create Lights ===
 
     // Directional light (sun)
-    auto sun = scene::Light::create_directional(
-        glm::vec3(0.3f, -1.0f, -0.5f),
-        glm::vec3(1.0f, 0.95f, 0.9f)
-    );
+    auto sun = scene::Light::create_directional(glm::vec3(0.3f, -1.0f, -0.5f), glm::vec3(1.0f, 0.95f, 0.9f));
     sun->set_intensity(2.0f);
     scene->add_light(sun);
 
     // Point light (orange)
-    auto point_light = scene::Light::create_point(
-        glm::vec3(0.0f, 3.0f, 0.0f),
-        10.0f,
-        glm::vec3(1.0f, 0.5f, 0.2f)
-    );
+    auto point_light = scene::Light::create_point(glm::vec3(0.0f, 3.0f, 0.0f), 10.0f, glm::vec3(1.0f, 0.5f, 0.2f));
     point_light->set_intensity(20.0f);
     scene->add_light(point_light);
 
@@ -228,8 +202,11 @@ int main() {
     bool camera_free_look = false;
     auto skybox_ref = scene->get_skybox(); // Store reference for toggling
     bool render_skybox = (skybox_ref != nullptr);
-    bool render_shadows = true;
     bool show_ui = true;
+
+    // Configure scene shadow settings
+    scene->set_shadows_enabled(true);
+    scene->set_shadow_resolution(4096);
 
     // Camera movement
     glm::vec3 camera_pos = camera->get_position();
@@ -241,8 +218,8 @@ int main() {
         camera->set_aspect(engine.get_aspect_ratio());
         renderer->resize(width, height);
         canvas->resize(width, height);
-        std::cout << "Window resized: " << width << "x" << height 
-                  << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
+        std::cout << "Window resized: " << width << "x" << height << " (aspect: " << engine.get_aspect_ratio() << ")"
+                  << std::endl;
     });
 
     // Main loop
@@ -288,8 +265,9 @@ int main() {
             }
         }
         if (engine.is_key_just_pressed(core::Key::H)) {
-            render_shadows = !render_shadows;
-            std::cout << "Shadows " << (render_shadows ? "enabled" : "disabled") << std::endl;
+            bool shadows = !scene->are_shadows_enabled();
+            scene->set_shadows_enabled(shadows);
+            std::cout << "Shadows " << (shadows ? "enabled" : "disabled") << std::endl;
         }
         if (engine.is_key_just_pressed(core::Key::U)) {
             show_ui = !show_ui;
@@ -350,11 +328,7 @@ int main() {
             // Orbital camera when not in free look
             float cam_angle = time * 0.3f;
             float cam_radius = 8.0f;
-            camera_pos = glm::vec3(
-                std::cos(cam_angle) * cam_radius,
-                3.0f,
-                std::sin(cam_angle) * cam_radius
-            );
+            camera_pos = glm::vec3(std::cos(cam_angle) * cam_radius, 3.0f, std::sin(cam_angle) * cam_radius);
             camera->set_position(camera_pos);
             camera->set_target(glm::vec3(0.0f, 1.0f, 0.0f));
         }
@@ -366,35 +340,15 @@ int main() {
 
         // Animate point light
         float light_angle = time * 2.0f;
-        point_light->set_position(glm::vec3(
-            std::cos(light_angle) * 3.0f,
-            3.0f,
-            std::sin(light_angle) * 3.0f
-        ));
+        point_light->set_position(glm::vec3(std::cos(light_angle) * 3.0f, 3.0f, std::sin(light_angle) * 3.0f));
         emissive_node->set_position(point_light->get_position());
 
         // Render
         engine.clear(0.05f, 0.05f, 0.1f);
-        
-        // Shadow pass (if enabled)
-        glm::mat4 light_space_matrix(1.0f);
-        if (render_shadows) {
-            shadow_renderer->render_directional_shadow(scene, sun, shadow_map);
-            // Get light space matrix for shader - centered on scene with larger radius
-            light_space_matrix = shadow_renderer->get_light_space_matrix(sun, glm::vec3(0.0f, 2.0f, 0.0f), 20.0f);
-            
-            // Bind shadow map and set uniforms on PBR shader
-            pbr_shader->bind();
-            shadow_map->bind_texture(15); // Use texture slot 15 for shadows
-            pbr_shader->set_int("u_ShadowMap", 15);
-            pbr_shader->set_int("u_UseShadows", 1);
-            pbr_shader->set_mat4("u_LightSpaceMatrix", light_space_matrix);
-        } else {
-            // Disable shadows
-            pbr_shader->bind();
-            pbr_shader->set_int("u_UseShadows", 0);
-        }
-        
+
+        // Setup shadows automatically (replaces manual shadow pass)
+        renderer->setup_shadows(scene, pbr_shader);
+
         // Render scene with frustum culling (automatic)
         scene->update();
         renderer->render(scene, camera);
@@ -409,9 +363,8 @@ int main() {
         static float title_timer = 0.0f;
         title_timer += dt;
         if (title_timer >= 0.5f) {
-            std::string title = "LMGL Sandbox | Draw Calls: " +
-                              std::to_string(renderer->get_draw_calls()) +
-                              " | Tris: " + std::to_string(renderer->get_triangles_count());
+            std::string title = "LMGL Sandbox | Draw Calls: " + std::to_string(renderer->get_draw_calls()) +
+                                " | Tris: " + std::to_string(renderer->get_triangles_count());
             engine.set_title(title);
             title_timer = 0.0f;
         }

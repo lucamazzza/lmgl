@@ -31,7 +31,10 @@ add_library(lmgl STATIC
 
     # core
     include/lmgl/core/engine.hpp
+    include/lmgl/input.hpp
+    include/lmgl/lmgl.hpp
     src/core/engine.cpp
+    src/input.cpp
 
     # renderer
     include/lmgl/renderer/buffer.hpp
@@ -110,7 +113,7 @@ if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
 endif()
 
-add_subdirectory(sandbox)
+add_subdirectory(examples)
 
 set(CPACK_PACKAGE_NAME "lmgl")
 set(CPACK_PACKAGE_VENDOR "Luca Mazza")

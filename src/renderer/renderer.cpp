@@ -68,10 +68,10 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
 
     // Post-process pass
     m_framebuffer->unbind();
-    
+
     // Reset to solid fill mode for post-processing
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    
+
     glViewport(0, 0, m_window_width, m_window_height);
     glDisable(GL_DEPTH_TEST);
 
@@ -139,7 +139,8 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
         m_screen_quad->get_vertex_array()->bind();
     m_screen_quad->render();
     m_postprocess_shader->unbind();
-    if (m_depth_test_enabled) glEnable(GL_DEPTH_TEST);
+    if (m_depth_test_enabled)
+        glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::set_render_mode(RenderMode mode) { m_render_mode = mode; }
@@ -370,10 +371,53 @@ void Renderer::clear_material_cache() { m_last_bound_material = nullptr; }
 void Renderer::resize(int width, int height) {
     m_window_width = width;
     m_window_height = height;
-    if (m_framebuffer) m_framebuffer->resize(width, height);
-    if (m_bright_framebuffer) m_bright_framebuffer->resize(width, height);
-    if (m_blur_framebuffer[0]) m_blur_framebuffer[0]->resize(width, height);
-    if (m_blur_framebuffer[1]) m_blur_framebuffer[1]->resize(width, height);
+    if (m_framebuffer)
+        m_framebuffer->resize(width, height);
+    if (m_bright_framebuffer)
+        m_bright_framebuffer->resize(width, height);
+    if (m_blur_framebuffer[0])
+        m_blur_framebuffer[0]->resize(width, height);
+    if (m_blur_framebuffer[1])
+        m_blur_framebuffer[1]->resize(width, height);
+}
+
+void Renderer::setup_shadows(std::shared_ptr<scene::Scene> scene, std::shared_ptr<Shader> shader) {
+    if (!scene || !shader)
+        return;
+
+    if (!scene->are_shadows_enabled()) {
+        shader->bind();
+        shader->set_int("u_UseShadows", 0);
+        return;
+    }
+    if (!m_shadow_map) {
+        int resolution = scene->get_shadow_resolution();
+        m_shadow_map = std::make_shared<ShadowMap>(resolution, resolution);
+    }
+    if (!m_shadow_renderer) {
+        m_shadow_renderer = std::make_unique<ShadowRenderer>();
+    }
+    auto lights = scene->get_lights();
+    std::shared_ptr<scene::Light> directional_light = nullptr;
+    for (auto &light : lights) {
+        if (light->get_type() == scene::LightType::Directional) {
+            directional_light = light;
+            break;
+        }
+    }
+    if (!directional_light) {
+        shader->bind();
+        shader->set_int("u_UseShadows", 0);
+        return;
+    }
+    m_shadow_renderer->render_directional_shadow(scene, directional_light, m_shadow_map);
+    glm::mat4 light_space_matrix =
+        m_shadow_renderer->get_light_space_matrix(directional_light, glm::vec3(0.0f, 2.0f, 0.0f), 20.0f);
+    shader->bind();
+    m_shadow_map->bind_texture(15);
+    shader->set_int("u_ShadowMap", 15);
+    shader->set_int("u_UseShadows", 1);
+    shader->set_mat4("u_LightSpaceMatrix", light_space_matrix);
 }
 
 } // namespace renderer
