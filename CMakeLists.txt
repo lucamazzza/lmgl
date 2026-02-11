@@ -76,12 +76,18 @@ add_library(lmgl STATIC
     include/lmgl/ui/image.hpp
     include/lmgl/ui/font.hpp
     include/lmgl/ui/text.hpp
+    include/lmgl/ui/button.hpp
+    include/lmgl/ui/toggle.hpp
+    include/lmgl/ui/slider.hpp
     src/ui/canvas.cpp
     src/ui/ui_element.cpp
     src/ui/panel.cpp
     src/ui/image.cpp
     src/ui/font.cpp
     src/ui/text.cpp
+    src/ui/button.cpp
+    src/ui/toggle.cpp
+    src/ui/slider.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

@@ -28,7 +28,7 @@ int main() {
 
     // Initialize engine with aspect-ratio aware settings
     auto &engine = core::Engine::get_instance();
-    if (!engine.init(1280, 720, "LMGL - PBR & Lighting Demo", true, false)) {
+    if (!engine.init(1920, 1080, "LMGL - PBR & Lighting Demo", true, false)) {
         std::cerr << "Failed to initialize engine!" << std::endl;
         return -1;
     }
@@ -38,8 +38,8 @@ int main() {
 
     // Load font
     auto &font_mgr = ui::FontManager::get();
-    auto ui_font = font_mgr.load("ui_font", "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 20);
-    auto ui_font_small = font_mgr.load("ui_font_small", "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 16);
+    auto ui_font = font_mgr.load("ui_font", "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 14);
+    auto ui_font_small = font_mgr.load("ui_font_small", "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 11);
 
     if (!ui_font || !ui_font_small) {
         std::cerr << "Warning: Failed to load UI fonts, UI overlay disabled" << std::endl;
@@ -47,59 +47,38 @@ int main() {
         std::cout << "UI fonts loaded successfully!" << std::endl;
     }
 
-    // Create title text
-    auto title_text = std::make_shared<ui::Text>("LMGL PBR Demo", "TitleText");
-    if (ui_font) {
-        title_text->set_font(ui_font);
-        title_text->set_color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        title_text->set_position(glm::vec2(20.0f, 20.0f));
-        title_text->set_anchor(ui::Anchor::TopLeft);
-        title_text->set_render_order(1);
-        canvas->add_element(title_text);
-    }
-
     // Create FPS counter text
     auto fps_text = std::make_shared<ui::Text>("FPS: 0", "FPSText");
     if (ui_font_small) {
         fps_text->set_font(ui_font_small);
-        fps_text->set_color(glm::vec4(0.8f, 1.0f, 0.8f, 1.0f));
-        fps_text->set_position(glm::vec2(20.0f, 50.0f));
+        fps_text->set_color(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
+        fps_text->set_position(glm::vec2(10.0f, 0.0f));
         fps_text->set_anchor(ui::Anchor::TopLeft);
         fps_text->set_render_order(1);
         canvas->add_element(fps_text);
     }
 
-    // Create controls help text
-    auto controls_text = std::make_shared<ui::Text>("Controls:", "ControlsText");
-    if (ui_font_small) {
-        controls_text->set_font(ui_font_small);
-        controls_text->set_color(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
-        controls_text->set_position(glm::vec2(20.0f, 90.0f));
-        controls_text->set_anchor(ui::Anchor::TopLeft);
-        controls_text->set_render_order(1);
-        canvas->add_element(controls_text);
-    }
-
     // Individual control lines
     std::vector<std::shared_ptr<ui::Text>> control_lines;
     std::vector<std::string> control_texts = {
-        "1/2/3 - Render Mode",
-        "7/8/9 - Tone Map",
-        "B - Toggle Skybox",
-        "H - Toggle Shadows",
-        "U - Toggle UI",
-        "WASD - Move Camera",
-        "Right Mouse - Free Look"
+        "1-3  Render Mode",
+        "7-9  Tone Map",
+        "B    Toggle Skybox",
+        "H    Toggle Shadows",
+        "U    Toggle UI",
+        "N    Toggle Bloom",
+        "WASD Move Camera",
+        "RC   Free Look"
     };
 
-    float y_offset = 110.0f;
+    float y_offset = -130.0f;
     for (const auto &text : control_texts) {
         auto line = std::make_shared<ui::Text>(text, "ControlLine");
         if (ui_font_small) {
             line->set_font(ui_font_small);
-            line->set_color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
-            line->set_position(glm::vec2(30.0f, y_offset));
-            line->set_anchor(ui::Anchor::TopLeft);
+            line->set_color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+            line->set_position(glm::vec2(10.0f, y_offset));
+            line->set_anchor(ui::Anchor::BottomLeft);
             line->set_render_order(1);
             canvas->add_element(line);
             control_lines.push_back(line);
@@ -430,8 +409,8 @@ int main() {
         static float title_timer = 0.0f;
         title_timer += dt;
         if (title_timer >= 0.5f) {
-            std::string title = "LMGL PBR Demo | FPS: " + std::to_string(static_cast<int>(engine.get_fps())) +
-                              " | Draw Calls: " + std::to_string(renderer->get_draw_calls()) +
+            std::string title = "LMGL Sandbox | Draw Calls: " +
+                              std::to_string(renderer->get_draw_calls()) +
                               " | Tris: " + std::to_string(renderer->get_triangles_count());
             engine.set_title(title);
             title_timer = 0.0f;
