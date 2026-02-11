@@ -79,6 +79,7 @@ add_library(lmgl STATIC
     include/lmgl/ui/button.hpp
     include/lmgl/ui/toggle.hpp
     include/lmgl/ui/slider.hpp
+    include/lmgl/ui/ui_loader.hpp
     src/ui/canvas.cpp
     src/ui/ui_element.cpp
     src/ui/panel.cpp
@@ -88,9 +89,11 @@ add_library(lmgl STATIC
     src/ui/button.cpp
     src/ui/toggle.cpp
     src/ui/slider.cpp
+    src/ui/ui_loader.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external)
 target_include_directories(lmgl PUBLIC external/glad/include)
 target_include_directories(lmgl PRIVATE external/stb)
 target_include_directories(lmgl PUBLIC ${FREETYPE_INCLUDE_DIRS})

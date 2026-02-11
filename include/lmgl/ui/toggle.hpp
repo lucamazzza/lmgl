@@ -9,6 +9,8 @@
 #pragma once
 
 #include "lmgl/ui/ui_element.hpp"
+#include "lmgl/ui/panel.hpp"
+#include "lmgl/ui/text.hpp"
 
 #include <glm/glm.hpp>
 #include <functional>
@@ -18,9 +20,6 @@
 namespace lmgl {
 
 namespace ui {
-
-class Panel;
-class Text;
 
 /*!
  * @brief Toggle/Checkbox UI element with on/off state.
