@@ -64,8 +64,9 @@ int main() {
 
   // Individual control lines
   std::vector<std::shared_ptr<ui::Text>> control_lines;
-  std::vector<std::string> control_texts = {"WASD Move Camera",
-                                             "RC   Free Look"};
+  std::vector<std::string> control_texts = {"WASD  Move Camera",
+                                             "Tab   Toggle Mouse Mode",
+                                             "U     Toggle UI"};
 
   // UI Controls
   auto toggle_skybox =
@@ -265,7 +266,6 @@ int main() {
   // Animation state
   float time = 0.0f;
   renderer::RenderMode current_mode = renderer::RenderMode::Solid;
-  bool camera_free_look = false;
   auto skybox_ref = scene->get_skybox(); // Store reference for toggling
   bool render_skybox = (skybox_ref != nullptr);
   bool show_ui = true;
@@ -274,10 +274,14 @@ int main() {
   scene->set_shadows_enabled(true);
   scene->set_shadow_resolution(4096);
 
-  // Camera movement
+  // Camera movement - free camera setup
   glm::vec3 camera_pos = camera->get_position();
   float camera_yaw = -90.0f;
   float camera_pitch = 0.0f;
+
+  // Mouse mode state - start with free camera
+  bool mouse_locked = true;
+  engine.set_cursor_mode(core::CursorMode::Disabled);
 
   // Handle window resize
   engine.set_resize_callback([&](int width, int height) {
@@ -292,8 +296,8 @@ int main() {
   engine.run([&](float dt) {
     time += dt;
 
-    // Handle UI clicks with single-click tracking
-    if (engine.is_mouse_button_just_pressed(core::MouseButton::Left)) {
+    // Handle UI clicks with single-click tracking (only when mouse is unlocked)
+    if (!mouse_locked && engine.is_mouse_button_just_pressed(core::MouseButton::Left)) {
       float mx = engine.get_mouse_x();
       float my = engine.get_mouse_y();
       float cw = canvas->get_width();
@@ -307,7 +311,7 @@ int main() {
       btn_points->handle_mouse_button(mx, my, true, cw, ch);
     }
 
-    if (engine.is_mouse_button_just_released(core::MouseButton::Left)) {
+    if (!mouse_locked && engine.is_mouse_button_just_released(core::MouseButton::Left)) {
       float mx = engine.get_mouse_x();
       float my = engine.get_mouse_y();
       float cw = canvas->get_width();
@@ -318,14 +322,16 @@ int main() {
       btn_points->handle_mouse_button(mx, my, false, cw, ch);
     }
 
-    // Handle mouse movement for button hover states
-    float mx = engine.get_mouse_x();
-    float my = engine.get_mouse_y();
-    float cw = canvas->get_width();
-    float ch = canvas->get_height();
-    btn_solid->handle_mouse_move(mx, my, cw, ch);
-    btn_wireframe->handle_mouse_move(mx, my, cw, ch);
-    btn_points->handle_mouse_move(mx, my, cw, ch);
+    // Handle mouse movement for button hover states (only when unlocked)
+    if (!mouse_locked) {
+      float mx = engine.get_mouse_x();
+      float my = engine.get_mouse_y();
+      float cw = canvas->get_width();
+      float ch = canvas->get_height();
+      btn_solid->handle_mouse_move(mx, my, cw, ch);
+      btn_wireframe->handle_mouse_move(mx, my, cw, ch);
+      btn_points->handle_mouse_move(mx, my, cw, ch);
+    }
 
     // === Input Handling (no GLFW!) ===
 
@@ -335,6 +341,13 @@ int main() {
 
     if (engine.is_key_just_pressed(core::Key::F)) {
       engine.set_fullscreen(!engine.is_fullscreen());
+    }
+
+    // Toggle mouse mode with Tab key
+    if (engine.is_key_just_pressed(core::Key::Tab)) {
+      mouse_locked = !mouse_locked;
+      engine.set_cursor_mode(mouse_locked ? core::CursorMode::Disabled : core::CursorMode::Normal);
+      std::cout << "Mouse " << (mouse_locked ? "locked (free camera)" : "unlocked (UI mode)") << std::endl;
     }
 
     if (engine.is_key_just_pressed(core::Key::U)) {
@@ -400,43 +413,25 @@ int main() {
       camera_pos += right * cam_speed;
     }
 
-    // Mouse look (if enabled)
-    if (engine.is_mouse_button_pressed(core::MouseButton::Right)) {
-      if (!camera_free_look) {
-        engine.set_cursor_mode(core::CursorMode::Disabled);
-        camera_free_look = true;
-      }
-
+    // Mouse look (only when locked)
+    if (mouse_locked) {
       double dx, dy;
       engine.get_mouse_delta(dx, dy);
 
       camera_yaw += dx * 0.1f;
       camera_pitch -= dy * 0.1f;
       camera_pitch = glm::clamp(camera_pitch, -89.0f, 89.0f);
-
-      glm::vec3 direction;
-      direction.x =
-          cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-      direction.y = sin(glm::radians(camera_pitch));
-      direction.z =
-          sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-
-      camera->set_position(camera_pos);
-      camera->set_target(camera_pos + glm::normalize(direction));
-    } else {
-      if (camera_free_look) {
-        engine.set_cursor_mode(core::CursorMode::Normal);
-        camera_free_look = false;
-      }
-
-      // Orbital camera when not in free look
-      float cam_angle = time * 0.3f;
-      float cam_radius = 8.0f;
-      camera_pos = glm::vec3(std::cos(cam_angle) * cam_radius, 3.0f,
-                             std::sin(cam_angle) * cam_radius);
-      camera->set_position(camera_pos);
-      camera->set_target(glm::vec3(0.0f, 1.0f, 0.0f));
     }
+
+    glm::vec3 direction;
+    direction.x =
+        cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+    direction.y = sin(glm::radians(camera_pitch));
+    direction.z =
+        sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+
+    camera->set_position(camera_pos);
+    camera->set_target(camera_pos + glm::normalize(direction));
 
     // Animate spheres
     metal_node->set_rotation(glm::vec3(0.0f, time * 30.0f, 0.0f));

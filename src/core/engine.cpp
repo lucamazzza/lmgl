@@ -47,6 +47,12 @@ bool Engine::init(int w, int h, std::string title, bool resizable, bool vsync) {
     glEnable(GL_DEPTH_TEST);
     set_vsync(vsync ? VSyncMode::On : VSyncMode::Off);
     m_last_frame_time = static_cast<float>(glfwGetTime());
+    
+    // Initialize mouse position to prevent spinning on first frame
+    glfwGetCursorPos(m_window, &m_mouse_x, &m_mouse_y);
+    m_last_mouse_x = m_mouse_x;
+    m_last_mouse_y = m_mouse_y;
+    
     return true;
 }
 
@@ -69,8 +75,12 @@ void Engine::run(std::function<void(float)> update_callback) {
         glViewport(0, 0, m_width, m_height);
         update_callback(m_delta_time);
         glfwSwapBuffers(m_window);
+        
+        // Reset per-frame input states
         m_scroll_x = 0.0f;
         m_scroll_y = 0.0f;
+        m_last_mouse_x = m_mouse_x;
+        m_last_mouse_y = m_mouse_y;
     }
 }
 
@@ -190,6 +200,10 @@ void Engine::set_mouse_position(double x, double y) {
 void Engine::set_cursor_mode(CursorMode mode) {
     if (!m_window)
         return;
+    
+    // Reset first mouse flag when changing cursor mode to prevent spinning
+    m_first_mouse_move = true;
+    
     switch (mode) {
     case CursorMode::Normal:
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -253,8 +267,17 @@ void Engine::cursor_position_callback(GLFWwindow *window, double xpos, double yp
     if (!engine)
         return;
 
-    engine->m_last_mouse_x = engine->m_mouse_x;
-    engine->m_last_mouse_y = engine->m_mouse_y;
+    // Skip first mouse movement to prevent spinning
+    if (engine->m_first_mouse_move) {
+        engine->m_mouse_x = xpos;
+        engine->m_mouse_y = ypos;
+        engine->m_last_mouse_x = xpos;
+        engine->m_last_mouse_y = ypos;
+        engine->m_first_mouse_move = false;
+        return;
+    }
+
+    // Only update current position - delta will be calculated per frame
     engine->m_mouse_x = xpos;
     engine->m_mouse_y = ypos;
 }

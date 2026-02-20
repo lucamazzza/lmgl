@@ -561,6 +561,9 @@ class Engine {
     //! @brief Last frame's y axis position of the mouse on the window.
     double m_last_mouse_y = 0.0;
 
+    //! @brief Flag to ignore first mouse movement after cursor mode change.
+    bool m_first_mouse_move = true;
+
     //! @brief Amount of x axis scroll on the window.
     double m_scroll_x = 0.0;
 
