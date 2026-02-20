@@ -47,7 +47,7 @@ int main() {
         return -1;
     }
 
-    std::cout << "✅ UI loaded from JSON successfully!" << std::endl;
+    std::cout << "UI loaded from JSON successfully!" << std::endl;
     std::cout << "Loaded " << result.elements.size() << " named elements" << std::endl;
 
     // Get references to specific elements

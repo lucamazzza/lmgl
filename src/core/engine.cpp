@@ -166,6 +166,16 @@ bool Engine::is_mouse_button_pressed(MouseButton button) const {
     return b >= 0 && b < 8 ? m_mouse_button_states[b] : false;
 }
 
+bool Engine::is_mouse_button_just_pressed(MouseButton button) const {
+    int b = static_cast<int>(button);
+    return b >= 0 && b < 8 ? m_mouse_button_just_pressed[b] : false;
+}
+
+bool Engine::is_mouse_button_just_released(MouseButton button) const {
+    int b = static_cast<int>(button);
+    return b >= 0 && b < 8 ? m_mouse_button_just_released[b] : false;
+}
+
 void Engine::get_mouse_delta(double &dx, double &dy) const {
     dx = m_mouse_x - m_last_mouse_x;
     dy = m_mouse_y - m_last_mouse_y;
@@ -229,7 +239,13 @@ void Engine::mouse_button_callback(GLFWwindow *window, int button, int action, i
     if (!engine || button < 0 || button >= 8)
         return;
 
-    engine->m_mouse_button_states[button] = (action == GLFW_PRESS);
+    if (action == GLFW_PRESS) {
+        engine->m_mouse_button_states[button] = true;
+        engine->m_mouse_button_just_pressed[button] = true;
+    } else if (action == GLFW_RELEASE) {
+        engine->m_mouse_button_states[button] = false;
+        engine->m_mouse_button_just_released[button] = true;
+    }
 }
 
 void Engine::cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
@@ -257,6 +273,10 @@ void Engine::update_input_state() {
     for (int i = 0; i < 512; ++i) {
         m_key_just_pressed[i] = false;
         m_key_just_released[i] = false;
+    }
+    for (int i = 0; i < 8; ++i) {
+        m_mouse_button_just_pressed[i] = false;
+        m_mouse_button_just_released[i] = false;
     }
 }
 

@@ -96,7 +96,7 @@ void Button::render(float canvas_width, float canvas_height, const glm::mat4 &pr
     m_panel->set_position(abs_pos);
     m_panel->set_size(m_size);
     m_panel->set_anchor(Anchor::TopLeft);
-    m_text->set_position(glm::vec2(abs_pos.x + m_size.x * 0.5f, abs_pos.y + m_size.y * 0.5f - 16.0f));
+    m_text->set_position(glm::vec2(abs_pos.x + m_size.x * 0.5f, abs_pos.y + m_size.y * 0.5f - 10.0f));
     m_text->set_anchor(Anchor::TopLeft);
     m_panel->render(canvas_width, canvas_height, projection);
     m_text->render(canvas_width, canvas_height, projection);
