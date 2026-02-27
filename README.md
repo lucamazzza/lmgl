@@ -14,6 +14,9 @@
 
 </p>
 
+> [!INFO]
+> The project is currently under review for VR features integration
+
 What is it?
 -----------
 
