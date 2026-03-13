@@ -18,9 +18,9 @@ add_subdirectory(external/glfw)
 add_subdirectory(external/glm)
 add_subdirectory(external/googletest)
 add_subdirectory(external/assimp)
+add_subdirectory(external/freetype)
 
 find_package(OpenGL REQUIRED)
-find_package(Freetype REQUIRED)
 
 add_library(lmgl STATIC 
     # assets
@@ -99,15 +99,14 @@ target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external)
 target_include_directories(lmgl PUBLIC external/glad/include)
 target_include_directories(lmgl PRIVATE external/stb)
-target_include_directories(lmgl PUBLIC ${FREETYPE_INCLUDE_DIRS})
-
+target_include_directories(lmgl PRIVATE external/freetype/include)
 if(HEADLESS)
     target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
 endif()
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
-target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY} ${FREETYPE_LIBRARIES})
+target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY} freetype)
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
