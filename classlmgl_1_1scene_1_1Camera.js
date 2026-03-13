@@ -1,9 +1,6 @@
 var classlmgl_1_1scene_1_1Camera =
 [
-    [ "ProjectionMode", "classlmgl_1_1scene_1_1Camera.html#a3a45067f3d21d5699d75bb8f2b863cf6", [
-      [ "Perspective", "classlmgl_1_1scene_1_1Camera.html#a3a45067f3d21d5699d75bb8f2b863cf6aa80420eef88d11f77532f1b9cb467fa3", null ],
-      [ "Orthographic", "classlmgl_1_1scene_1_1Camera.html#a3a45067f3d21d5699d75bb8f2b863cf6a03424250432f2aa71de95579d2c0eaeb", null ]
-    ] ],
+    [ "ProjectionMode", "classlmgl_1_1scene_1_1Camera.html#a3a45067f3d21d5699d75bb8f2b863cf6", null ],
     [ "Camera", "classlmgl_1_1scene_1_1Camera.html#a5a7a11476b29633431772616a6437e26", null ],
     [ "get_aspect", "classlmgl_1_1scene_1_1Camera.html#a590c48581489a9ecc7e9b6f096138030", null ],
     [ "get_position", "classlmgl_1_1scene_1_1Camera.html#abe0cce927970decbc72bde2573dfa15e", null ],

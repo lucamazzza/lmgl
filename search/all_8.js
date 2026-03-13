@@ -1,12 +1,23 @@
 var searchData=
 [
-  ['indexbuffer_0',['IndexBuffer',['../classlmgl_1_1renderer_1_1IndexBuffer.html',1,'lmgl::renderer::IndexBuffer'],['../classlmgl_1_1renderer_1_1IndexBuffer.html#a50cf34186c9a85cadd35586ae1fea253',1,'lmgl::renderer::IndexBuffer::IndexBuffer()']]],
-  ['init_1',['init',['../classlmgl_1_1core_1_1Engine.html#a96800a1bd9cf9a8d60b346777eae0a5b',1,'lmgl::core::Engine']]],
-  ['inputstate_2',['InputState',['../engine_8hpp.html#a38451776b9cf43874f327b6e4000775d',1,'lmgl::core']]],
-  ['is_5ffullscreen_3',['is_fullscreen',['../classlmgl_1_1core_1_1Engine.html#afaeb0cb9bb06fe6ea4368f0dcb0d8b55',1,'lmgl::core::Engine']]],
-  ['is_5fkey_5fjust_5fpressed_4',['is_key_just_pressed',['../classlmgl_1_1core_1_1Engine.html#af48dde52529a49123d2b75e9c97d1cfd',1,'lmgl::core::Engine']]],
-  ['is_5fkey_5fjust_5freleased_5',['is_key_just_released',['../classlmgl_1_1core_1_1Engine.html#a87fdd675b3b1ff08c727d6d8aa92e5fc',1,'lmgl::core::Engine']]],
-  ['is_5fkey_5fpressed_6',['is_key_pressed',['../classlmgl_1_1core_1_1Engine.html#a745f8414b87fbce4f9f985dbef5e709f',1,'lmgl::core::Engine']]],
-  ['is_5fmouse_5fbutton_5fpressed_7',['is_mouse_button_pressed',['../classlmgl_1_1core_1_1Engine.html#acbe184fc68c97fe0b795f30ae47e08ca',1,'lmgl::core::Engine']]],
-  ['is_5frunning_8',['is_running',['../classlmgl_1_1core_1_1Engine.html#a216f1503ae84966920def1a3cbfe5868',1,'lmgl::core::Engine']]]
+  ['image_0',['Image',['../classlmgl_1_1ui_1_1Image.html',1,'lmgl::ui::Image'],['../classlmgl_1_1ui_1_1Image.html#a440329262ebb47bc7a7d3e7758391134',1,'lmgl::ui::Image::Image()']]],
+  ['image_2ecpp_1',['image.cpp',['../image_8cpp.html',1,'']]],
+  ['image_2ehpp_2',['image.hpp',['../image_8hpp.html',1,'']]],
+  ['indexbuffer_3',['IndexBuffer',['../classlmgl_1_1renderer_1_1IndexBuffer.html',1,'lmgl::renderer::IndexBuffer'],['../classlmgl_1_1renderer_1_1IndexBuffer.html#a50cf34186c9a85cadd35586ae1fea253',1,'lmgl::renderer::IndexBuffer::IndexBuffer()']]],
+  ['init_4',['init',['../classlmgl_1_1core_1_1Engine.html#a96800a1bd9cf9a8d60b346777eae0a5b',1,'lmgl::core::Engine']]],
+  ['input_5',['Input',['../classlmgl_1_1Input.html',1,'lmgl']]],
+  ['input_2ecpp_6',['input.cpp',['../input_8cpp.html',1,'']]],
+  ['input_2ehpp_7',['input.hpp',['../input_8hpp.html',1,'']]],
+  ['inputstate_8',['InputState',['../engine_8hpp.html#a38451776b9cf43874f327b6e4000775d',1,'lmgl::core']]],
+  ['introduction_9',['Introduction',['../index.html#intro_sec',1,'']]],
+  ['is_5fchecked_10',['is_checked',['../classlmgl_1_1ui_1_1Toggle.html#a57c3685c0bf9437a9afc65a65a1f37d7',1,'lmgl::ui::Toggle']]],
+  ['is_5ffullscreen_11',['is_fullscreen',['../classlmgl_1_1core_1_1Engine.html#afaeb0cb9bb06fe6ea4368f0dcb0d8b55',1,'lmgl::core::Engine']]],
+  ['is_5fkey_5fjust_5fpressed_12',['is_key_just_pressed',['../classlmgl_1_1core_1_1Engine.html#af48dde52529a49123d2b75e9c97d1cfd',1,'lmgl::core::Engine::is_key_just_pressed()'],['../classlmgl_1_1Input.html#a189746017b6151ff7de90a84b594d996',1,'lmgl::Input::is_key_just_pressed()']]],
+  ['is_5fkey_5fjust_5freleased_13',['is_key_just_released',['../classlmgl_1_1core_1_1Engine.html#a87fdd675b3b1ff08c727d6d8aa92e5fc',1,'lmgl::core::Engine::is_key_just_released()'],['../classlmgl_1_1Input.html#a57827631ec0ab58e80a3444257ea1535',1,'lmgl::Input::is_key_just_released()']]],
+  ['is_5fkey_5fpressed_14',['is_key_pressed',['../classlmgl_1_1core_1_1Engine.html#a745f8414b87fbce4f9f985dbef5e709f',1,'lmgl::core::Engine::is_key_pressed()'],['../classlmgl_1_1Input.html#a062b6b4d36a63fa2e04ddd29269ad9f1',1,'lmgl::Input::is_key_pressed()']]],
+  ['is_5fmouse_5fbutton_5fjust_5fpressed_15',['is_mouse_button_just_pressed',['../classlmgl_1_1core_1_1Engine.html#af9de0c08ca7a430b8b0b176974b2bcf3',1,'lmgl::core::Engine']]],
+  ['is_5fmouse_5fbutton_5fjust_5freleased_16',['is_mouse_button_just_released',['../classlmgl_1_1core_1_1Engine.html#a1c5f042739761d2bb29c8716fc558a5b',1,'lmgl::core::Engine']]],
+  ['is_5fmouse_5fbutton_5fpressed_17',['is_mouse_button_pressed',['../classlmgl_1_1core_1_1Engine.html#acbe184fc68c97fe0b795f30ae47e08ca',1,'lmgl::core::Engine::is_mouse_button_pressed()'],['../classlmgl_1_1Input.html#a8b40378dd782b776880e2aadc5fdb94d',1,'lmgl::Input::is_mouse_button_pressed()']]],
+  ['is_5frunning_18',['is_running',['../classlmgl_1_1core_1_1Engine.html#a216f1503ae84966920def1a3cbfe5868',1,'lmgl::core::Engine']]],
+  ['is_5fvisible_19',['is_visible',['../classlmgl_1_1ui_1_1Canvas.html#a7783b5819c115be434791f290c5676f6',1,'lmgl::ui::Canvas::is_visible()'],['../classlmgl_1_1ui_1_1UIElement.html#ae25f8131cb1dbf1bf41f0a78ba353b93',1,'lmgl::ui::UIElement::is_visible()']]]
 ];

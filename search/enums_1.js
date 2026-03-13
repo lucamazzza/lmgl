@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['inputstate_0',['InputState',['../engine_8hpp.html#a38451776b9cf43874f327b6e4000775d',1,'lmgl::core']]]
+  ['buttonstate_0',['ButtonState',['../namespacelmgl_1_1ui.html#a5413eaca6397de96a37d4b51c7a1227f',1,'lmgl::ui']]]
 ];

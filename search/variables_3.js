@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['flip_5fuvs_0',['flip_uvs',['../structlmgl_1_1assets_1_1ModelLoadOptions.html#a6a58899bf2df057645e037a4dc4d3cc5',1,'lmgl::assets::ModelLoadOptions']]]
+  ['distance_0',['distance',['../structlmgl_1_1scene_1_1Plane.html#af831d5b0577cf08dfe318c826f087bf2',1,'lmgl::scene::Plane']]]
 ];

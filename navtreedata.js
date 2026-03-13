@@ -25,6 +25,9 @@
 var NAVTREE =
 [
   [ "lmgl", "index.html", [
+    [ "Introduction", "index.html#intro_sec", null ],
+    [ "Quick Start", "index.html#quick_start", null ],
+    [ "Modules", "index.html#modules", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -52,10 +55,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classlmgl_1_1renderer_1_1VertexArray.html#a932c45c8e5bce1703246bee706222fdc",
-"classlmgl_1_1scene_1_1Mesh.html#a669dc3133ff321a5ed94db889497889e",
-"functions_s.html"
+"classlmgl_1_1renderer_1_1VertexArray.html",
+"classlmgl_1_1scene_1_1Mesh.html#ab68784226d4e11319260dad7f857b7d5",
+"classlmgl_1_1ui_1_1Slider.html#a3a9ac99906b467f61299e54dbc8052bc",
+"pages.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
 var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';

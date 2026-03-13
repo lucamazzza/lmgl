@@ -1,15 +1,19 @@
 var searchData=
 [
   ['flip_5fuvs_0',['flip_uvs',['../structlmgl_1_1assets_1_1ModelLoadOptions.html#a6a58899bf2df057645e037a4dc4d3cc5',1,'lmgl::assets::ModelLoadOptions']]],
-  ['framebuffer_1',['Framebuffer',['../classlmgl_1_1renderer_1_1Framebuffer.html',1,'lmgl::renderer::Framebuffer'],['../classlmgl_1_1renderer_1_1Framebuffer.html#af2dee9c79800f83f1e7f2ed8573c87a1',1,'lmgl::renderer::Framebuffer::Framebuffer()']]],
-  ['framebuffer_2ehpp_2',['framebuffer.hpp',['../framebuffer_8hpp.html',1,'']]],
-  ['free_3',['free',['../classlmgl_1_1core_1_1Engine.html#aa62359dc01047f830feba550edc40f9b',1,'lmgl::core::Engine']]],
-  ['from_5faabb_4',['from_aabb',['../structlmgl_1_1scene_1_1BoundingSphere.html#a02f92d7622b27284cac994136d1adf54',1,'lmgl::scene::BoundingSphere']]],
-  ['from_5fequirectangular_5',['from_equirectangular',['../classlmgl_1_1scene_1_1Cubemap.html#acee71335fb170413e1e3aa39e58cc4a8',1,'lmgl::scene::Cubemap']]],
-  ['from_5ffaces_6',['from_faces',['../classlmgl_1_1scene_1_1Cubemap.html#abab05dab10f24c3b2b89cbdc42149384',1,'lmgl::scene::Cubemap']]],
-  ['from_5fglsl_5ffile_7',['from_glsl_file',['../classlmgl_1_1renderer_1_1Shader.html#ae9075bd087c28e815438de54964c90ea',1,'lmgl::renderer::Shader']]],
-  ['from_5fvf_5ffiles_8',['from_vf_files',['../classlmgl_1_1renderer_1_1Shader.html#adaba3e90b277ee73a48140e6624572d4',1,'lmgl::renderer::Shader']]],
-  ['from_5fvgf_5ffiles_9',['from_vgf_files',['../classlmgl_1_1renderer_1_1Shader.html#a66b1e6445dc3b7e13c1960c9ad6897b3',1,'lmgl::renderer::Shader']]],
-  ['frustum_10',['Frustum',['../classlmgl_1_1scene_1_1Frustum.html',1,'lmgl::scene']]],
-  ['frustum_2ehpp_11',['frustum.hpp',['../frustum_8hpp.html',1,'']]]
+  ['font_1',['Font',['../classlmgl_1_1ui_1_1Font.html',1,'lmgl::ui::Font'],['../classlmgl_1_1ui_1_1Font.html#a0e7f6130fa591e3b411a6c6de2f1679e',1,'lmgl::ui::Font::Font()']]],
+  ['font_2ecpp_2',['font.cpp',['../font_8cpp.html',1,'']]],
+  ['font_2ehpp_3',['font.hpp',['../font_8hpp.html',1,'']]],
+  ['fontmanager_4',['FontManager',['../classlmgl_1_1ui_1_1FontManager.html',1,'lmgl::ui']]],
+  ['framebuffer_5',['Framebuffer',['../classlmgl_1_1renderer_1_1Framebuffer.html',1,'lmgl::renderer::Framebuffer'],['../classlmgl_1_1renderer_1_1Framebuffer.html#af2dee9c79800f83f1e7f2ed8573c87a1',1,'lmgl::renderer::Framebuffer::Framebuffer()']]],
+  ['framebuffer_2ehpp_6',['framebuffer.hpp',['../framebuffer_8hpp.html',1,'']]],
+  ['free_7',['free',['../classlmgl_1_1core_1_1Engine.html#aa62359dc01047f830feba550edc40f9b',1,'lmgl::core::Engine']]],
+  ['from_5faabb_8',['from_aabb',['../structlmgl_1_1scene_1_1BoundingSphere.html#a02f92d7622b27284cac994136d1adf54',1,'lmgl::scene::BoundingSphere']]],
+  ['from_5fequirectangular_9',['from_equirectangular',['../classlmgl_1_1scene_1_1Cubemap.html#acee71335fb170413e1e3aa39e58cc4a8',1,'lmgl::scene::Cubemap']]],
+  ['from_5ffaces_10',['from_faces',['../classlmgl_1_1scene_1_1Cubemap.html#abab05dab10f24c3b2b89cbdc42149384',1,'lmgl::scene::Cubemap']]],
+  ['from_5fglsl_5ffile_11',['from_glsl_file',['../classlmgl_1_1renderer_1_1Shader.html#ae9075bd087c28e815438de54964c90ea',1,'lmgl::renderer::Shader']]],
+  ['from_5fvf_5ffiles_12',['from_vf_files',['../classlmgl_1_1renderer_1_1Shader.html#adaba3e90b277ee73a48140e6624572d4',1,'lmgl::renderer::Shader']]],
+  ['from_5fvgf_5ffiles_13',['from_vgf_files',['../classlmgl_1_1renderer_1_1Shader.html#a66b1e6445dc3b7e13c1960c9ad6897b3',1,'lmgl::renderer::Shader']]],
+  ['frustum_14',['Frustum',['../classlmgl_1_1scene_1_1Frustum.html',1,'lmgl::scene']]],
+  ['frustum_2ehpp_15',['frustum.hpp',['../frustum_8hpp.html',1,'']]]
 ];

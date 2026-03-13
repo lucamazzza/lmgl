@@ -18,6 +18,8 @@ var classlmgl_1_1core_1_1Engine =
     [ "is_key_just_pressed", "classlmgl_1_1core_1_1Engine.html#af48dde52529a49123d2b75e9c97d1cfd", null ],
     [ "is_key_just_released", "classlmgl_1_1core_1_1Engine.html#a87fdd675b3b1ff08c727d6d8aa92e5fc", null ],
     [ "is_key_pressed", "classlmgl_1_1core_1_1Engine.html#a745f8414b87fbce4f9f985dbef5e709f", null ],
+    [ "is_mouse_button_just_pressed", "classlmgl_1_1core_1_1Engine.html#af9de0c08ca7a430b8b0b176974b2bcf3", null ],
+    [ "is_mouse_button_just_released", "classlmgl_1_1core_1_1Engine.html#a1c5f042739761d2bb29c8716fc558a5b", null ],
     [ "is_mouse_button_pressed", "classlmgl_1_1core_1_1Engine.html#acbe184fc68c97fe0b795f30ae47e08ca", null ],
     [ "is_running", "classlmgl_1_1core_1_1Engine.html#a216f1503ae84966920def1a3cbfe5868", null ],
     [ "maximize", "classlmgl_1_1core_1_1Engine.html#a8eba160837fa0833bbfdbbe2455b642e", null ],

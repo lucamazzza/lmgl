@@ -5,15 +5,28 @@ var hierarchy =
     [ "lmgl::renderer::BufferElement", "structlmgl_1_1renderer_1_1BufferElement.html", null ],
     [ "lmgl::renderer::BufferLayout", "classlmgl_1_1renderer_1_1BufferLayout.html", null ],
     [ "lmgl::scene::Camera", "classlmgl_1_1scene_1_1Camera.html", null ],
+    [ "lmgl::ui::Canvas", "classlmgl_1_1ui_1_1Canvas.html", null ],
     [ "lmgl::scene::Cubemap", "classlmgl_1_1scene_1_1Cubemap.html", null ],
     [ "lmgl::renderer::CubemapShadowMap", "classlmgl_1_1renderer_1_1CubemapShadowMap.html", null ],
     [ "std::enable_shared_from_this", null, [
-      [ "lmgl::scene::Node", "classlmgl_1_1scene_1_1Node.html", null ]
+      [ "lmgl::scene::Node", "classlmgl_1_1scene_1_1Node.html", null ],
+      [ "lmgl::ui::UIElement", "classlmgl_1_1ui_1_1UIElement.html", [
+        [ "lmgl::ui::Button", "classlmgl_1_1ui_1_1Button.html", null ],
+        [ "lmgl::ui::Image", "classlmgl_1_1ui_1_1Image.html", null ],
+        [ "lmgl::ui::Panel", "classlmgl_1_1ui_1_1Panel.html", null ],
+        [ "lmgl::ui::Slider", "classlmgl_1_1ui_1_1Slider.html", null ],
+        [ "lmgl::ui::Text", "classlmgl_1_1ui_1_1Text.html", null ],
+        [ "lmgl::ui::Toggle", "classlmgl_1_1ui_1_1Toggle.html", null ]
+      ] ]
     ] ],
     [ "lmgl::core::Engine", "classlmgl_1_1core_1_1Engine.html", null ],
+    [ "lmgl::ui::Font", "classlmgl_1_1ui_1_1Font.html", null ],
+    [ "lmgl::ui::FontManager", "classlmgl_1_1ui_1_1FontManager.html", null ],
     [ "lmgl::renderer::Framebuffer", "classlmgl_1_1renderer_1_1Framebuffer.html", null ],
     [ "lmgl::scene::Frustum", "classlmgl_1_1scene_1_1Frustum.html", null ],
+    [ "lmgl::ui::Glyph", "structlmgl_1_1ui_1_1Glyph.html", null ],
     [ "lmgl::renderer::IndexBuffer", "classlmgl_1_1renderer_1_1IndexBuffer.html", null ],
+    [ "lmgl::Input", "classlmgl_1_1Input.html", null ],
     [ "lmgl::scene::Light", "classlmgl_1_1scene_1_1Light.html", null ],
     [ "lmgl::scene::LOD", "classlmgl_1_1scene_1_1LOD.html", null ],
     [ "lmgl::scene::LODLevel", "structlmgl_1_1scene_1_1LODLevel.html", null ],
@@ -31,6 +44,9 @@ var hierarchy =
     [ "lmgl::scene::Skybox", "classlmgl_1_1scene_1_1Skybox.html", null ],
     [ "lmgl::renderer::Texture", "classlmgl_1_1renderer_1_1Texture.html", null ],
     [ "lmgl::assets::TextureLibrary", "classlmgl_1_1assets_1_1TextureLibrary.html", null ],
+    [ "lmgl::ui::UICallbackRegistry", "classlmgl_1_1ui_1_1UICallbackRegistry.html", null ],
+    [ "lmgl::ui::UILoader", "classlmgl_1_1ui_1_1UILoader.html", null ],
+    [ "lmgl::ui::UILoadResult", "structlmgl_1_1ui_1_1UILoadResult.html", null ],
     [ "lmgl::scene::Vertex", "structlmgl_1_1scene_1_1Vertex.html", null ],
     [ "lmgl::renderer::VertexArray", "classlmgl_1_1renderer_1_1VertexArray.html", null ],
     [ "lmgl::renderer::VertexBuffer", "classlmgl_1_1renderer_1_1VertexBuffer.html", null ]

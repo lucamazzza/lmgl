@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['light_0',['Light',['../classlmgl_1_1scene_1_1Light.html',1,'lmgl::scene']]],
-  ['lod_1',['LOD',['../classlmgl_1_1scene_1_1LOD.html',1,'lmgl::scene']]],
-  ['lodlevel_2',['LODLevel',['../structlmgl_1_1scene_1_1LODLevel.html',1,'lmgl::scene']]]
+  ['image_0',['Image',['../classlmgl_1_1ui_1_1Image.html',1,'lmgl::ui']]],
+  ['indexbuffer_1',['IndexBuffer',['../classlmgl_1_1renderer_1_1IndexBuffer.html',1,'lmgl::renderer']]],
+  ['input_2',['Input',['../classlmgl_1_1Input.html',1,'lmgl']]]
 ];

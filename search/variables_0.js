@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bitangent_0',['bitangent',['../structlmgl_1_1scene_1_1Vertex.html#a72e0feb0c0299c82a3680b490f2baa03',1,'lmgl::scene::Vertex']]]
+  ['advance_0',['advance',['../structlmgl_1_1ui_1_1Glyph.html#a2deac43c091d9dfec2942f10a003317b',1,'lmgl::ui::Glyph']]]
 ];
