@@ -136,8 +136,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7444d1805a7f741f744b557bd076fd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the bloom brightness threshold.  <br /></td></tr>
 <tr class="memitem:a88224d328ca5bf2d7fcaf5ec0fa0e48c" id="r_a88224d328ca5bf2d7fcaf5ec0fa0e48c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a88224d328ca5bf2d7fcaf5ec0fa0e48c">set_bloom_intensity</a> (float intensity)</td></tr>
 <tr class="memdesc:a88224d328ca5bf2d7fcaf5ec0fa0e48c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the bloom intensity/strength.  <br /></td></tr>
-<tr class="memitem:a352f939a560264e97dfcad2830170321" id="r_a352f939a560264e97dfcad2830170321"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a352f939a560264e97dfcad2830170321">setup_shadows</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Scene.html">scene::Scene</a> &gt; <a class="el" href="namespacelmgl_1_1scene.html">scene</a>, std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt; shader)</td></tr>
-<tr class="memdesc:a352f939a560264e97dfcad2830170321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure shadow rendering for the scene.  <br /></td></tr>
+<tr class="memitem:a95afaa2afe7686d977c2c580c8322f06" id="r_a95afaa2afe7686d977c2c580c8322f06"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a95afaa2afe7686d977c2c580c8322f06">setup_shadows</a> (std::shared_ptr&lt; <a class="el" href="classlmgl_1_1scene_1_1Scene.html">scene::Scene</a> &gt; <a class="el" href="namespacelmgl_1_1scene.html">scene</a>, std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt; shader, bool enable_point=true, bool enable_directional=true)</td></tr>
+<tr class="memdesc:a95afaa2afe7686d977c2c580c8322f06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure shadow rendering for the scene.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages the rendering of scenes. </p>
@@ -673,8 +673,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a352f939a560264e97dfcad2830170321" name="a352f939a560264e97dfcad2830170321"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a352f939a560264e97dfcad2830170321">&#9670;&#160;</a></span>setup_shadows()</h2>
+<a id="a95afaa2afe7686d977c2c580c8322f06" name="a95afaa2afe7686d977c2c580c8322f06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95afaa2afe7686d977c2c580c8322f06">&#9670;&#160;</a></span>setup_shadows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -687,17 +687,29 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>shader</em></span>&#160;)</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlmgl_1_1renderer_1_1Shader.html">Shader</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>shader</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enable_point</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enable_directional</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Configure shadow rendering for the scene. </p>
-<p>Call this before rendering to automatically handle shadow maps. The renderer will create shadow maps for directional lights if enabled.</p>
+<p>Call this before rendering to automatically handle shadow maps. The renderer will create shadow maps for directional and/or point lights if enabled.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname"><a class="el" href="namespacelmgl_1_1scene.html" title="Namespace for scene-related classes and functions.">scene</a></td><td>The scene to render shadows for. </td></tr>
     <tr><td class="paramname">shader</td><td>The PBR shader to bind shadow uniforms to. </td></tr>
+    <tr><td class="paramname">enable_point</td><td>Enable point light shadows (default true). </td></tr>
+    <tr><td class="paramname">enable_directional</td><td>Enable directional light shadows (default true). </td></tr>
   </table>
   </dd>
 </dl>

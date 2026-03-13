@@ -115,6 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae0fa564ca4c419409db991e2dde70108"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the OpenGL texture ID of the cubemap depth texture.  <br /></td></tr>
 <tr class="memitem:a8c012b6d38be7a2c7db45f98a0f9df04" id="r_a8c012b6d38be7a2c7db45f98a0f9df04"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#a8c012b6d38be7a2c7db45f98a0f9df04">get_resolution</a> () const</td></tr>
 <tr class="memdesc:a8c012b6d38be7a2c7db45f98a0f9df04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the resolution of each face of the cubemap shadow map.  <br /></td></tr>
+<tr class="memitem:ac7c7db301974ed61db1f2494665619cc" id="r_ac7c7db301974ed61db1f2494665619cc"><td class="memItemLeft">unsigned int&#160;</td><td class="memItemRight"><a class="el" href="#ac7c7db301974ed61db1f2494665619cc">get_fbo</a> () const</td></tr>
+<tr class="memdesc:ac7c7db301974ed61db1f2494665619cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the OpenGL framebuffer object ID.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages a cubemap depth texture for rendering shadows from point lights. </p>
@@ -198,6 +200,34 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ac7c7db301974ed61db1f2494665619cc" name="ac7c7db301974ed61db1f2494665619cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7c7db301974ed61db1f2494665619cc">&#9670;&#160;</a></span>get_fbo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int lmgl::renderer::CubemapShadowMap::get_fbo </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the OpenGL framebuffer object ID. </p>
+<dl class="section return"><dt>Returns</dt><dd>The FBO ID. </dd></dl>
 
 </div>
 </div>

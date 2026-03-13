@@ -153,118 +153,126 @@ $(function(){initNavTree('renderer_8hpp_source.html','',''); });
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span></div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="classlmgl_1_1renderer_1_1Renderer.html#a88224d328ca5bf2d7fcaf5ec0fa0e48c">  223</a></span>    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classlmgl_1_1renderer_1_1Renderer.html#a88224d328ca5bf2d7fcaf5ec0fa0e48c">set_bloom_intensity</a>(<span class="keywordtype">float</span> intensity) { m_bloom_intensity = intensity; }</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classlmgl_1_1renderer_1_1Renderer.html#a352f939a560264e97dfcad2830170321">setup_shadows</a>(std::shared_ptr&lt;scene::Scene&gt; <a class="code hl_namespace" href="namespacelmgl_1_1scene.html">scene</a>, std::shared_ptr&lt;Shader&gt; shader);</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <a class="code hl_enumeration" href="namespacelmgl_1_1renderer.html#a07a28ea1fa7ba1f0c814ba1d557f00ff">RenderMode</a> m_render_mode;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_draw_calls;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classlmgl_1_1renderer_1_1Renderer.html#a95afaa2afe7686d977c2c580c8322f06">setup_shadows</a>(std::shared_ptr&lt;scene::Scene&gt; <a class="code hl_namespace" href="namespacelmgl_1_1scene.html">scene</a>, std::shared_ptr&lt;Shader&gt; shader, </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                      <span class="keywordtype">bool</span> enable_point = <span class="keyword">true</span>, <span class="keywordtype">bool</span> enable_directional = <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <a class="code hl_enumeration" href="namespacelmgl_1_1renderer.html#a07a28ea1fa7ba1f0c814ba1d557f00ff">RenderMode</a> m_render_mode;</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span></div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_triangles_count;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_draw_calls;</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span></div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordtype">bool</span> m_depth_test_enabled;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_triangles_count;</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordtype">bool</span> m_culling_enabled;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordtype">bool</span> m_depth_test_enabled;</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordtype">bool</span> m_blending_enabled;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordtype">bool</span> m_culling_enabled;</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    std::vector&lt;std::shared_ptr&lt;scene::Light&gt;&gt; m_directional_lights;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keywordtype">bool</span> m_blending_enabled;</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span></div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    std::vector&lt;std::shared_ptr&lt;scene::Light&gt;&gt; m_point_lights;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    std::vector&lt;std::shared_ptr&lt;scene::Light&gt;&gt; m_directional_lights;</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    std::vector&lt;std::shared_ptr&lt;scene::Light&gt;&gt; m_spot_lights;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    std::vector&lt;std::shared_ptr&lt;scene::Light&gt;&gt; m_point_lights;</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    std::shared_ptr&lt;scene::Material&gt; m_default_material;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    std::vector&lt;std::shared_ptr&lt;scene::Light&gt;&gt; m_spot_lights;</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    std::shared_ptr&lt;scene::Material&gt; m_last_bound_material;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    std::shared_ptr&lt;scene::Material&gt; m_default_material;</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    std::unique_ptr&lt;Framebuffer&gt; m_framebuffer;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    std::shared_ptr&lt;scene::Material&gt; m_last_bound_material;</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    std::unique_ptr&lt;Framebuffer&gt; m_bright_framebuffer;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    std::unique_ptr&lt;Framebuffer&gt; m_framebuffer;</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    std::unique_ptr&lt;Framebuffer&gt; m_blur_framebuffer[2];</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    std::unique_ptr&lt;Framebuffer&gt; m_bright_framebuffer;</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    std::shared_ptr&lt;Shader&gt; m_postprocess_shader;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    std::unique_ptr&lt;Framebuffer&gt; m_blur_framebuffer[2];</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    std::shared_ptr&lt;Shader&gt; m_bright_pass_shader;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    std::shared_ptr&lt;Shader&gt; m_postprocess_shader;</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    std::shared_ptr&lt;Shader&gt; m_blur_shader;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    std::shared_ptr&lt;Shader&gt; m_bright_pass_shader;</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span></div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    std::shared_ptr&lt;scene::Mesh&gt; m_screen_quad;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    std::shared_ptr&lt;Shader&gt; m_blur_shader;</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    <span class="keywordtype">int</span> m_tone_map_mode = 2;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    std::shared_ptr&lt;scene::Mesh&gt; m_screen_quad;</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordtype">float</span> m_exposure = 1.0f;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordtype">int</span> m_tone_map_mode = 2;</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordtype">float</span> m_gamma = 2.2f;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordtype">float</span> m_exposure = 1.0f;</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordtype">int</span> m_window_width = 1920;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <span class="keywordtype">int</span> m_window_height = 1080;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    <span class="keywordtype">bool</span> m_bloom_enabled = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordtype">float</span> m_gamma = 2.2f;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keywordtype">int</span> m_window_width = 1920;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    <span class="keywordtype">int</span> m_window_height = 1080;</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <span class="keywordtype">float</span> m_bloom_threshold = 1.0f;</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <span class="keywordtype">bool</span> m_bloom_enabled = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keywordtype">float</span> m_bloom_intensity = 0.5f;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keywordtype">float</span> m_bloom_threshold = 1.0f;</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    std::shared_ptr&lt;ShadowMap&gt; m_shadow_map;</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <span class="keywordtype">float</span> m_bloom_intensity = 0.5f;</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    std::unique_ptr&lt;ShadowRenderer&gt; m_shadow_renderer;</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    std::shared_ptr&lt;ShadowMap&gt; m_shadow_map;</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    <span class="keyword">struct </span>RenderItem {</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>        std::shared_ptr&lt;scene::Mesh&gt; mesh;</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>        glm::mat4 transform;</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>        <span class="keywordtype">float</span> distance_to_camera;</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span></div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        <a class="code hl_enumeration" href="namespacelmgl_1_1renderer.html#abb2cb9b0179041d51d5ea3a244f8f4b1">RenderLayer</a> layer;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    std::shared_ptr&lt;CubemapShadowMap&gt; m_cubemap_shadow_map;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    std::unique_ptr&lt;ShadowRenderer&gt; m_shadow_renderer;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    </div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    <span class="keywordtype">bool</span> m_shadow_enabled = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    glm::vec3 m_shadow_light_pos = glm::vec3(0.0f);</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="keywordtype">float</span> m_shadow_far_plane = 1.0f;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    glm::mat4 m_light_space_matrix = glm::mat4(1.0f);</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    <span class="keyword">struct </span>RenderItem {</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span></div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        <span class="keywordtype">bool</span> is_transparent;</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    };</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    std::vector&lt;RenderItem&gt; m_render_queue;</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span></div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keywordtype">void</span> build_render_queue(std::shared_ptr&lt;scene::Node&gt; node, std::shared_ptr&lt;scene::Camera&gt; camera,</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                            <span class="keyword">const</span> glm::mat4 &amp;par_transform, std::vector&lt;RenderItem&gt; &amp;out_items);</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span></div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keywordtype">void</span> build_render_queue_culled(std::shared_ptr&lt;scene::Node&gt; node, std::shared_ptr&lt;scene::Camera&gt; camera,</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>                                   <span class="keyword">const</span> glm::mat4 &amp;par_transform, std::vector&lt;RenderItem&gt; &amp;out_items,</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>                                   <span class="keyword">const</span> <a class="code hl_class" href="classlmgl_1_1scene_1_1Frustum.html">scene::Frustum</a> &amp;frustum);</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span></div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    <span class="keywordtype">void</span> sort_render_queue(std::vector&lt;RenderItem&gt; &amp;items);</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span></div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    <span class="keywordtype">void</span> render_mesh(std::shared_ptr&lt;scene::Mesh&gt; mesh, <span class="keyword">const</span> glm::mat4 &amp;transform,</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                     std::shared_ptr&lt;scene::Camera&gt; camera);</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span></div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    <span class="keywordtype">void</span> apply_render_mode();</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span></div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    <span class="keywordtype">void</span> collect_lights(std::shared_ptr&lt;scene::Scene&gt; <a class="code hl_namespace" href="namespacelmgl_1_1scene.html">scene</a>);</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span></div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>    <span class="keywordtype">void</span> collect_node_lights(std::shared_ptr&lt;scene::Node&gt; node);</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span></div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    <span class="keywordtype">void</span> bind_lights(std::shared_ptr&lt;renderer::Shader&gt; shader);</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    <span class="keywordtype">void</span> bind_material(std::shared_ptr&lt;scene::Material&gt; material, std::shared_ptr&lt;renderer::Shader&gt; shader);</div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    <span class="keywordtype">void</span> clear_material_cache();</div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>};</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        std::shared_ptr&lt;scene::Mesh&gt; mesh;</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        glm::mat4 transform;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>        <span class="keywordtype">float</span> distance_to_camera;</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span></div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        <a class="code hl_enumeration" href="namespacelmgl_1_1renderer.html#abb2cb9b0179041d51d5ea3a244f8f4b1">RenderLayer</a> layer;</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        <span class="keywordtype">bool</span> is_transparent;</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    };</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    std::vector&lt;RenderItem&gt; m_render_queue;</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span></div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="keywordtype">void</span> build_render_queue(std::shared_ptr&lt;scene::Node&gt; node, std::shared_ptr&lt;scene::Camera&gt; camera,</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>                            <span class="keyword">const</span> glm::mat4 &amp;par_transform, std::vector&lt;RenderItem&gt; &amp;out_items);</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    <span class="keywordtype">void</span> build_render_queue_culled(std::shared_ptr&lt;scene::Node&gt; node, std::shared_ptr&lt;scene::Camera&gt; camera,</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>                                   <span class="keyword">const</span> glm::mat4 &amp;par_transform, std::vector&lt;RenderItem&gt; &amp;out_items,</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>                                   <span class="keyword">const</span> <a class="code hl_class" href="classlmgl_1_1scene_1_1Frustum.html">scene::Frustum</a> &amp;frustum);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    <span class="keywordtype">void</span> sort_render_queue(std::vector&lt;RenderItem&gt; &amp;items);</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span></div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    <span class="keywordtype">void</span> render_mesh(std::shared_ptr&lt;scene::Mesh&gt; mesh, <span class="keyword">const</span> glm::mat4 &amp;transform,</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>                     std::shared_ptr&lt;scene::Camera&gt; camera);</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span></div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <span class="keywordtype">void</span> apply_render_mode();</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span></div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="keywordtype">void</span> collect_lights(std::shared_ptr&lt;scene::Scene&gt; <a class="code hl_namespace" href="namespacelmgl_1_1scene.html">scene</a>);</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    <span class="keywordtype">void</span> collect_node_lights(std::shared_ptr&lt;scene::Node&gt; node);</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>    <span class="keywordtype">void</span> bind_lights(std::shared_ptr&lt;renderer::Shader&gt; shader);</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span></div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    <span class="keywordtype">void</span> bind_material(std::shared_ptr&lt;scene::Material&gt; material, std::shared_ptr&lt;renderer::Shader&gt; shader);</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span></div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>    <span class="keywordtype">void</span> clear_material_cache();</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>};</div>
 </div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span> </div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>} <span class="comment">// namespace renderer</span></div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span> </div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>} <span class="comment">// namespace lmgl</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span> </div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>} <span class="comment">// namespace renderer</span></div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>} <span class="comment">// namespace lmgl</span></div>
 <div class="ttc" id="acamera_8hpp_html"><div class="ttname"><a href="camera_8hpp.html">camera.hpp</a></div><div class="ttdoc">Declaration of the Camera class for managing viewport and projection.</div></div>
-<div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a2133f1ccf864a55a458e25b98ae73129"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a2133f1ccf864a55a458e25b98ae73129">lmgl::renderer::Renderer::resize</a></div><div class="ttdeci">void resize(int width, int height)</div><div class="ttdoc">Resizes the framebuffer to specific width and height.</div><div class="ttdef"><b>Definition</b> renderer.cpp:373</div></div>
+<div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a2133f1ccf864a55a458e25b98ae73129"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a2133f1ccf864a55a458e25b98ae73129">lmgl::renderer::Renderer::resize</a></div><div class="ttdeci">void resize(int width, int height)</div><div class="ttdoc">Resizes the framebuffer to specific width and height.</div><div class="ttdef"><b>Definition</b> renderer.cpp:404</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a2d5dbb55d03627703cf39e22b62f82a5"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a2d5dbb55d03627703cf39e22b62f82a5">lmgl::renderer::Renderer::set_gamma</a></div><div class="ttdeci">void set_gamma(float gamma)</div><div class="ttdoc">Sets the gamma of the tone map.</div><div class="ttdef"><b>Definition</b> renderer.hpp:193</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a30458b718761c51c476ab19b035a1320"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a30458b718761c51c476ab19b035a1320">lmgl::renderer::Renderer::get_draw_calls</a></div><div class="ttdeci">unsigned int get_draw_calls() const</div><div class="ttdoc">Get the number of draw calls made in the last render.</div><div class="ttdef"><b>Definition</b> renderer.hpp:149</div></div>
-<div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a352f939a560264e97dfcad2830170321"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a352f939a560264e97dfcad2830170321">lmgl::renderer::Renderer::setup_shadows</a></div><div class="ttdeci">void setup_shadows(std::shared_ptr&lt; scene::Scene &gt; scene, std::shared_ptr&lt; Shader &gt; shader)</div><div class="ttdoc">Configure shadow rendering for the scene.</div><div class="ttdef"><b>Definition</b> renderer.cpp:386</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a3ab707e8356ddc0e1f5283e263f4d2b2"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a3ab707e8356ddc0e1f5283e263f4d2b2">lmgl::renderer::Renderer::get_render_mode</a></div><div class="ttdeci">RenderMode get_render_mode() const</div><div class="ttdoc">Get the current rendering mode.</div><div class="ttdef"><b>Definition</b> renderer.hpp:139</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a64ce1baabff5b6634bcb75341f254dc5"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a64ce1baabff5b6634bcb75341f254dc5">lmgl::renderer::Renderer::set_blending</a></div><div class="ttdeci">void set_blending(bool enabled)</div><div class="ttdoc">Enable or disable blending.</div><div class="ttdef"><b>Definition</b> renderer.cpp:169</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a7444d1805a7f741f744b557bd076fd7f"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a7444d1805a7f741f744b557bd076fd7f">lmgl::renderer::Renderer::set_bloom_threshold</a></div><div class="ttdeci">void set_bloom_threshold(float threshold)</div><div class="ttdoc">Sets the bloom brightness threshold.</div><div class="ttdef"><b>Definition</b> renderer.hpp:216</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a7e146c91431feb752d43483da7c2740c"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a7e146c91431feb752d43483da7c2740c">lmgl::renderer::Renderer::set_tone_map_mode</a></div><div class="ttdeci">void set_tone_map_mode(int mode)</div><div class="ttdoc">Sets the tone map mode.</div><div class="ttdef"><b>Definition</b> renderer.hpp:179</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a88224d328ca5bf2d7fcaf5ec0fa0e48c"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a88224d328ca5bf2d7fcaf5ec0fa0e48c">lmgl::renderer::Renderer::set_bloom_intensity</a></div><div class="ttdeci">void set_bloom_intensity(float intensity)</div><div class="ttdoc">Sets the bloom intensity/strength.</div><div class="ttdef"><b>Definition</b> renderer.hpp:223</div></div>
+<div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a95afaa2afe7686d977c2c580c8322f06"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a95afaa2afe7686d977c2c580c8322f06">lmgl::renderer::Renderer::setup_shadows</a></div><div class="ttdeci">void setup_shadows(std::shared_ptr&lt; scene::Scene &gt; scene, std::shared_ptr&lt; Shader &gt; shader, bool enable_point=true, bool enable_directional=true)</div><div class="ttdoc">Configure shadow rendering for the scene.</div><div class="ttdef"><b>Definition</b> renderer.cpp:417</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_a97ef9e466ce591659145940199b48eae"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#a97ef9e466ce591659145940199b48eae">lmgl::renderer::Renderer::~Renderer</a></div><div class="ttdeci">~Renderer()=default</div><div class="ttdoc">Destructor for the Renderer class.</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_ab874fa78e93c58e17eb84911e3e660a0"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#ab874fa78e93c58e17eb84911e3e660a0">lmgl::renderer::Renderer::set_depth_test</a></div><div class="ttdeci">void set_depth_test(bool enabled)</div><div class="ttdoc">Enable or disable depth testing.</div><div class="ttdef"><b>Definition</b> renderer.cpp:150</div></div>
 <div class="ttc" id="aclasslmgl_1_1renderer_1_1Renderer_html_abf76999a9af51132150c295d233b31e1"><div class="ttname"><a href="classlmgl_1_1renderer_1_1Renderer.html#abf76999a9af51132150c295d233b31e1">lmgl::renderer::Renderer::render</a></div><div class="ttdeci">void render(std::shared_ptr&lt; scene::Scene &gt; scene, std::shared_ptr&lt; scene::Camera &gt; camera)</div><div class="ttdoc">Render a scene from the perspective of a camera.</div><div class="ttdef"><b>Definition</b> renderer.cpp:39</div></div>

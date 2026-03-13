@@ -86,7 +86,7 @@ var searchData=
   ['set_5fvec4_83',['set_vec4',['../classlmgl_1_1renderer_1_1Shader.html#a765c05543de9bc64dc131b472386325b',1,'lmgl::renderer::Shader']]],
   ['set_5fvisible_84',['set_visible',['../classlmgl_1_1ui_1_1Canvas.html#a0535f51e4ff62da660b6452a6d209f16',1,'lmgl::ui::Canvas::set_visible()'],['../classlmgl_1_1ui_1_1UIElement.html#a8e2a8f1699871eb2e74c5f92014a30c9',1,'lmgl::ui::UIElement::set_visible()']]],
   ['set_5fvsync_85',['set_vsync',['../classlmgl_1_1core_1_1Engine.html#a9b7d3a3fcc65adc88e4c10abd493d929',1,'lmgl::core::Engine']]],
-  ['setup_5fshadows_86',['setup_shadows',['../classlmgl_1_1renderer_1_1Renderer.html#a352f939a560264e97dfcad2830170321',1,'lmgl::renderer::Renderer']]],
+  ['setup_5fshadows_86',['setup_shadows',['../classlmgl_1_1renderer_1_1Renderer.html#a95afaa2afe7686d977c2c580c8322f06',1,'lmgl::renderer::Renderer']]],
   ['shader_87',['Shader',['../classlmgl_1_1renderer_1_1Shader.html',1,'lmgl::renderer::Shader'],['../classlmgl_1_1renderer_1_1Shader.html#abb526742fed9ac702038912e748a6510',1,'lmgl::renderer::Shader::Shader(const std::string &amp;vert, const std::string &amp;frag)'],['../classlmgl_1_1renderer_1_1Shader.html#ad00bdef5a74d989eae069389b8d62c9e',1,'lmgl::renderer::Shader::Shader(const std::string &amp;vert, const std::string &amp;geom, const std::string &amp;frag)']]],
   ['shader_2ehpp_88',['shader.hpp',['../shader_8hpp.html',1,'']]],
   ['shaderdatatype_89',['ShaderDataType',['../namespacelmgl_1_1renderer.html#a7646e5370869ec783bcafda16697a80a',1,'lmgl::renderer']]],

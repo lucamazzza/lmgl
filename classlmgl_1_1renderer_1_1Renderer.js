@@ -18,5 +18,5 @@ var classlmgl_1_1renderer_1_1Renderer =
     [ "set_gamma", "classlmgl_1_1renderer_1_1Renderer.html#a2d5dbb55d03627703cf39e22b62f82a5", null ],
     [ "set_render_mode", "classlmgl_1_1renderer_1_1Renderer.html#aef756974ce641222fb62458eb73ae193", null ],
     [ "set_tone_map_mode", "classlmgl_1_1renderer_1_1Renderer.html#a7e146c91431feb752d43483da7c2740c", null ],
-    [ "setup_shadows", "classlmgl_1_1renderer_1_1Renderer.html#a352f939a560264e97dfcad2830170321", null ]
+    [ "setup_shadows", "classlmgl_1_1renderer_1_1Renderer.html#a95afaa2afe7686d977c2c580c8322f06", null ]
 ];

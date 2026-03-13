@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"node_8hpp.html":[5,0,0,0,3,6],
+"node_8hpp_source.html":[5,0,0,0,3,6],
 "pages.html":[],
 "panel_8cpp.html":[5,0,1,0,3],
 "panel_8hpp.html":[5,0,0,0,4,4],
