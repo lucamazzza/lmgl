@@ -326,6 +326,22 @@ class Engine {
     bool is_mouse_button_pressed(MouseButton button) const;
 
     /*!
+     * @brief Checks if a mouse button was just pressed this frame.
+     *
+     * @param button the mouse button to check
+     * @return whether the mouse button was just pressed this frame or not.
+     */
+    bool is_mouse_button_just_pressed(MouseButton button) const;
+
+    /*!
+     * @brief Checks if a mouse button was just released this frame.
+     *
+     * @param button the mouse button to check
+     * @return whether the mouse button was just released this frame or not.
+     */
+    bool is_mouse_button_just_released(MouseButton button) const;
+
+    /*!
      * @brief Retrieves the x position of the mouse in the window.
      *
      * @return The x position of the mouse in the window.
@@ -527,6 +543,12 @@ class Engine {
     //! @brief Mouse button input states.
     bool m_mouse_button_states[8] = {false};
 
+    //! @brief "Last frame just pressed" mouse button states.
+    bool m_mouse_button_just_pressed[8] = {false};
+
+    //! @brief "Last frame just released" mouse button states.
+    bool m_mouse_button_just_released[8] = {false};
+
     //! @brief Current x axis position of the mouse on the window.
     double m_mouse_x = 0.0;
 
@@ -538,6 +560,9 @@ class Engine {
 
     //! @brief Last frame's y axis position of the mouse on the window.
     double m_last_mouse_y = 0.0;
+
+    //! @brief Flag to ignore first mouse movement after cursor mode change.
+    bool m_first_mouse_move = true;
 
     //! @brief Amount of x axis scroll on the window.
     double m_scroll_x = 0.0;

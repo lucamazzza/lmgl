@@ -1,0 +1,92 @@
+{
+  "width": 1280,
+  "height": 720,
+  "fonts": {
+    "default": {
+      "path": "/System/Library/Fonts/Supplemental/Arial.ttf",
+      "size": 18
+    },
+    "title": {
+      "path": "/System/Library/Fonts/Supplemental/Arial.ttf",
+      "size": 24
+    }
+  },
+  "elements": [
+    {
+      "type": "Panel",
+      "name": "background",
+      "position": [0, 0],
+      "size": [400, 450],
+      "color": [0.15, 0.15, 0.15, 0.9],
+      "anchor": "Center"
+    },
+    {
+      "type": "Text",
+      "name": "title",
+      "text": "JSON UI Demo",
+      "position": [0, -200],
+      "font": "title",
+      "color": [1.0, 1.0, 1.0, 1.0],
+      "anchor": "Center",
+      "alignment": "Center"
+    },
+    {
+      "type": "Button",
+      "name": "button1",
+      "label": "Click Me!",
+      "position": [-180, -120],
+      "size": [150, 35],
+      "anchor": "Center",
+      "font": "default",
+      "onClick": "onButton1Click"
+    },
+    {
+      "type": "Button",
+      "name": "button2",
+      "label": "Reset",
+      "position": [-20, -120],
+      "size": [150, 35],
+      "anchor": "Center",
+      "font": "default",
+      "onClick": "onButton2Click",
+      "colors": {
+        "normal": [0.6, 0.2, 0.2, 1.0],
+        "hovered": [0.7, 0.3, 0.3, 1.0],
+        "pressed": [0.5, 0.1, 0.1, 1.0]
+      }
+    },
+    {
+      "type": "Toggle",
+      "name": "toggle1",
+      "label": "Enable Feature",
+      "position": [-180, -50],
+      "size": [200, 20],
+      "anchor": "Center",
+      "font": "default",
+      "checked": false
+    },
+    {
+      "type": "Slider",
+      "name": "slider1",
+      "label": "Volume",
+      "position": [-180, 20],
+      "size": [250, 16],
+      "anchor": "Center",
+      "font": "default",
+      "min": 0.0,
+      "max": 100.0,
+      "value": 50.0,
+      "showValue": true
+    },
+    {
+      "type": "Text",
+      "name": "footer",
+      "text": "UI loaded from JSON!",
+      "position": [0, 180],
+      "font": "default",
+      "color": [0.6, 0.6, 0.6, 1.0],
+      "anchor": "Center",
+      "alignment": "Center"
+    }
+  ]
+}

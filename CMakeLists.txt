@@ -20,6 +20,7 @@ add_subdirectory(external/googletest)
 add_subdirectory(external/assimp)
 
 find_package(OpenGL REQUIRED)
+find_package(Freetype REQUIRED)
 
 add_library(lmgl STATIC 
     # assets
@@ -30,7 +31,14 @@ add_library(lmgl STATIC
 
     # core
     include/lmgl/core/engine.hpp
+<<<<<<< HEAD
     src/core/engine.cpp
+=======
+    include/lmgl/input.hpp
+    include/lmgl/lmgl.hpp
+    src/core/engine.cpp
+    src/input.cpp
+>>>>>>> dev
 
     # renderer
     include/lmgl/renderer/buffer.hpp
@@ -67,11 +75,43 @@ add_library(lmgl STATIC
     src/scene/node.cpp
     src/scene/scene.cpp
     src/scene/skybox.cpp
+<<<<<<< HEAD
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(lmgl PUBLIC external/glad/include)
 target_include_directories(lmgl PRIVATE external/stb)
+=======
+
+    # ui
+    include/lmgl/ui/canvas.hpp
+    include/lmgl/ui/ui_element.hpp
+    include/lmgl/ui/panel.hpp
+    include/lmgl/ui/image.hpp
+    include/lmgl/ui/font.hpp
+    include/lmgl/ui/text.hpp
+    include/lmgl/ui/button.hpp
+    include/lmgl/ui/toggle.hpp
+    include/lmgl/ui/slider.hpp
+    include/lmgl/ui/ui_loader.hpp
+    src/ui/canvas.cpp
+    src/ui/ui_element.cpp
+    src/ui/panel.cpp
+    src/ui/image.cpp
+    src/ui/font.cpp
+    src/ui/text.cpp
+    src/ui/button.cpp
+    src/ui/toggle.cpp
+    src/ui/slider.cpp
+    src/ui/ui_loader.cpp
+)
+
+target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external)
+target_include_directories(lmgl PUBLIC external/glad/include)
+target_include_directories(lmgl PRIVATE external/stb)
+target_include_directories(lmgl PUBLIC ${FREETYPE_INCLUDE_DIRS})
+>>>>>>> dev
 
 if(HEADLESS)
     target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
@@ -79,13 +119,21 @@ endif()
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
+<<<<<<< HEAD
 target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY})
+=======
+target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY} ${FREETYPE_LIBRARIES})
+>>>>>>> dev
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
 endif()
 
+<<<<<<< HEAD
 add_subdirectory(sandbox)
+=======
+add_subdirectory(examples)
+>>>>>>> dev
 
 set(CPACK_PACKAGE_NAME "lmgl")
 set(CPACK_PACKAGE_VENDOR "Luca Mazza")

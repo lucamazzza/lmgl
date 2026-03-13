@@ -13,3 +13,9 @@
 [submodule "external/assimp"]
 	path = external/assimp
 	url = https://github.com/assimp/assimp.git
+<<<<<<< HEAD
+=======
+[submodule "external/openxr"]
+	path = external/openxr
+	url = https://github.com/KhronosGroup/OpenXR-SDK.git
+>>>>>>> dev

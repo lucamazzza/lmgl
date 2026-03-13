@@ -139,7 +139,6 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
 
 float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
     if (u_UseShadows == 0) return 0.0;
-    
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     projCoords = projCoords * 0.5 + 0.5;
     float closestDepth = texture(u_ShadowMap, projCoords.xy).r;

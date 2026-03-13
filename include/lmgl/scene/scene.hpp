@@ -122,6 +122,37 @@ class Scene {
      */
     inline std::shared_ptr<Skybox> get_skybox() const { return m_skybox; }
 
+    /*!
+     * @brief Enable or disable shadows for the scene.
+     *
+     * When enabled, the scene will automatically render shadow maps
+     * for directional lights.
+     *
+     * @param enabled True to enable shadows, false to disable.
+     */
+    void set_shadows_enabled(bool enabled);
+
+    /*!
+     * @brief Check if shadows are enabled.
+     *
+     * @return True if shadows are enabled.
+     */
+    inline bool are_shadows_enabled() const { return m_shadows_enabled; }
+
+    /*!
+     * @brief Set shadow map resolution.
+     *
+     * @param resolution Resolution for shadow maps (e.g., 2048, 4096).
+     */
+    void set_shadow_resolution(int resolution);
+
+    /*!
+     * @brief Get the shadow map resolution.
+     *
+     * @return Shadow map resolution.
+     */
+    inline int get_shadow_resolution() const { return m_shadow_resolution; }
+
   private:
     //! @brief Name of the scene.
     std::string m_name;
@@ -134,6 +165,12 @@ class Scene {
 
     //! @brief Skybox for the scene.
     std::shared_ptr<Skybox> m_skybox;
+
+    //! @brief Whether shadows are enabled.
+    bool m_shadows_enabled = true;
+
+    //! @brief Shadow map resolution.
+    int m_shadow_resolution = 2048;
 };
 
 } // namespace scene

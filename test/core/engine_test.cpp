@@ -44,6 +44,22 @@ TEST_F(EngineTest, DeltaTimeIsPositive) {
 }
 #endif
 
+TEST_F(EngineTest, MouseButtonJustPressedWorks) {
+    auto &engine = Engine::get_instance();
+    // Initially, no mouse button should be "just pressed"
+    EXPECT_FALSE(engine.is_mouse_button_just_pressed(MouseButton::Left));
+    EXPECT_FALSE(engine.is_mouse_button_just_pressed(MouseButton::Right));
+    EXPECT_FALSE(engine.is_mouse_button_just_pressed(MouseButton::Middle));
+}
+
+TEST_F(EngineTest, MouseButtonJustReleasedWorks) {
+    auto &engine = Engine::get_instance();
+    // Initially, no mouse button should be "just released"
+    EXPECT_FALSE(engine.is_mouse_button_just_released(MouseButton::Left));
+    EXPECT_FALSE(engine.is_mouse_button_just_released(MouseButton::Right));
+    EXPECT_FALSE(engine.is_mouse_button_just_released(MouseButton::Middle));
+}
+
 } // namespace core
 
 } // namespace lmgl

@@ -3,7 +3,7 @@ add_executable(Tests
     assets/texture_library_test.cpp
 
     core/engine_test.cpp
-    
+
     renderer/buffer_test.cpp
     renderer/framebuffer_test.cpp
     renderer/renderer_test.cpp
@@ -21,6 +21,8 @@ add_executable(Tests
     scene/node_test.cpp
     scene/scene_test.cpp
     scene/skybox_test.cpp
+
+    ui/ui_element_canvas_test.cpp
 )
 
 target_link_libraries(Tests PRIVATE lmgl GTest::gtest_main)
