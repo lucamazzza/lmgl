@@ -31,14 +31,10 @@ add_library(lmgl STATIC
 
     # core
     include/lmgl/core/engine.hpp
-<<<<<<< HEAD
-    src/core/engine.cpp
-=======
     include/lmgl/input.hpp
     include/lmgl/lmgl.hpp
     src/core/engine.cpp
     src/input.cpp
->>>>>>> dev
 
     # renderer
     include/lmgl/renderer/buffer.hpp
@@ -75,13 +71,6 @@ add_library(lmgl STATIC
     src/scene/node.cpp
     src/scene/scene.cpp
     src/scene/skybox.cpp
-<<<<<<< HEAD
-)
-
-target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(lmgl PUBLIC external/glad/include)
-target_include_directories(lmgl PRIVATE external/stb)
-=======
 
     # ui
     include/lmgl/ui/canvas.hpp
@@ -111,7 +100,6 @@ target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external)
 target_include_directories(lmgl PUBLIC external/glad/include)
 target_include_directories(lmgl PRIVATE external/stb)
 target_include_directories(lmgl PUBLIC ${FREETYPE_INCLUDE_DIRS})
->>>>>>> dev
 
 if(HEADLESS)
     target_compile_definitions(lmgl PRIVATE TEST_HEADLESS)
@@ -119,21 +107,13 @@ endif()
 
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
-<<<<<<< HEAD
-target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY})
-=======
 target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY} ${FREETYPE_LIBRARIES})
->>>>>>> dev
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
 endif()
 
-<<<<<<< HEAD
-add_subdirectory(sandbox)
-=======
 add_subdirectory(examples)
->>>>>>> dev
 
 set(CPACK_PACKAGE_NAME "lmgl")
 set(CPACK_PACKAGE_VENDOR "Luca Mazza")
