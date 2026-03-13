@@ -10,15 +10,16 @@ namespace lmgl {
 namespace renderer {
 
 class BufferTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
         // Setup code before each test
 #ifndef TEST_HEADLESS
-        auto& engine = core::Engine::get_instance();
-        if (!engine.get_window()) engine.init(800, 600, "Buffer Test");
+        auto &engine = core::Engine::get_instance();
+        if (!engine.get_window())
+            engine.init(800, 600, "Buffer Test");
 #endif
     }
-    
+
     void TearDown() override {
         // Cleanup code after each test
     }
@@ -65,88 +66,69 @@ TEST_F(BufferTest, ComponentCountCorrect) {
 }
 
 TEST_F(BufferTest, BufferLayoutStrideCalculation) {
-    BufferLayout layout = {
-        { ShaderDataType::Float3, "a_Position" },
-        { ShaderDataType::Float4, "a_Color" }
-    };
+    BufferLayout layout = {{ShaderDataType::Float3, "a_Position"}, {ShaderDataType::Float4, "a_Color"}};
 
     // Stride should be 3*4 + 4*4 = 28
     EXPECT_EQ(layout.get_stride(), 28);
 }
 
 TEST_F(BufferTest, BufferLayoutOffsetCalculation) {
-    BufferLayout layout = {
-        { ShaderDataType::Float3, "a_Position" },
-        { ShaderDataType::Float4, "a_Color" },
-        { ShaderDataType::Float2, "a_TexCoord" }
-    };
+    BufferLayout layout = {{ShaderDataType::Float3, "a_Position"},
+                           {ShaderDataType::Float4, "a_Color"},
+                           {ShaderDataType::Float2, "a_TexCoord"}};
 
-    const auto& elements = layout.get_elements();
+    const auto &elements = layout.get_elements();
     EXPECT_EQ(elements.size(), 3);
 
-    EXPECT_EQ(elements[0].offset, 0);          // Float3 starts at 0
-    EXPECT_EQ(elements[1].offset, 12);         // Float4 starts at 12
-    EXPECT_EQ(elements[2].offset, 28);         // Float2 starts at 28
+    EXPECT_EQ(elements[0].offset, 0);  // Float3 starts at 0
+    EXPECT_EQ(elements[1].offset, 12); // Float4 starts at 12
+    EXPECT_EQ(elements[2].offset, 28); // Float2 starts at 28
 }
 
 #ifndef TEST_HEADLESS
 TEST_F(BufferTest, VertexBufferCalculation) {
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
+    float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
     auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
     EXPECT_NE(vbo, nullptr);
-    
-    BufferLayout layout = {
-        { ShaderDataType::Float3, "a_Position" }
-    };
+
+    BufferLayout layout = {{ShaderDataType::Float3, "a_Position"}};
     vbo->set_layout(layout);
     EXPECT_EQ(vbo->get_layout().get_stride(), 12);
 }
 
 TEST_F(BufferTest, DynamicVertexBufferCreation) {
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
+    float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
     auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
     EXPECT_NE(vbo, nullptr);
 
-    float new_vertices[] = {
-        -0.6f, -0.6f, 0.0f,
-         0.6f, -0.6f, 0.0f,
-         0.0f,  0.6f, 0.0f
-    };
+    float new_vertices[] = {-0.6f, -0.6f, 0.0f, 0.6f, -0.6f, 0.0f, 0.0f, 0.6f, 0.0f};
     vbo->set_data(new_vertices, sizeof(new_vertices));
 }
 
 TEST_F(BufferTest, IndexBufferCreation) {
-    unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
+    unsigned int indices[] = {0, 1, 2, 2, 3, 0};
     auto ibo = std::make_shared<IndexBuffer>(indices, sizeof(indices) / sizeof(unsigned int));
     EXPECT_NE(ibo, nullptr);
     EXPECT_EQ(ibo->get_count(), 6);
 }
 
 TEST_F(BufferTest, BufferBindUnbind) {
-    float vertices[] = { -0.5f, -0.5f, 0.0f };
+    float vertices[] = {-0.5f, -0.5f, 0.0f};
     auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
 
     // should not crash
     vbo->bind();
     vbo->unbind();
 
-    unsigned int indices[] = { 0, 1, 2 };
+    unsigned int indices[] = {0, 1, 2};
     auto ibo = std::make_shared<IndexBuffer>(indices, 3);
-    
+
     // should not crash
     ibo->bind();
     ibo->unbind();
 }
 
-#endif 
+#endif
 
 } // namespace renderer
 

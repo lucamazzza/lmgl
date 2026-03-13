@@ -12,7 +12,9 @@
 
 #pragma once
 
+#include "lmgl/scene/light.hpp"
 #include "lmgl/scene/node.hpp"
+#include "lmgl/scene/skybox.hpp"
 
 #include <memory>
 #include <string>
@@ -35,16 +37,15 @@ namespace scene {
  * provides methods to update the scene.
  */
 class Scene {
-public:
-
-    /*! 
+  public:
+    /*!
      * @brief Constructor for the Scene class.
      *
      * Initializes a Scene with a root node.
      *
      * @param name Optional name for the scene.
      */
-    Scene(const std::string& name = "Scene");
+    Scene(const std::string &name = "Scene");
 
     /*!
      * @brief Getter for the root node.
@@ -63,31 +64,76 @@ public:
      */
     void update();
 
-    /*! 
+    /*!
      * @brief Getters and setters for the scene's name.
      *
      * Provides access to the scene's name property.
      *
      * @return Name of the scene.
      */
-    inline const std::string& get_name() const { return m_name; }
+    inline const std::string &get_name() const { return m_name; }
 
-    /*! 
+    /*!
      * @brief Set the name of the scene.
      *
      * Updates the scene's name property.
      *
      * @param name New name for the scene.
      */
-    inline void set_name(const std::string& name) { m_name = name; }
+    inline void set_name(const std::string &name) { m_name = name; }
 
-private:
+    /*!
+     * @brief Returns all the lights in the scene.
+     *
+     * @return Vector containing all the lights introduced into the scene.
+     */
+    inline std::vector<std::shared_ptr<Light>> get_lights() const { return m_lights; }
 
+    /*!
+     * @brief Adds a light in the scene.
+     *
+     * @param light the light to add.
+     */
+    void add_light(std::shared_ptr<Light> light);
+
+    /*!
+     * @brief Removes a light from the scene.
+     *
+     * @param light the light to remove.
+     */
+    void remove_light(std::shared_ptr<Light> light);
+
+    /*!
+     * @brief Removes all lights from the scene.
+     */
+    void clear_lights();
+
+    /*!
+     * @brief Set the skybox for the scene.
+     *
+     * @param skybox The skybox to set (or nullptr to remove).
+     */
+    inline void set_skybox(std::shared_ptr<Skybox> skybox) { m_skybox = skybox; }
+
+    /*!
+     * @brief Get the skybox of the scene.
+     *
+     * @return The skybox (or nullptr if none).
+     */
+    inline std::shared_ptr<Skybox> get_skybox() const { return m_skybox; }
+
+  private:
     //! @brief Name of the scene.
     std::string m_name;
 
     //! @brief Root node of the scene graph.
     std::shared_ptr<Node> m_root;
+
+    //! @brief Lights in the scene.
+    std::vector<std::shared_ptr<Light>> m_lights;
+
+    //! @brief Skybox for the scene.
+    std::shared_ptr<Skybox> m_skybox;
 };
 
 } // namespace scene

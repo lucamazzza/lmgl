@@ -1,5 +1,5 @@
 /*!
- * @file vertex_array.hpp 
+ * @file vertex_array.hpp
  *
  * @brief Declaration of the VertexArray class for managing Vertex Array Objects (VAOs) in OpenGL.
  *
@@ -32,8 +32,7 @@ namespace renderer {
  * defined in "buffer.hpp".
  */
 class VertexArray {
-public:
-
+  public:
     //! Constructs a new Vertex Array Object (VAO)
     VertexArray();
 
@@ -42,7 +41,7 @@ public:
 
     /*!
      * @brief Binds the Vertex Array Object for rendering.
-     * 
+     *
      * This method makes the VAO active so that subsequent rendering commands use it.
      *
      * @note Ensure to call unbind() after rendering to avoid unintended side effects.
@@ -51,7 +50,7 @@ public:
 
     /*!
      * @brief Unbinds the Vertex Array Object.
-     * 
+     *
      * This method deactivates the VAO, preventing it from being used in subsequent rendering commands.
      *
      * @note It is good practice to unbind the VAO after rendering to maintain a clean state.
@@ -65,7 +64,7 @@ public:
      *
      * @param vertexBuffer A shared pointer to the Vertex Buffer to be added.
      */
-    void add_vertex_buffer(const std::shared_ptr<VertexBuffer>& vertex_buffer);
+    void add_vertex_buffer(const std::shared_ptr<VertexBuffer> &vertex_buffer);
 
     /*!
      * @brief Sets the Index Buffer for the Vertex Array Object.
@@ -74,28 +73,27 @@ public:
      *
      * @param indexBuffer A shared pointer to the Index Buffer to be set.
      */
-    void set_index_buffer(const std::shared_ptr<IndexBuffer>& index_buffer);
+    void set_index_buffer(const std::shared_ptr<IndexBuffer> &index_buffer);
 
-    /*! 
+    /*!
      * @brief Retrieves the list of Vertex Buffers associated with the Vertex Array Object.
      *
      * This method returns a constant reference to a vector containing shared pointers to the Vertex Buffers.
      *
      * @return A constant reference to a vector of shared pointers to the Vertex Buffers.
      */
-    const std::vector<std::shared_ptr<VertexBuffer>>& get_vertex_buffers() const;
+    const std::vector<std::shared_ptr<VertexBuffer>> &get_vertex_buffers() const;
 
-    /*! 
+    /*!
      * @brief Retrieves the Index Buffer associated with the Vertex Array Object.
      *
      * This method returns a shared pointer to the Index Buffer.
      *
      * @return A shared pointer to the Index Buffer.
      */
-    const std::shared_ptr<IndexBuffer>& get_index_buffer() const;
+    const std::shared_ptr<IndexBuffer> &get_index_buffer() const;
 
-private:
-
+  private:
     //! Renderer ID for the Vertex Array Object
     unsigned int m_renderer_id;
 

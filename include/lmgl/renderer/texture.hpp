@@ -27,9 +27,8 @@ namespace renderer {
  * It provides methods to interact with the texture in a rendering context.
  */
 class Texture {
-public:
-
-    /*! 
+  public:
+    /*!
      * @brief Constructor for creating a texture with specified width and height.
      *
      * Initializes an empty texture with the given dimensions.
@@ -39,19 +38,30 @@ public:
      */
     Texture(int width, int height);
 
-    /*! 
+    /*!
+     * @brief Constructor for creating an existing texture with specified width and height.
+     *
+     * Initializes an existing texture with the given dimensions.
+     *
+     * @param id The id of the existing renderer texture.
+     * @param width The width of the texture.
+     * @param height The height of the texture.
+     */
+    Texture(unsigned int id, int width, int height);
+
+    /*!
      * @brief Constructor for creating a texture from an image file.
      *
      * Loads the texture data from the specified file path.
      *
      * @param fpath The file path to the image to load as a texture.
      */
-    Texture(const std::string& fpath);
+    Texture(const std::string &fpath);
 
     //! @brief Destructor for the Texture class.
     ~Texture();
 
-    /*! 
+    /*!
      * @brief Binds the texture to a specified texture slot.
      *
      * Activates the texture for use in rendering operations.
@@ -60,14 +70,14 @@ public:
      */
     void bind(unsigned int slot = 0) const;
 
-    /*! 
+    /*!
      * @brief Unbinds the texture.
      *
      * Deactivates the texture from the current texture slot.
      */
     void unbind() const;
 
-    /*! 
+    /*!
      * @brief Resizes the texture to new dimensions.
      *
      * Updates the texture's width and height.
@@ -77,28 +87,28 @@ public:
      */
     void resize(int width, int height);
 
-    /*! 
+    /*!
      * @brief Gets the width of the texture.
      *
      * @return The width of the texture.
      */
     inline int get_width() const { return m_width; }
 
-    /*! 
+    /*!
      * @brief Gets the height of the texture.
      *
      * @return The height of the texture.
      */
     inline int get_height() const { return m_height; }
 
-    /*! 
+    /*!
      * @brief Gets the OpenGL renderer ID of the texture.
      *
      * @return The renderer ID of the texture.
      */
     inline unsigned int get_id() const { return m_renderer_id; }
 
-    /*! 
+    /*!
      * @brief Sets the data of the texture.
      *
      * Updates the texture's data with the provided data buffer.
@@ -106,10 +116,9 @@ public:
      * @param data Pointer to the new texture data.
      * @param size Size of the new texture data in bytes.
      */
-    void set_data(void* data, unsigned int size);
+    void set_data(void *data, unsigned int size);
 
-private:
-
+  private:
     //! @brief OpenGL renderer ID for the texture.
     unsigned int m_renderer_id;
 
@@ -125,7 +134,7 @@ private:
     //! @brief Internal format and data format of the texture.
     GLenum m_data_format;
 
-    /*! 
+    /*!
      * @brief Initializes texture parameters.
      *
      * Sets default parameters for the texture such as filtering and wrapping modes.
