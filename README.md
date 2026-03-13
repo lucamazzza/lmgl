@@ -44,9 +44,11 @@ work in progress) and *Linux* (testing in backlog).
 There are no specific hardware requirement to run (no specific GPU), just make 
 sure you have the correct *drivers* installed for your GPU.
 
-> [!NOTE]
-> An update on Software and Hardware compatibility will be given in a further
-> notice when the development of `v1.0` reaches the end.
+The library is built and compatible with Windows, Linux and macOS. The features
+are unfortunately limited to OpenGL 4.1, given the support for macOS is crucial.
+
+If you whish to upgrade to a later version, you can fork the repository and adapt
+the engine for the new features, and set the State Machine own version to `4 x`.
 
 Documentation
 -------------
@@ -59,7 +61,10 @@ If something goes wrong...
 --------------------------
 
 Check that:
-* All the needed dependencies are included as submodule
+* All the needed dependencies are included as submodule, otherwise run
+  ```
+  git submodule update --init --recursive
+  ```
 * Your compiler supports C++17
 
 <hr>
