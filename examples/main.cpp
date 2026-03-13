@@ -99,9 +99,29 @@ int main() {
   toggle_bloom->set_render_order(1);
   canvas->add_element(toggle_bloom);
 
+  auto toggle_point_shadows =
+      std::make_shared<ui::Toggle>("Point Shadows", "PointShadowsToggle");
+  toggle_point_shadows->get_text()->set_font(ui_font_small);
+  toggle_point_shadows->set_position(glm::vec2(10.0f, -90.0f));
+  toggle_point_shadows->set_anchor(ui::Anchor::BottomLeft);
+  toggle_point_shadows->set_checked(true);
+  toggle_point_shadows->set_box_size(10.0f);
+  toggle_point_shadows->set_render_order(1);
+  canvas->add_element(toggle_point_shadows);
+
+  auto toggle_dir_shadows =
+      std::make_shared<ui::Toggle>("Directional Shadows", "DirShadowsToggle");
+  toggle_dir_shadows->get_text()->set_font(ui_font_small);
+  toggle_dir_shadows->set_position(glm::vec2(10.0f, -110.0f));
+  toggle_dir_shadows->set_anchor(ui::Anchor::BottomLeft);
+  toggle_dir_shadows->set_checked(true);
+  toggle_dir_shadows->set_box_size(10.0f);
+  toggle_dir_shadows->set_render_order(1);
+  canvas->add_element(toggle_dir_shadows);
+
   auto btn_solid = std::make_shared<ui::Button>("Solid", "SolidButton");
   btn_solid->get_text()->set_font(ui_font_small);
-  btn_solid->set_position(glm::vec2(10.0f, -170.0f));
+  btn_solid->set_position(glm::vec2(10.0f, -150.0f));
   btn_solid->set_size(glm::vec2(80.0f, 25.0f));
   btn_solid->set_anchor(ui::Anchor::BottomLeft);
   btn_solid->set_render_order(1);
@@ -110,7 +130,7 @@ int main() {
   auto btn_wireframe =
       std::make_shared<ui::Button>("Wireframe", "WireframeButton");
   btn_wireframe->get_text()->set_font(ui_font_small);
-  btn_wireframe->set_position(glm::vec2(10.0f, -140.0f));
+  btn_wireframe->set_position(glm::vec2(10.0f, -180.0f));
   btn_wireframe->set_size(glm::vec2(80.0f, 25.0f));
   btn_wireframe->set_anchor(ui::Anchor::BottomLeft);
   btn_wireframe->set_render_order(1);
@@ -118,13 +138,13 @@ int main() {
 
   auto btn_points = std::make_shared<ui::Button>("Points", "PointsButton");
   btn_points->get_text()->set_font(ui_font_small);
-  btn_points->set_position(glm::vec2(10.0f, -110.0f));
+  btn_points->set_position(glm::vec2(10.0f, -210.0f));
   btn_points->set_size(glm::vec2(80.0f, 25.0f));
   btn_points->set_anchor(ui::Anchor::BottomLeft);
   btn_points->set_render_order(1);
   canvas->add_element(btn_points);
 
-  float y_offset = -250.0f;
+  float y_offset = -270.0f;
   for (const auto &text : control_texts) {
     auto line = std::make_shared<ui::Text>(text, "ControlLine");
     if (ui_font_small) {
@@ -167,7 +187,7 @@ int main() {
   auto renderer = std::make_unique<renderer::Renderer>();
   renderer->set_tone_map_mode(1); // reinhard
 
-  // === Create Materials ===
+  // CREATE MATERIALS
 
   // Shiny metal material
   auto metal_material = std::make_shared<scene::Material>("Metal");
@@ -192,7 +212,7 @@ int main() {
   emissive_material->set_albedo(glm::vec3(0.1f, 0.1f, 0.1f));
   emissive_material->set_emissive(glm::vec3(2.0f, 2.0f, 2.0f));
 
-  // === Create Scene Objects ===
+  // CREATE SCENE OBJECTS
 
   // Metal sphere (left)
   auto metal_sphere = scene::Mesh::create_sphere(pbr_shader, 0.8f, 32, 32);
@@ -249,7 +269,7 @@ int main() {
   rifle->set_scale(0.05f);
   scene->get_root()->add_child(rifle);
 
-  // === Create Lights ===
+  // CREATE LIGHTS
 
   // Directional light (sun)
   auto sun = scene::Light::create_directional(glm::vec3(0.3f, -1.0f, -0.5f),
@@ -269,6 +289,8 @@ int main() {
   auto skybox_ref = scene->get_skybox(); // Store reference for toggling
   bool render_skybox = (skybox_ref != nullptr);
   bool show_ui = true;
+  bool enable_point_shadows = true;
+  bool enable_directional_shadows = true;
 
   // Configure scene shadow settings
   scene->set_shadows_enabled(true);
@@ -307,6 +329,8 @@ int main() {
       toggle_skybox->handle_click(mx, my, cw, ch);
       toggle_shadows->handle_click(mx, my, cw, ch);
       toggle_bloom->handle_click(mx, my, cw, ch);
+      toggle_point_shadows->handle_click(mx, my, cw, ch);
+      toggle_dir_shadows->handle_click(mx, my, cw, ch);
       btn_solid->handle_mouse_button(mx, my, true, cw, ch);
       btn_wireframe->handle_mouse_button(mx, my, true, cw, ch);
       btn_points->handle_mouse_button(mx, my, true, cw, ch);
@@ -334,7 +358,7 @@ int main() {
       btn_points->handle_mouse_move(mx, my, cw, ch);
     }
 
-    // === Input Handling (no GLFW!) ===
+    // INPUT HANDLING
 
     if (engine.is_key_just_pressed(core::Key::Esc)) {
       engine.shutdown();
@@ -377,6 +401,16 @@ int main() {
     toggle_bloom->set_on_toggle([&](bool checked) {
       renderer->set_bloom_enabled(checked);
       std::cout << "Bloom " << (checked ? "enabled" : "disabled") << std::endl;
+    });
+
+    toggle_point_shadows->set_on_toggle([&](bool checked) {
+      enable_point_shadows = checked;
+      std::cout << "Point shadows " << (checked ? "enabled" : "disabled") << std::endl;
+    });
+
+    toggle_dir_shadows->set_on_toggle([&](bool checked) {
+      enable_directional_shadows = checked;
+      std::cout << "Directional shadows " << (checked ? "enabled" : "disabled") << std::endl;
     });
 
     btn_solid->set_on_click([&]() {
@@ -448,8 +482,8 @@ int main() {
     // Render
     engine.clear(0.05f, 0.05f, 0.1f);
 
-    // Setup shadows automatically (replaces manual shadow pass)
-    renderer->setup_shadows(scene, pbr_shader);
+    // Setup shadows automatically
+    renderer->setup_shadows(scene, pbr_shader, enable_point_shadows, enable_directional_shadows);
 
     // Render scene with frustum culling (automatic)
     scene->update();

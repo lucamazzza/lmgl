@@ -95,8 +95,13 @@ uniform DirectionalLight u_DirLights[4];
 uniform int u_NumPointLights;
 uniform PointLight u_PointLights[16];
 
-uniform sampler2D u_ShadowMap;
+uniform samplerCube u_ShadowMap;
 uniform int u_UseShadows;
+uniform vec3 u_LightPos;
+uniform float u_FarPlane;
+
+uniform sampler2D u_DirShadowMap;
+uniform int u_UseDirShadows;
 
 const float PI = 3.14159265359;
 
@@ -137,19 +142,29 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
-float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
+float ShadowCalculation(vec3 fragPos, vec3 normal, vec3 lightDir) {
     if (u_UseShadows == 0) return 0.0;
+    vec3 fragToLight = fragPos - u_LightPos;
+    float closestDepth = texture(u_ShadowMap, fragToLight).r;
+    closestDepth *= u_FarPlane;
+    float currentDepth = length(fragToLight);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    return shadow;
+}
+
+float DirShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
+    if (u_UseDirShadows == 0) return 0.0;
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     projCoords = projCoords * 0.5 + 0.5;
-    float closestDepth = texture(u_ShadowMap, projCoords.xy).r;
+    float closestDepth = texture(u_DirShadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;
-    // Reduced bias to prevent holes in shadows
     float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.0005);
     float shadow = 0.0;
-    vec2 texelSize = 1.0 / textureSize(u_ShadowMap, 0);
+    vec2 texelSize = 1.0 / textureSize(u_DirShadowMap, 0);
     for(int x = -1; x <= 1; ++x) {
         for(int y = -1; y <= 1; ++y) {
-            float pcfDepth = texture(u_ShadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            float pcfDepth = texture(u_DirShadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }
@@ -227,8 +242,8 @@ void main() {
         kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
-        float shadow = ShadowCalculation(v_FragPosLightSpace, N, L);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
+        float dirShadow = DirShadowCalculation(v_FragPosLightSpace, N, L);
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - dirShadow);
     }
 
     // Point lights
@@ -253,7 +268,8 @@ void main() {
         kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        float pointShadow = ShadowCalculation(v_FragPos, N, L);
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - pointShadow);
     }
 
     // Ambient lighting (simplified)

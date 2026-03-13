@@ -10,8 +10,6 @@ namespace lmgl {
 
 namespace renderer {
 
-// ShadowMap
-
 ShadowMap::ShadowMap(unsigned int width, unsigned int height) : m_width(width), m_height(height) {
     glGenFramebuffers(1, &m_fbo);
     glGenTextures(1, &m_depth_map);
@@ -60,8 +58,6 @@ void ShadowMap::resize(unsigned int width, unsigned int height) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 }
 
-// CubemapShadowMap
-
 CubemapShadowMap::CubemapShadowMap(unsigned int resolution) : m_resolution(resolution) {
     glGenFramebuffers(1, &m_fbo);
     glGenTextures(1, &m_depth_cubemap);
@@ -94,8 +90,7 @@ CubemapShadowMap::~CubemapShadowMap() {
 
 void CubemapShadowMap::bind(unsigned int face) {
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, m_depth_cubemap,
-                           0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, m_depth_cubemap, 0);
     glViewport(0, 0, m_resolution, m_resolution);
     glClear(GL_DEPTH_BUFFER_BIT);
 }
@@ -107,8 +102,6 @@ void CubemapShadowMap::bind_texture(unsigned int slot) const {
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_depth_cubemap);
 }
 
-// ShadowRenderer
-
 ShadowRenderer::ShadowRenderer() {
     m_depth_shader = Shader::from_glsl_file("shaders/dir_light_depth.glsl");
     m_depth_cubemap_shader = Shader::from_glsl_file("shaders/pt_light_depth.glsl");
@@ -118,38 +111,37 @@ void ShadowRenderer::render_directional_shadow(std::shared_ptr<scene::Scene> sce
                                                std::shared_ptr<ShadowMap> shadow_map) {
     if (!scene || !light || !shadow_map)
         return;
-    
-    // Save GL state
+
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
     GLint cull_face_mode;
     glGetIntegerv(GL_CULL_FACE_MODE, &cull_face_mode);
-    
-    // Use larger radius and better centered for the scene
+
     glm::mat4 light_space_matrix = get_light_space_matrix(light, glm::vec3(0.0f, 2.0f, 0.0f), 20.0f);
     shadow_map->bind();
     glCullFace(GL_FRONT);
     render_scene_depth(scene, light_space_matrix);
     shadow_map->unbind();
-    
-    // Restore GL state
+    m_depth_shader->unbind();
+
     glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
     glCullFace(cull_face_mode);
 }
 
 void ShadowRenderer::render_point_shadow(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Light> light,
                                          std::shared_ptr<CubemapShadowMap> shadow_map) {
-    if (!scene || !light || !shadow_map) return;
-    
-    // Save GL state
+    if (!scene || !light || !shadow_map)
+        return;
+
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
     GLint cull_face_mode;
     glGetIntegerv(GL_CULL_FACE_MODE, &cull_face_mode);
-    
+
     glm::vec3 light_pos = light->get_position();
     float far_plane = light->get_range();
     glm::mat4 shadow_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, far_plane);
+    
     std::vector<glm::mat4> shadow_transforms;
     shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
     shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
@@ -157,56 +149,70 @@ void ShadowRenderer::render_point_shadow(std::shared_ptr<scene::Scene> scene, st
     shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)));
     shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
     shadow_transforms.push_back(shadow_proj * glm::lookAt(light_pos, light_pos + glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+
     m_depth_cubemap_shader->bind();
     m_depth_cubemap_shader->set_vec3("u_LightPos", light_pos);
     m_depth_cubemap_shader->set_float("u_FarPlane", far_plane);
     for (unsigned int i = 0; i < 6; ++i) {
         m_depth_cubemap_shader->set_mat4("u_ShadowMatrices[" + std::to_string(i) + "]", shadow_transforms[i]);
     }
-    shadow_map->bind(0);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, shadow_map->get_fbo());
+    glViewport(0, 0, shadow_map->get_resolution(), shadow_map->get_resolution());
+    glClear(GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_FRONT);
-    
-    // Render scene for all 6 cubemap faces using geometry shader
+
     std::function<void(std::shared_ptr<scene::Node>, const glm::mat4&)> traverse;
     traverse = [&](std::shared_ptr<scene::Node> node, const glm::mat4& parent_transform) {
-        if (!node) return;
+        if (!node)
+            return;
         glm::mat4 transform = parent_transform * node->get_local_transform();
         auto mesh = node->get_mesh();
         if (mesh) {
-            m_depth_cubemap_shader->set_mat4("u_Model", transform);
-            if (mesh->get_vertex_array()) {
-                mesh->get_vertex_array()->bind();
+            auto material = mesh->get_material();
+            bool is_emissive = material && glm::length(material->get_emissive()) > 0.0f;
+            if (!is_emissive) {
+                m_depth_cubemap_shader->set_mat4("u_Model", transform);
+                if (mesh->get_vertex_array())
+                    mesh->get_vertex_array()->bind();
+                mesh->render();
             }
-            mesh->render();
         }
         for (const auto& child : node->get_children()) {
             traverse(child, transform);
         }
     };
     traverse(scene->get_root(), glm::mat4(1.0f));
-    
+
     shadow_map->unbind();
-    
-    // Restore GL state
+    m_depth_cubemap_shader->unbind();
+
     glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
     glCullFace(cull_face_mode);
 }
 
 void ShadowRenderer::render_scene_depth(std::shared_ptr<scene::Scene> scene, const glm::mat4 &light_space_matrix) {
-    if (!scene) return;
+    if (!scene)
+        return;
+
     m_depth_shader->bind();
     m_depth_shader->set_mat4("u_LightSpaceMatrix", light_space_matrix);
+
     std::function<void(std::shared_ptr<scene::Node>, const glm::mat4&)> traverse;
     traverse = [&](std::shared_ptr<scene::Node> node, const glm::mat4& parent_transform) {
-        if (!node) return;
+        if (!node)
+            return;
         glm::mat4 transform = parent_transform * node->get_local_transform();
         auto mesh = node->get_mesh();
         if (mesh) {
-            m_depth_shader->set_mat4("u_Model", transform);
-            if (mesh->get_vertex_array()) {
-                mesh->get_vertex_array()->bind();
+            auto material = mesh->get_material();
+            bool is_emissive = material && glm::length(material->get_emissive()) > 0.0f;
+            if (!is_emissive) {
+                m_depth_shader->set_mat4("u_Model", transform);
+                if (mesh->get_vertex_array())
+                    mesh->get_vertex_array()->bind();
+                mesh->render();
             }
-            mesh->render();
         }
         for (const auto& child : node->get_children()) {
             traverse(child, transform);
@@ -219,12 +225,12 @@ glm::mat4 ShadowRenderer::get_light_space_matrix(std::shared_ptr<scene::Light> l
                                                  float scene_radius) {
     glm::vec3 light_dir = glm::normalize(light->get_direction());
     glm::vec3 light_pos = scene_center - light_dir * scene_radius;
-    
+
     glm::mat4 light_projection = glm::ortho(-scene_radius, scene_radius,
                                            -scene_radius, scene_radius,
                                            0.1f, scene_radius * 2.0f);
     glm::mat4 light_view = glm::lookAt(light_pos, scene_center, glm::vec3(0.0f, 1.0f, 0.0f));
-    
+
     return light_projection * light_view;
 }
 

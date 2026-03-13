@@ -226,12 +226,15 @@ class Renderer {
      * @brief Configure shadow rendering for the scene.
      *
      * Call this before rendering to automatically handle shadow maps.
-     * The renderer will create shadow maps for directional lights if enabled.
+     * The renderer will create shadow maps for directional and/or point lights if enabled.
      *
      * @param scene The scene to render shadows for.
      * @param shader The PBR shader to bind shadow uniforms to.
+     * @param enable_point Enable point light shadows (default true).
+     * @param enable_directional Enable directional light shadows (default true).
      */
-    void setup_shadows(std::shared_ptr<scene::Scene> scene, std::shared_ptr<Shader> shader);
+    void setup_shadows(std::shared_ptr<scene::Scene> scene, std::shared_ptr<Shader> shader, 
+                      bool enable_point = true, bool enable_directional = true);
 
   private:
     //! @brief Current rendering mode.
@@ -313,8 +316,17 @@ class Renderer {
     //! Shadow map for directional light (lazy initialized)
     std::shared_ptr<ShadowMap> m_shadow_map;
 
+    //! Cubemap shadow map for point light (lazy initialized)
+    std::shared_ptr<CubemapShadowMap> m_cubemap_shadow_map;
+
     //! Shadow renderer (lazy initialized)
     std::unique_ptr<ShadowRenderer> m_shadow_renderer;
+    
+    //! Shadow state
+    bool m_shadow_enabled = false;
+    glm::vec3 m_shadow_light_pos = glm::vec3(0.0f);
+    float m_shadow_far_plane = 1.0f;
+    glm::mat4 m_light_space_matrix = glm::mat4(1.0f);
 
     /*!
      * @brief Structure representing an item to be rendered.

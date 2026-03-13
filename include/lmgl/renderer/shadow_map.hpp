@@ -191,6 +191,13 @@ class CubemapShadowMap {
      */
     inline unsigned int get_resolution() const { return m_resolution; }
 
+    /*!
+     * @brief Returns the OpenGL framebuffer object ID.
+     *
+     * @return The FBO ID.
+     */
+    inline unsigned int get_fbo() const { return m_fbo; }
+
   private:
     //! Framebuffer object ID
     unsigned int m_fbo = 0;
