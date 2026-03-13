@@ -298,8 +298,8 @@ class Renderer {
     float m_gamma = 2.2f;
 
     //! Window width and height for viewport
-    int m_window_width = 1280;
-    int m_window_height = 720;
+    int m_window_width = 1920;
+    int m_window_height = 1080;
 
     //! Flag to enable/disable bloom effect
     bool m_bloom_enabled = true;

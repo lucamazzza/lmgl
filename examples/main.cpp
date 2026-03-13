@@ -28,13 +28,13 @@ int main() {
   using namespace lmgl;
 
   auto &engine = core::Engine::get_instance();
-  if (!engine.init(1920, 1200, "LMGL - PBR & Lighting Demo", true, false)) {
+  if (!engine.init(1920, 1080, "LMGL - PBR & Lighting Demo", true, false)) {
     std::cerr << "Failed to initialize engine!" << std::endl;
     return -1;
   }
 
   // Create UI Canvas
-  auto canvas = std::make_shared<ui::Canvas>(1920, 1200);
+  auto canvas = std::make_shared<ui::Canvas>(1920, 1080);
 
   // Load font
   auto &font_mgr = ui::FontManager::get();
@@ -94,7 +94,7 @@ int main() {
   toggle_bloom->get_text()->set_font(ui_font_small);
   toggle_bloom->set_position(glm::vec2(10.0f, -70.0f));
   toggle_bloom->set_anchor(ui::Anchor::BottomLeft);
-  toggle_bloom->set_checked(true);
+  toggle_bloom->set_checked(false);
   toggle_bloom->set_box_size(10.0f);
   toggle_bloom->set_render_order(1);
   canvas->add_element(toggle_bloom);
@@ -124,7 +124,7 @@ int main() {
   btn_points->set_render_order(1);
   canvas->add_element(btn_points);
 
-  float y_offset = -300.0f;
+  float y_offset = -250.0f;
   for (const auto &text : control_texts) {
     auto line = std::make_shared<ui::Text>(text, "ControlLine");
     if (ui_font_small) {
@@ -190,7 +190,7 @@ int main() {
   // Emissive material
   auto emissive_material = std::make_shared<scene::Material>("Emissive");
   emissive_material->set_albedo(glm::vec3(0.1f, 0.1f, 0.1f));
-  emissive_material->set_emissive(glm::vec3(2.0f, 0.5f, 0.1f));
+  emissive_material->set_emissive(glm::vec3(2.0f, 2.0f, 2.0f));
 
   // === Create Scene Objects ===
 
@@ -219,10 +219,10 @@ int main() {
   scene->get_root()->add_child(gold_node);
 
   // Emissive cube (light source visualization)
-  auto emissive_cube = scene::Mesh::create_cube(pbr_shader);
-  emissive_cube->set_material(emissive_material);
+  auto emissive_sphere = scene::Mesh::create_sphere(pbr_shader);
+  emissive_sphere->set_material(emissive_material);
   auto emissive_node = std::make_shared<scene::Node>("Emissive Cube");
-  emissive_node->set_mesh(emissive_cube);
+  emissive_node->set_mesh(emissive_sphere);
   emissive_node->set_position(glm::vec3(0.0f, 3.0f, 0.0f));
   emissive_node->set_scale(0.3f);
   scene->get_root()->add_child(emissive_node);
@@ -292,6 +292,7 @@ int main() {
               << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
   });
 
+  renderer->set_bloom_enabled(false);
   // Main loop
   engine.run([&](float dt) {
     time += dt;
