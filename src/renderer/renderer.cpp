@@ -282,24 +282,27 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &t
     shader->set_vec3("u_CameraPos", camera->get_position());
     bind_lights(shader);
     if (m_shadow_enabled) {
-        if (m_cubemap_shadow_map) {
-            m_cubemap_shadow_map->bind_texture(15);
-            shader->set_int("u_ShadowCubemap", 15);
-            shader->set_int("u_UseShadows", 1);
-            shader->set_int("u_ShadowType", 1);
-            shader->set_vec3("u_LightPos", m_shadow_light_pos);
-            shader->set_float("u_FarPlane", m_shadow_far_plane);
-        } else if (m_shadow_map) {
+        if (m_shadow_map) {
             m_shadow_map->bind_texture(15);
             shader->set_int("u_ShadowMap", 15);
-            shader->set_int("u_UseShadows", 1);
-            shader->set_int("u_ShadowType", 0);
+            shader->set_int("u_UseDirectionalShadow", 1);
             shader->set_mat4("u_LightSpaceMatrix", m_light_space_matrix);
         } else {
-            shader->set_int("u_UseShadows", 0);
+            shader->set_int("u_UseDirectionalShadow", 0);
+        }
+
+        if (m_cubemap_shadow_map) {
+            m_cubemap_shadow_map->bind_texture(16);
+            shader->set_int("u_ShadowCubemap", 16);
+            shader->set_int("u_UsePointShadow", 1);
+            shader->set_vec3("u_ShadowLightPos", m_shadow_light_pos);
+            shader->set_float("u_ShadowFarPlane", m_shadow_far_plane);
+        } else {
+            shader->set_int("u_UsePointShadow", 0);
         }
     } else {
-        shader->set_int("u_UseShadows", 0);
+        shader->set_int("u_UseDirectionalShadow", 0);
+        shader->set_int("u_UsePointShadow", 0);
     }
     if (scene->get_skybox() && scene->get_skybox()->get_cubemap()) {
         scene->get_skybox()->get_cubemap()->bind(14);

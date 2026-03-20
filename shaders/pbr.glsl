@@ -107,10 +107,10 @@ uniform SpotLight u_SpotLights[8];
 
 uniform sampler2D u_ShadowMap;
 uniform samplerCube u_ShadowCubemap;
-uniform int u_UseShadows;
-uniform int u_ShadowType;
-uniform vec3 u_LightPos;
-uniform float u_FarPlane;
+uniform int u_UseDirectionalShadow;
+uniform int u_UsePointShadow;
+uniform vec3 u_ShadowLightPos;
+uniform float u_ShadowFarPlane;
 
 uniform samplerCube u_EnvironmentMap;
 uniform int u_UseEnvironmentMap;
@@ -158,7 +158,7 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness) {
 }
 
 float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
-    if (u_UseShadows == 0 || u_ShadowType != 0) return 0.0;
+    if (u_UseDirectionalShadow == 0) return 0.0;
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     projCoords = projCoords * 0.5 + 0.5;
     float closestDepth = texture(u_ShadowMap, projCoords.xy).r;
@@ -178,8 +178,8 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
 }
 
 float PointShadowCalculation(vec3 fragPos) {
-    if (u_UseShadows == 0 || u_ShadowType != 1) return 0.0;
-    vec3 fragToLight = fragPos - u_LightPos;
+    if (u_UsePointShadow == 0) return 0.0;
+    vec3 fragToLight = fragPos - u_ShadowLightPos;
     float currentDepth = length(fragToLight);
     float shadow = 0.0;
     float bias = 0.05;
@@ -194,7 +194,7 @@ float PointShadowCalculation(vec3 fragPos) {
     float diskRadius = 0.05;
     for(int i = 0; i < samples; ++i) {
         float closestDepth = texture(u_ShadowCubemap, fragToLight + sampleOffsetDirections[i] * diskRadius).r;
-        closestDepth *= u_FarPlane;
+        closestDepth *= u_ShadowFarPlane;
         if(currentDepth - bias > closestDepth)
             shadow += 1.0;
     }
@@ -264,7 +264,7 @@ void main() {
 
         float NdotL = max(dot(N, L), 0.0);
         float shadow = 0.0;
-        if (u_ShadowType == 0) {
+        if (u_UseDirectionalShadow == 1) {
             shadow = ShadowCalculation(v_FragPosLightSpace, N, L);
         }
         Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
@@ -291,7 +291,7 @@ void main() {
 
         float NdotL = max(dot(N, L), 0.0);
         float shadow = 0.0;
-        if (u_ShadowType == 1) {
+        if (u_UsePointShadow == 1 && length(u_PointLights[i].position - u_ShadowLightPos) < 0.1) {
             shadow = PointShadowCalculation(v_FragPos);
         }
         Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
