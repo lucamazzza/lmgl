@@ -25,5 +25,6 @@ uniform float u_Exposure;
 void main() {
     vec3 color = texture(u_Skybox, v_TexCoords).rgb;
     color *= u_Exposure;
+    color = clamp(color, 0.0, 65504.0);
     FragColor = vec4(color, 1.0);
 }

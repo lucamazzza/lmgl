@@ -127,7 +127,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = PI * denom * denom;
 
-    return nom / denom;
+    return nom / max(denom, 0.0001);
 }
 
 float GeometrySchlickGGX(float NdotV, float roughness) {
@@ -137,7 +137,7 @@ float GeometrySchlickGGX(float NdotV, float roughness) {
     float nom = NdotV;
     float denom = NdotV * (1.0 - k) + k;
 
-    return nom / denom;
+    return nom / max(denom, 0.0001);
 }
 
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
@@ -256,7 +256,7 @@ void main() {
 
         vec3 numerator = NDF * G * F;
         float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001;
-        vec3 specular = numerator / denominator;
+        vec3 specular = min(numerator / denominator, vec3(10.0));
 
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
@@ -283,7 +283,7 @@ void main() {
 
         vec3 numerator = NDF * G * F;
         float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001;
-        vec3 specular = numerator / denominator;
+        vec3 specular = min(numerator / denominator, vec3(10.0));
 
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
@@ -320,6 +320,7 @@ void main() {
     }
 
     vec3 color = ambient + Lo + emissive;
+    color = clamp(color, 0.0, 65504.0);
 
     FragColor = vec4(color, 1.0);
 }

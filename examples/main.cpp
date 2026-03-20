@@ -89,20 +89,10 @@ int main() {
   toggle_shadows->set_render_order(1);
   canvas->add_element(toggle_shadows);
 
-  auto toggle_bloom =
-      std::make_shared<ui::Toggle>("Bloom", "BloomToggle");
-  toggle_bloom->get_text()->set_font(ui_font_small);
-  toggle_bloom->set_position(glm::vec2(10.0f, -70.0f));
-  toggle_bloom->set_anchor(ui::Anchor::BottomLeft);
-  toggle_bloom->set_checked(false);
-  toggle_bloom->set_box_size(10.0f);
-  toggle_bloom->set_render_order(1);
-  canvas->add_element(toggle_bloom);
-
   auto toggle_point_shadows =
       std::make_shared<ui::Toggle>("Point Shadows", "PointShadowsToggle");
   toggle_point_shadows->get_text()->set_font(ui_font_small);
-  toggle_point_shadows->set_position(glm::vec2(10.0f, -90.0f));
+  toggle_point_shadows->set_position(glm::vec2(10.0f, -70.0f));
   toggle_point_shadows->set_anchor(ui::Anchor::BottomLeft);
   toggle_point_shadows->set_checked(true);
   toggle_point_shadows->set_box_size(10.0f);
@@ -112,7 +102,7 @@ int main() {
   auto toggle_dir_shadows =
       std::make_shared<ui::Toggle>("Directional Shadows", "DirShadowsToggle");
   toggle_dir_shadows->get_text()->set_font(ui_font_small);
-  toggle_dir_shadows->set_position(glm::vec2(10.0f, -110.0f));
+  toggle_dir_shadows->set_position(glm::vec2(10.0f, -90.0f));
   toggle_dir_shadows->set_anchor(ui::Anchor::BottomLeft);
   toggle_dir_shadows->set_checked(true);
   toggle_dir_shadows->set_box_size(10.0f);
@@ -206,15 +196,13 @@ int main() {
   auto options = assets::ModelLoadOptions();
   options.optimize_meshes = true;
   options.flip_uvs = true;
-  auto rifle = assets::ModelLoader::load("examples/assets/ratchet_wrench_4k.gltf",
+  auto asset = assets::ModelLoader::load("examples/assets/ratchet_wrench_4k.gltf",
                                          pbr_shader, options);
-  if (!rifle) {
-    std::cerr << "Failed to load wrench model!" << std::endl;
+  if (!asset) {
   } else {
-    rifle->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
-    rifle->set_scale(10.0f);
-    scene->get_root()->add_child(rifle);
-    std::cout << "Wrench model loaded and added to scene" << std::endl;
+    asset->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
+    asset->set_scale(10.0f);
+    scene->get_root()->add_child(asset);
   }
 
   // CREATE LIGHTS
@@ -268,7 +256,6 @@ int main() {
               << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
   });
 
-  renderer->set_bloom_enabled(false);
   // Main loop
   engine.run([&](float dt) {
     time += dt;
@@ -281,7 +268,6 @@ int main() {
       float ch = canvas->get_height();
       toggle_skybox->handle_click(mx, my, cw, ch);
       toggle_shadows->handle_click(mx, my, cw, ch);
-      toggle_bloom->handle_click(mx, my, cw, ch);
       toggle_point_shadows->handle_click(mx, my, cw, ch);
       toggle_dir_shadows->handle_click(mx, my, cw, ch);
       btn_solid->handle_mouse_button(mx, my, true, cw, ch);
@@ -349,11 +335,6 @@ int main() {
       scene->set_shadows_enabled(checked);
       std::cout << "Shadows " << (checked ? "enabled" : "disabled")
                 << std::endl;
-    });
-
-    toggle_bloom->set_on_toggle([&](bool checked) {
-      renderer->set_bloom_enabled(checked);
-      std::cout << "Bloom " << (checked ? "enabled" : "disabled") << std::endl;
     });
 
     toggle_point_shadows->set_on_toggle([&](bool checked) {
