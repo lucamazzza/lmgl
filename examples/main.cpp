@@ -28,7 +28,7 @@ int main() {
   using namespace lmgl;
 
   auto &engine = core::Engine::get_instance();
-  if (!engine.init(1920, 1080, "LMGL - PBR & Lighting Demo", true, false)) {
+  if (!engine.init(1920, 1080, "LMGL - Scene Viewer", true, false)) {
     std::cerr << "Failed to initialize engine!" << std::endl;
     return -1;
   }
@@ -187,65 +187,7 @@ int main() {
   auto renderer = std::make_unique<renderer::Renderer>();
   renderer->set_tone_map_mode(1); // reinhard
 
-  // CREATE MATERIALS
 
-  // Shiny metal material
-  auto metal_material = std::make_shared<scene::Material>("Metal");
-  metal_material->set_albedo(glm::vec3(0.8f, 0.8f, 0.8f));
-  metal_material->set_metallic(1.0f);
-  metal_material->set_roughness(0.2f);
-
-  // Rough plastic material
-  auto plastic_material = std::make_shared<scene::Material>("Plastic");
-  plastic_material->set_albedo(glm::vec3(0.2f, 0.5f, 0.8f));
-  plastic_material->set_metallic(0.0f);
-  plastic_material->set_roughness(0.7f);
-
-  // Gold material
-  auto gold_material = std::make_shared<scene::Material>("Gold");
-  gold_material->set_albedo(glm::vec3(1.0f, 0.782f, 0.344f));
-  gold_material->set_metallic(1.0f);
-  gold_material->set_roughness(0.3f);
-
-  // Emissive material
-  auto emissive_material = std::make_shared<scene::Material>("Emissive");
-  emissive_material->set_albedo(glm::vec3(0.1f, 0.1f, 0.1f));
-  emissive_material->set_emissive(glm::vec3(2.0f, 2.0f, 2.0f));
-
-  // CREATE SCENE OBJECTS
-
-  // Metal sphere (left)
-  auto metal_sphere = scene::Mesh::create_sphere(pbr_shader, 0.8f, 32, 32);
-  metal_sphere->set_material(metal_material);
-  auto metal_node = std::make_shared<scene::Node>("Metal Sphere");
-  metal_node->set_mesh(metal_sphere);
-  metal_node->set_position(glm::vec3(-3.0f, 1.0f, 0.0f));
-  scene->get_root()->add_child(metal_node);
-
-  // Plastic sphere (center)
-  auto plastic_sphere = scene::Mesh::create_sphere(pbr_shader, 0.8f, 32, 32);
-  plastic_sphere->set_material(plastic_material);
-  auto plastic_node = std::make_shared<scene::Node>("Plastic Sphere");
-  plastic_node->set_mesh(plastic_sphere);
-  plastic_node->set_position(glm::vec3(0.0f, 1.0f, 0.0f));
-  scene->get_root()->add_child(plastic_node);
-
-  // Gold sphere (right)
-  auto gold_sphere = scene::Mesh::create_sphere(pbr_shader, 0.8f, 32, 32);
-  gold_sphere->set_material(gold_material);
-  auto gold_node = std::make_shared<scene::Node>("Gold Sphere");
-  gold_node->set_mesh(gold_sphere);
-  gold_node->set_position(glm::vec3(3.0f, 1.0f, 0.0f));
-  scene->get_root()->add_child(gold_node);
-
-  // Emissive cube (light source visualization)
-  auto emissive_sphere = scene::Mesh::create_sphere(pbr_shader);
-  emissive_sphere->set_material(emissive_material);
-  auto emissive_node = std::make_shared<scene::Node>("Emissive Cube");
-  emissive_node->set_mesh(emissive_sphere);
-  emissive_node->set_position(glm::vec3(0.0f, 3.0f, 0.0f));
-  emissive_node->set_scale(0.3f);
-  scene->get_root()->add_child(emissive_node);
 
   // Ground plane
   auto ground_material = std::make_shared<scene::Material>("Ground");
@@ -258,29 +200,41 @@ int main() {
   auto ground_node = std::make_shared<scene::Node>("Ground");
   ground_node->set_mesh(ground);
   ground_node->set_rotation(glm::vec3(-90.0f, 0.0f, 0.0f));
+  ground_node->set_position(glm::vec3(0.0f, -5.0f, 0.0f));
   scene->get_root()->add_child(ground_node);
 
   auto options = assets::ModelLoadOptions();
   options.optimize_meshes = true;
   options.flip_uvs = true;
-  auto rifle = assets::ModelLoader::load("examples/assets/rifle.obj",
+  auto rifle = assets::ModelLoader::load("examples/assets/ratchet_wrench_4k.gltf",
                                          pbr_shader, options);
-  rifle->set_position(glm::vec3(2.0f, 2.0f, -2.0f));
-  rifle->set_scale(0.05f);
-  scene->get_root()->add_child(rifle);
+  if (!rifle) {
+    std::cerr << "Failed to load wrench model!" << std::endl;
+  } else {
+    rifle->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
+    rifle->set_scale(10.0f);
+    scene->get_root()->add_child(rifle);
+    std::cout << "Wrench model loaded and added to scene" << std::endl;
+  }
 
   // CREATE LIGHTS
 
   // Directional light (sun)
-  auto sun = scene::Light::create_directional(glm::vec3(0.3f, -1.0f, -0.5f),
+  auto sun = scene::Light::create_directional(glm::vec3(0.5f, -1.0f, -0.3f),
                                               glm::vec3(1.0f, 0.95f, 0.9f));
-  sun->set_intensity(2.0f);
+  sun->set_intensity(3.0f);
   scene->add_light(sun);
 
-  // Point light (orange)
+  // Fill light (soft ambient from opposite direction)
+  auto fill_light = scene::Light::create_directional(glm::vec3(-0.3f, 0.5f, 0.5f),
+                                                     glm::vec3(0.6f, 0.7f, 1.0f));
+  fill_light->set_intensity(0.5f);
+  scene->add_light(fill_light);
+
+  // Point light (orange accent)
   auto point_light = scene::Light::create_point(
-      glm::vec3(0.0f, 3.0f, 0.0f), 10.0f, glm::vec3(1.0f, 0.5f, 0.2f));
-  point_light->set_intensity(20.0f);
+      glm::vec3(3.0f, 3.0f, 3.0f), 15.0f, glm::vec3(1.0f, 0.7f, 0.4f));
+  point_light->set_intensity(15.0f);
   scene->add_light(point_light);
 
   // Animation state
@@ -325,7 +279,6 @@ int main() {
       float my = engine.get_mouse_y();
       float cw = canvas->get_width();
       float ch = canvas->get_height();
-      
       toggle_skybox->handle_click(mx, my, cw, ch);
       toggle_shadows->handle_click(mx, my, cw, ch);
       toggle_bloom->handle_click(mx, my, cw, ch);
@@ -467,17 +420,6 @@ int main() {
 
     camera->set_position(camera_pos);
     camera->set_target(camera_pos + glm::normalize(direction));
-
-    // Animate spheres
-    metal_node->set_rotation(glm::vec3(0.0f, time * 30.0f, 0.0f));
-    plastic_node->set_rotation(glm::vec3(0.0f, time * 20.0f, 0.0f));
-    gold_node->set_rotation(glm::vec3(0.0f, time * 40.0f, 0.0f));
-
-    // Animate point light
-    float light_angle = time * 2.0f;
-    point_light->set_position(glm::vec3(std::cos(light_angle) * 3.0f, 3.0f,
-                                        std::sin(light_angle) * 3.0f));
-    emissive_node->set_position(point_light->get_position());
 
     // Render
     engine.clear(0.05f, 0.05f, 0.1f);

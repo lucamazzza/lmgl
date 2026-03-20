@@ -63,7 +63,7 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     }
 
     for (const auto &item : m_render_queue) {
-        render_mesh(item.mesh, item.transform, camera);
+        render_mesh(item.mesh, item.transform, camera, scene);
     }
 
     // Post-process pass
@@ -263,7 +263,7 @@ void Renderer::sort_render_queue(std::vector<RenderItem> &items) {
 }
 
 void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &transform,
-                           std::shared_ptr<scene::Camera> camera) {
+                           std::shared_ptr<scene::Camera> camera, std::shared_ptr<scene::Scene> scene) {
     if (!mesh || !camera)
         return;
     auto shader = mesh->get_shader();
@@ -281,6 +281,33 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &t
     shader->set_mat3("u_NormalMatrix", normal_matrix);
     shader->set_vec3("u_CameraPos", camera->get_position());
     bind_lights(shader);
+    if (m_shadow_enabled) {
+        if (m_cubemap_shadow_map) {
+            m_cubemap_shadow_map->bind_texture(15);
+            shader->set_int("u_ShadowCubemap", 15);
+            shader->set_int("u_UseShadows", 1);
+            shader->set_int("u_ShadowType", 1);
+            shader->set_vec3("u_LightPos", m_shadow_light_pos);
+            shader->set_float("u_FarPlane", m_shadow_far_plane);
+        } else if (m_shadow_map) {
+            m_shadow_map->bind_texture(15);
+            shader->set_int("u_ShadowMap", 15);
+            shader->set_int("u_UseShadows", 1);
+            shader->set_int("u_ShadowType", 0);
+            shader->set_mat4("u_LightSpaceMatrix", m_light_space_matrix);
+        } else {
+            shader->set_int("u_UseShadows", 0);
+        }
+    } else {
+        shader->set_int("u_UseShadows", 0);
+    }
+    if (scene->get_skybox() && scene->get_skybox()->get_cubemap()) {
+        scene->get_skybox()->get_cubemap()->bind(14);
+        shader->set_int("u_EnvironmentMap", 14);
+        shader->set_int("u_UseEnvironmentMap", 1);
+    } else {
+        shader->set_int("u_UseEnvironmentMap", 0);
+    }
     auto material = mesh->get_material();
     if (material)
         bind_material(material, shader);
@@ -357,36 +384,19 @@ void Renderer::bind_lights(std::shared_ptr<renderer::Shader> shader) {
         shader->set_float(base + ".intensity", m_point_lights[i]->get_intensity());
         shader->set_float(base + ".range", m_point_lights[i]->get_range());
     }
-    
-    // Bind shadow uniforms
-    if (m_shadow_enabled) {
-        if (m_cubemap_shadow_map) {
-            m_cubemap_shadow_map->bind_texture(15);
-            shader->set_int("u_ShadowMap", 15);
-            shader->set_int("u_UseShadows", 1);
-            shader->set_vec3("u_LightPos", m_shadow_light_pos);
-            shader->set_float("u_FarPlane", m_shadow_far_plane);
-        } else {
-            shader->set_int("u_UseShadows", 0);
-            shader->set_vec3("u_LightPos", glm::vec3(0.0f));
-            shader->set_float("u_FarPlane", 1.0f);
+    int num_spot_lights = std::min((int)m_spot_lights.size(), 8);
+    if (num_spot_lights > 0) {
+        shader->set_int("u_NumSpotLights", num_spot_lights);
+        for (int i = 0; i < num_spot_lights; ++i) {
+            std::string base = "u_SpotLights[" + std::to_string(i) + "]";
+            shader->set_vec3(base + ".position", m_spot_lights[i]->get_position());
+            shader->set_vec3(base + ".direction", m_spot_lights[i]->get_direction());
+            shader->set_vec3(base + ".color", m_spot_lights[i]->get_color());
+            shader->set_float(base + ".intensity", m_spot_lights[i]->get_intensity());
+            shader->set_float(base + ".range", m_spot_lights[i]->get_range());
+            shader->set_float(base + ".innerCutoff", m_spot_lights[i]->get_inner_cone());
+            shader->set_float(base + ".outerCutoff", m_spot_lights[i]->get_outer_cone());
         }
-        
-        if (m_shadow_map) {
-            m_shadow_map->bind_texture(14);
-            shader->set_int("u_DirShadowMap", 14);
-            shader->set_int("u_UseDirShadows", 1);
-            shader->set_mat4("u_LightSpaceMatrix", m_light_space_matrix);
-        } else {
-            shader->set_int("u_UseDirShadows", 0);
-            shader->set_mat4("u_LightSpaceMatrix", glm::mat4(1.0f));
-        }
-    } else {
-        shader->set_int("u_UseShadows", 0);
-        shader->set_int("u_UseDirShadows", 0);
-        shader->set_mat4("u_LightSpaceMatrix", glm::mat4(1.0f));
-        shader->set_vec3("u_LightPos", glm::vec3(0.0f));
-        shader->set_float("u_FarPlane", 1.0f);
     }
 }
 
@@ -423,17 +433,13 @@ void Renderer::setup_shadows(std::shared_ptr<scene::Scene> scene, std::shared_pt
         m_shadow_enabled = false;
         return;
     }
-    
     m_shadow_enabled = true;
-    
     if (!m_shadow_renderer) {
         m_shadow_renderer = std::make_unique<ShadowRenderer>();
     }
-    
     auto lights = scene->get_lights();
     std::shared_ptr<scene::Light> point_light = nullptr;
     std::shared_ptr<scene::Light> directional_light = nullptr;
-    
     for (auto &light : lights) {
         if (light->get_type() == scene::LightType::Point && !point_light) {
             point_light = light;
@@ -442,8 +448,6 @@ void Renderer::setup_shadows(std::shared_ptr<scene::Scene> scene, std::shared_pt
             directional_light = light;
         }
     }
-    
-    // Render point light shadows
     if (enable_point && point_light) {
         if (!m_cubemap_shadow_map) {
             int resolution = scene->get_shadow_resolution();
@@ -455,8 +459,6 @@ void Renderer::setup_shadows(std::shared_ptr<scene::Scene> scene, std::shared_pt
     } else {
         m_cubemap_shadow_map = nullptr;
     }
-    
-    // Render directional light shadows
     if (enable_directional && directional_light) {
         if (!m_shadow_map) {
             int resolution = scene->get_shadow_resolution();

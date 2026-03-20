@@ -48,7 +48,6 @@ in vec4 v_FragPosLightSpace;
 
 out vec4 FragColor;
 
-// Material properties
 struct Material {
     vec3 albedo;
     float metallic;
@@ -71,7 +70,6 @@ struct Material {
     int hasEmissiveMap;
 };
 
-// Light structure
 struct DirectionalLight {
     vec3 direction;
     vec3 color;
@@ -85,27 +83,40 @@ struct PointLight {
     float range;
 };
 
+struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 color;
+    float intensity;
+    float range;
+    float innerCutoff;
+    float outerCutoff;
+};
+
 uniform Material u_Material;
 uniform vec3 u_CameraPos;
 
-// Lights (simple for now)
 uniform int u_NumDirLights;
 uniform DirectionalLight u_DirLights[4];
 
 uniform int u_NumPointLights;
 uniform PointLight u_PointLights[16];
 
-uniform samplerCube u_ShadowMap;
+uniform int u_NumSpotLights;
+uniform SpotLight u_SpotLights[8];
+
+uniform sampler2D u_ShadowMap;
+uniform samplerCube u_ShadowCubemap;
 uniform int u_UseShadows;
+uniform int u_ShadowType;
 uniform vec3 u_LightPos;
 uniform float u_FarPlane;
 
-uniform sampler2D u_DirShadowMap;
-uniform int u_UseDirShadows;
+uniform samplerCube u_EnvironmentMap;
+uniform int u_UseEnvironmentMap;
 
 const float PI = 3.14159265359;
 
-// PBR Functions
 float DistributionGGX(vec3 N, vec3 H, float roughness) {
     float a = roughness * roughness;
     float a2 = a * a;
@@ -142,29 +153,22 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
-float ShadowCalculation(vec3 fragPos, vec3 normal, vec3 lightDir) {
-    if (u_UseShadows == 0) return 0.0;
-    vec3 fragToLight = fragPos - u_LightPos;
-    float closestDepth = texture(u_ShadowMap, fragToLight).r;
-    closestDepth *= u_FarPlane;
-    float currentDepth = length(fragToLight);
-    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
-    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
-    return shadow;
+vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness) {
+    return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
-float DirShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
-    if (u_UseDirShadows == 0) return 0.0;
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
+    if (u_UseShadows == 0 || u_ShadowType != 0) return 0.0;
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     projCoords = projCoords * 0.5 + 0.5;
-    float closestDepth = texture(u_DirShadowMap, projCoords.xy).r;
+    float closestDepth = texture(u_ShadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;
     float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.0005);
     float shadow = 0.0;
-    vec2 texelSize = 1.0 / textureSize(u_DirShadowMap, 0);
+    vec2 texelSize = 1.0 / textureSize(u_ShadowMap, 0);
     for(int x = -1; x <= 1; ++x) {
         for(int y = -1; y <= 1; ++y) {
-            float pcfDepth = texture(u_DirShadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            float pcfDepth = texture(u_ShadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }
@@ -173,8 +177,32 @@ float DirShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
     return shadow;
 }
 
+float PointShadowCalculation(vec3 fragPos) {
+    if (u_UseShadows == 0 || u_ShadowType != 1) return 0.0;
+    vec3 fragToLight = fragPos - u_LightPos;
+    float currentDepth = length(fragToLight);
+    float shadow = 0.0;
+    float bias = 0.05;
+    int samples = 20;
+    vec3 sampleOffsetDirections[20] = vec3[](
+       vec3( 1,  1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1,  1,  1), 
+       vec3( 1,  1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1,  1, -1),
+       vec3( 1,  1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1,  1,  0),
+       vec3( 1,  0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1,  0, -1),
+       vec3( 0,  1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0,  1, -1)
+    );
+    float diskRadius = 0.05;
+    for(int i = 0; i < samples; ++i) {
+        float closestDepth = texture(u_ShadowCubemap, fragToLight + sampleOffsetDirections[i] * diskRadius).r;
+        closestDepth *= u_FarPlane;
+        if(currentDepth - bias > closestDepth)
+            shadow += 1.0;
+    }
+    shadow /= float(samples);
+    return shadow;
+}
+
 void main() {
-    // Sample material properties
     vec3 albedo = u_Material.albedo;
     if (u_Material.hasAlbedoMap == 1) {
         albedo = texture(u_Material.albedoMap, v_TexCoord).rgb;
@@ -182,12 +210,12 @@ void main() {
 
     float metallic = u_Material.metallic;
     if (u_Material.hasMetallicMap == 1) {
-        metallic = texture(u_Material.metallicMap, v_TexCoord).r;
+        metallic = texture(u_Material.metallicMap, v_TexCoord).b;
     }
 
     float roughness = u_Material.roughness;
     if (u_Material.hasRoughnessMap == 1) {
-        roughness = texture(u_Material.roughnessMap, v_TexCoord).r;
+        roughness = texture(u_Material.roughnessMap, v_TexCoord).g;
     }
 
     float ao = u_Material.ao;
@@ -200,14 +228,10 @@ void main() {
         emissive = texture(u_Material.emissiveMap, v_TexCoord).rgb;
     }
 
-    // Get normal
     vec3 N;
     if (u_Material.hasNormalMap == 1) {
-        // Sample normal from normal map
         vec3 normalMap = texture(u_Material.normalMap, v_TexCoord).rgb;
-        // Transform from [0,1] to [-1,1]
         normalMap = normalMap * 2.0 - 1.0;
-        // Transform to world space using TBN matrix
         N = normalize(v_TBN * normalMap);
     } else {
         N = normalize(v_Normal);
@@ -215,14 +239,11 @@ void main() {
 
     vec3 V = normalize(u_CameraPos - v_FragPos);
 
-    // Calculate reflectance at normal incidence
     vec3 F0 = vec3(0.04);
     F0 = mix(F0, albedo, metallic);
 
-    // Reflectance equation
     vec3 Lo = vec3(0.0);
 
-    // Directional lights
     for (int i = 0; i < u_NumDirLights; ++i) {
         vec3 L = normalize(-u_DirLights[i].direction);
         vec3 H = normalize(V + L);
@@ -242,11 +263,13 @@ void main() {
         kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
-        float dirShadow = DirShadowCalculation(v_FragPosLightSpace, N, L);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - dirShadow);
+        float shadow = 0.0;
+        if (u_ShadowType == 0) {
+            shadow = ShadowCalculation(v_FragPosLightSpace, N, L);
+        }
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
     }
 
-    // Point lights
     for (int i = 0; i < u_NumPointLights; ++i) {
         vec3 L = normalize(u_PointLights[i].position - v_FragPos);
         vec3 H = normalize(V + L);
@@ -254,7 +277,6 @@ void main() {
         float attenuation = 1.0 / (distance * distance);
         vec3 radiance = u_PointLights[i].color * u_PointLights[i].intensity * attenuation;
 
-        // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);
         float G = GeometrySmith(N, V, L, roughness);
         vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);
@@ -268,15 +290,36 @@ void main() {
         kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
-        float pointShadow = ShadowCalculation(v_FragPos, N, L);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - pointShadow);
+        float shadow = 0.0;
+        if (u_ShadowType == 1) {
+            shadow = PointShadowCalculation(v_FragPos);
+        }
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL * (1.0 - shadow);
     }
 
-    // Ambient lighting (simplified)
-    vec3 ambient = vec3(0.03) * albedo * ao;
+    vec3 ambient;
+    if (u_UseEnvironmentMap == 1) {
+        vec3 R = reflect(-V, N);
+
+        vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+        vec3 kS = F;
+        vec3 kD = 1.0 - kS;
+        kD *= 1.0 - metallic;
+
+        float maxMipLevel = 8.0;
+        float mipLevel = roughness * maxMipLevel;
+        vec3 prefilteredColor = textureLod(u_EnvironmentMap, R, mipLevel).rgb;
+
+        vec3 irradiance = texture(u_EnvironmentMap, N).rgb;
+        vec3 diffuse = irradiance * albedo;
+        vec3 specular = prefilteredColor * F;
+
+        ambient = (kD * diffuse + specular) * ao;
+    } else {
+        ambient = vec3(0.1) * albedo * ao;
+    }
 
     vec3 color = ambient + Lo + emissive;
 
-    // Output raw HDR color (post-process will handle tone mapping and gamma)
     FragColor = vec4(color, 1.0);
 }

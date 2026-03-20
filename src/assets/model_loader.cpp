@@ -145,26 +145,42 @@ std::shared_ptr<scene::Mesh> ModelLoader::process_mesh(aiMesh *ai_mesh, const ai
         auto diffuse_maps = load_material_textures(ai_material, aiTextureType_DIFFUSE, dir);
         if (!diffuse_maps.empty()) {
             material->set_albedo_map(diffuse_maps[0]);
+            std::cout << "  Loaded albedo map" << std::endl;
         }
         // Normal map
         auto normal_maps = load_material_textures(ai_material, aiTextureType_NORMALS, dir);
         if (!normal_maps.empty()) {
             material->set_normal_map(normal_maps[0]);
+            std::cout << "  Loaded normal map" << std::endl;
         }
         // Metallic map
         auto metallic_maps = load_material_textures(ai_material, aiTextureType_METALNESS, dir);
         if (!metallic_maps.empty()) {
             material->set_metallic_map(metallic_maps[0]);
+            std::cout << "  Loaded metallic map" << std::endl;
         }
         // Roughness map
         auto roughness_maps = load_material_textures(ai_material, aiTextureType_DIFFUSE_ROUGHNESS, dir);
         if (!roughness_maps.empty()) {
             material->set_roughness_map(roughness_maps[0]);
+            std::cout << "  Loaded roughness map" << std::endl;
         }
-        // AO map
-        auto ao_maps = load_material_textures(ai_material, aiTextureType_AMBIENT_OCCLUSION, dir);
-        if (!ao_maps.empty()) {
-            material->set_ao_map(ao_maps[0]);
+        // GLTF combined metallic-roughness texture (if separate maps not found)
+        if (metallic_maps.empty() && roughness_maps.empty()) {
+            auto unknown_maps = load_material_textures(ai_material, aiTextureType_UNKNOWN, dir);
+            if (!unknown_maps.empty()) {
+                material->set_metallic_map(unknown_maps[0]);
+                material->set_roughness_map(unknown_maps[0]);
+                material->set_ao_map(unknown_maps[0]);  // AO is in red channel
+                std::cout << "  Loaded combined metallic-roughness-AO map" << std::endl;
+            }
+        } else {
+            // AO map (separate)
+            auto ao_maps = load_material_textures(ai_material, aiTextureType_AMBIENT_OCCLUSION, dir);
+            if (!ao_maps.empty()) {
+                material->set_ao_map(ao_maps[0]);
+                std::cout << "  Loaded AO map" << std::endl;
+            }
         }
         // Emissive map
         auto emissive_maps = load_material_textures(ai_material, aiTextureType_EMISSIVE, dir);
@@ -185,11 +201,13 @@ ModelLoader::load_material_textures(aiMaterial *ai_material, unsigned int type, 
         ai_material->GetTexture((aiTextureType)type, i, &str);
         std::string filename = str.C_Str();
         std::string texture_path = dir + "/" + filename;
+        std::cout << "    Looking for texture: " << texture_path << std::endl;
         auto &tex_lib = TextureLibrary::get_instance();
         if (std::filesystem::exists(texture_path)) {
             auto texture = tex_lib.load(texture_path);
             if (texture) {
                 textures.push_back(texture);
+                std::cout << "    Loaded successfully!" << std::endl;
             }
         } else {
             std::cerr << "WARNING: Texture file not found: " << texture_path << std::endl;

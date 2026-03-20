@@ -25,6 +25,5 @@ uniform float u_Exposure;
 void main() {
     vec3 color = texture(u_Skybox, v_TexCoords).rgb;
     color *= u_Exposure;
-    // Output raw HDR color (post-process will handle tone mapping and gamma)
     FragColor = vec4(color, 1.0);
 }

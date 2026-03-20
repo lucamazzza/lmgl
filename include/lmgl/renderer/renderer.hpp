@@ -321,7 +321,7 @@ class Renderer {
 
     //! Shadow renderer (lazy initialized)
     std::unique_ptr<ShadowRenderer> m_shadow_renderer;
-    
+
     //! Shadow state
     bool m_shadow_enabled = false;
     glm::vec3 m_shadow_light_pos = glm::vec3(0.0f);
@@ -410,7 +410,7 @@ class Renderer {
      * @param camera Shared pointer to the camera used for rendering.
      */
     void render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &transform,
-                     std::shared_ptr<scene::Camera> camera);
+                     std::shared_ptr<scene::Camera> camera, std::shared_ptr<scene::Scene> scene);
 
     /*!
      * @brief Apply the current render mode settings.
