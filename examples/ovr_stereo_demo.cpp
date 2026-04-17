@@ -90,16 +90,6 @@ int main() {
   toggle_shadows->set_render_order(1);
   canvas->add_element(toggle_shadows);
 
-  auto toggle_bloom =
-      std::make_shared<ui::Toggle>("Bloom", "BloomToggle");
-  toggle_bloom->get_text()->set_font(ui_font_small);
-  toggle_bloom->set_position(glm::vec2(10.0f, -70.0f));
-  toggle_bloom->set_anchor(ui::Anchor::BottomLeft);
-  toggle_bloom->set_checked(false);
-  toggle_bloom->set_box_size(10.0f);
-  toggle_bloom->set_render_order(1);
-  canvas->add_element(toggle_bloom);
-
   auto toggle_point_shadows =
       std::make_shared<ui::Toggle>("Point Shadows", "PointShadowsToggle");
   toggle_point_shadows->get_text()->set_font(ui_font_small);
@@ -282,7 +272,6 @@ int main() {
               << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
   });
 
-  renderer->set_bloom_enabled(false);
   // Main loop
   engine.run([&](float dt) {
     time += dt;
@@ -295,7 +284,6 @@ int main() {
       float ch = canvas->get_height();
       toggle_skybox->handle_click(mx, my, cw, ch);
       toggle_shadows->handle_click(mx, my, cw, ch);
-      toggle_bloom->handle_click(mx, my, cw, ch);
       toggle_point_shadows->handle_click(mx, my, cw, ch);
       toggle_dir_shadows->handle_click(mx, my, cw, ch);
       btn_solid->handle_mouse_button(mx, my, true, cw, ch);
@@ -363,11 +351,6 @@ int main() {
       scene->set_shadows_enabled(checked);
       std::cout << "Shadows " << (checked ? "enabled" : "disabled")
                 << std::endl;
-    });
-
-    toggle_bloom->set_on_toggle([&](bool checked) {
-      renderer->set_bloom_enabled(checked);
-      std::cout << "Bloom " << (checked ? "enabled" : "disabled") << std::endl;
     });
 
     toggle_point_shadows->set_on_toggle([&](bool checked) {
