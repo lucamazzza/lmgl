@@ -1,6 +1,9 @@
 add_executable(Sandbox main.cpp)
 target_link_libraries(Sandbox PRIVATE lmgl)
 
+add_executable(OVRStereoDemo ovr_stereo_demo.cpp)
+target_link_libraries(OVRStereoDemo PRIVATE lmgl)
+
 add_executable(JSONUIDemo json_ui_demo.cpp)
 target_link_libraries(JSONUIDemo PRIVATE lmgl)
 

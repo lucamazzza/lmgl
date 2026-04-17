@@ -39,6 +39,39 @@ Renderer::Renderer()
 void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> camera) {
     if (!scene || !camera)
         return;
+    render_scene_to_offscreen(scene, camera);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    composite_to_backbuffer(0, 0, m_window_width, m_window_height);
+}
+
+void Renderer::render_stereo(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> left_camera,
+                             std::shared_ptr<scene::Camera> right_camera) {
+    if (!scene || !left_camera || !right_camera)
+        return;
+
+    if (m_window_width < 2 || m_window_height < 1) {
+        render(scene, left_camera);
+        return;
+    }
+
+    const int half_width = std::max(1, m_window_width / 2);
+    const int right_width = std::max(1, m_window_width - half_width);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    render_scene_to_offscreen(scene, left_camera);
+    composite_to_backbuffer(0, 0, half_width, m_window_height);
+
+    render_scene_to_offscreen(scene, right_camera);
+    composite_to_backbuffer(half_width, 0, right_width, m_window_height);
+
+    // Restore full-window viewport for any subsequent passes (e.g. UI overlays).
+    glViewport(0, 0, m_window_width, m_window_height);
+}
+
+void Renderer::render_scene_to_offscreen(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> camera) {
     m_framebuffer->bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_draw_calls = 0;
@@ -53,11 +86,6 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
     sort_render_queue(m_render_queue);
     apply_render_mode();
 
-    // Render scene to framebuffer
-    m_framebuffer->bind();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Render skybox first (if present)
     if (scene->get_skybox()) {
         scene->get_skybox()->render(camera);
     }
@@ -66,16 +94,8 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
         render_mesh(item.mesh, item.transform, camera, scene);
     }
 
-    // Post-process pass
     m_framebuffer->unbind();
-    // Reset to solid fill mode for post-processing
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    // Reset to solid fill mode for post-processing
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    glViewport(0, 0, m_window_width, m_window_height);
-    glDisable(GL_DEPTH_TEST);
 
     // Bloom effect
     if (m_bloom_enabled) {
@@ -119,10 +139,12 @@ void Renderer::render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene
         }
         m_blur_shader->unbind();
     }
+}
 
-    // Final composite with tone mapping
+void Renderer::composite_to_backbuffer(int viewport_x, int viewport_y, int viewport_w, int viewport_h) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport(viewport_x, viewport_y, viewport_w, viewport_h);
+    glDisable(GL_DEPTH_TEST);
     m_postprocess_shader->bind();
     m_postprocess_shader->set_int("u_ScreenTexture", 0);
     m_postprocess_shader->set_int("u_BloomTexture", 1);

@@ -88,6 +88,20 @@ class Renderer {
     void render(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> camera);
 
     /*!
+     * @brief Render a scene in stereoscopic side-by-side mode.
+     *
+     * The left eye is rendered on the left half of the output and the right eye
+     * is rendered on the right half. This method is suitable for HMD backends
+     * that need per-eye images generated from distinct camera transforms.
+     *
+     * @param scene Shared pointer to the scene to be rendered.
+     * @param left_camera Camera used for the left eye.
+     * @param right_camera Camera used for the right eye.
+     */
+    void render_stereo(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> left_camera,
+                       std::shared_ptr<scene::Camera> right_camera);
+
+    /*!
      * @brief Set the rendering mode.
      *
      * This method allows changing the rendering mode of the renderer.
@@ -459,6 +473,24 @@ class Renderer {
      * material binding to occur regardless of the previous state.
      */
     void clear_material_cache();
+
+    /*!
+     * @brief Render scene geometry and effects into internal offscreen buffers.
+     *
+     * @param scene The scene to render.
+     * @param camera The camera used for view/projection.
+     */
+    void render_scene_to_offscreen(std::shared_ptr<scene::Scene> scene, std::shared_ptr<scene::Camera> camera);
+
+    /*!
+     * @brief Composite internal buffers into the default framebuffer viewport region.
+     *
+     * @param viewport_x Left coordinate of destination viewport.
+     * @param viewport_y Bottom coordinate of destination viewport.
+     * @param viewport_w Width of destination viewport.
+     * @param viewport_h Height of destination viewport.
+     */
+    void composite_to_backbuffer(int viewport_x, int viewport_y, int viewport_w, int viewport_h);
 };
 
 } // namespace renderer

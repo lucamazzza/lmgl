@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(HEADLESS "Build without display support for CI" OFF)
+option(LMGL_ENABLE_OVR "Enable LibOVR backend integration" OFF)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -93,6 +94,10 @@ add_library(lmgl STATIC
     src/ui/toggle.cpp
     src/ui/slider.cpp
     src/ui/ui_loader.cpp
+
+    # vr
+    include/lmgl/vr/ovr_backend.hpp
+    src/vr/ovr_backend.cpp
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -107,6 +112,17 @@ endif()
 target_sources(lmgl PRIVATE external/glad/src/glad.c)
 
 target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY} freetype)
+
+if(LMGL_ENABLE_OVR)
+    find_path(OVR_INCLUDE_DIR NAMES ovr.h OVR_CAPI.h)
+    find_library(OVR_LIBRARY NAMES LibOVR ovr)
+    if(NOT OVR_INCLUDE_DIR OR NOT OVR_LIBRARY)
+        message(FATAL_ERROR "LMGL_ENABLE_OVR=ON but LibOVR headers/library were not found")
+    endif()
+    target_include_directories(lmgl PUBLIC ${OVR_INCLUDE_DIR})
+    target_link_libraries(lmgl PUBLIC ${OVR_LIBRARY})
+    target_compile_definitions(lmgl PUBLIC LMGL_VR_OVR)
+endif()
 
 if(APPLE)
     target_link_libraries(lmgl PUBLIC "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")

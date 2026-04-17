@@ -36,6 +36,22 @@ application in a simpler way.
 The library comes also with an example application (`sandbox/`) and some
 example shaders (`shaders/`).
 
+LibOVR stereoscopic rendering
+-----------------------------
+
+LMGL now exposes an optional LibOVR backend (`lmgl/vr/ovr_backend.hpp`) and a
+stereoscopic renderer path (`renderer::Renderer::render_stereo`).
+
+To enable LibOVR at build time:
+
+```bash
+cmake -S . -B build -DLMGL_ENABLE_OVR=ON
+```
+
+When enabled, the backend queries runtime IPD from LibOVR (via `ovr.h` /
+`OVR_CAPI.h`) and can generate left/right eye cameras from a center camera.
+Those cameras can be rendered with `render_stereo(scene, left, right)`.
+
 On what does it run?
 --------------------
 

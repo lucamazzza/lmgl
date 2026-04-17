@@ -184,6 +184,27 @@ class Camera {
     inline float get_aspect() const { return m_aspect; }
 
     /*!
+     * @brief Get the perspective field of view in degrees.
+     *
+     * @return Perspective field of view in degrees.
+     */
+    inline float get_fov() const { return m_fov; }
+
+    /*!
+     * @brief Get the near clipping plane distance.
+     *
+     * @return Near clipping plane distance.
+     */
+    inline float get_near_clip() const { return m_near; }
+
+    /*!
+     * @brief Get the far clipping plane distance.
+     *
+     * @return Far clipping plane distance.
+     */
+    inline float get_far_clip() const { return m_far; }
+
+    /*!
      * @brief Set a new aspect ratio.
      *
      * Updates the aspect ratio and recalculates the projection matrix

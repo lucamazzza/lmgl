@@ -32,6 +32,7 @@
 // Renderer (commonly used)
 #include "lmgl/renderer/shader.hpp"
 #include "lmgl/renderer/texture.hpp"
+#include "lmgl/vr/ovr_backend.hpp"
 
 // UI
 #include "lmgl/ui/button.hpp"
@@ -65,6 +66,7 @@ using TextureLibrary = assets::TextureLibrary;
 // Renderer types
 using Shader = renderer::Shader;
 using Texture = renderer::Texture;
+using OvrBackend = vr::OvrBackend;
 
 // UI namespace remains as-is (ui::)
 // This allows: lmgl::ui::Button, lmgl::ui::Canvas, etc.
