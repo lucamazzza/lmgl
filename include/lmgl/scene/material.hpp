@@ -130,6 +130,20 @@ class Material {
     inline void set_emissive(const glm::vec3 &emissive) { m_emissive = emissive; }
 
     /*!
+     * @brief Returns whether the material should render both front and back faces.
+     *
+     * @return True when this material is double-sided.
+     */
+    inline bool is_double_sided() const { return m_double_sided; }
+
+    /*!
+     * @brief Sets whether the material should render both front and back faces.
+     *
+     * @param double_sided True to disable backface culling for this material.
+     */
+    inline void set_double_sided(bool double_sided) { m_double_sided = double_sided; }
+
+    /*!
      * @brief Sets the albedo texture map of the material.
      *
      * @param texture A shared pointer to the albedo texture.
@@ -241,6 +255,9 @@ class Material {
 
     //! @brief Material emissive color.
     glm::vec3 m_emissive{0.0f, 0.0f, 0.0f};
+
+    //! @brief Whether this material is rendered double-sided.
+    bool m_double_sided{false};
 
     //! @brief Albedo texture map.
     std::shared_ptr<renderer::Texture> m_albedo_map;

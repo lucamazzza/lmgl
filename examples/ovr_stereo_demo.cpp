@@ -161,7 +161,7 @@ int main() {
       scene::Cubemap::from_equirectangular("examples/assets/skybox.hdr");
   if (cubemap) {
     auto skybox = std::make_shared<scene::Skybox>(cubemap);
-    skybox->set_exposure(1.0f);
+    skybox->set_exposure(0.45f);
     scene->set_skybox(skybox);
     std::cout << "Skybox loaded successfully!" << std::endl;
   } else {
@@ -176,7 +176,8 @@ int main() {
 
   // Create renderer
   auto renderer = std::make_unique<renderer::Renderer>();
-  renderer->set_tone_map_mode(1); // reinhard
+  renderer->set_tone_map_mode(2); // ACES
+  renderer->set_exposure(0.65f);
 
   vr::OvrBackend ovr_backend;
   if (ovr_backend.initialize()) {
@@ -210,13 +211,13 @@ int main() {
   auto options = assets::ModelLoadOptions();
   options.optimize_meshes = true;
   options.flip_uvs = true;
-  auto rifle = assets::ModelLoader::load("examples/assets/ratchet_wrench_4k.gltf",
+  auto rifle = assets::ModelLoader::load("examples/assets/Hanoi.gltf",
                                          pbr_shader, options);
   if (!rifle) {
     std::cerr << "Failed to load wrench model!" << std::endl;
   } else {
     rifle->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
-    rifle->set_scale(10.0f);
+    rifle->set_scale(0.1f);
     scene->get_root()->add_child(rifle);
     std::cout << "Wrench model loaded and added to scene" << std::endl;
   }
@@ -226,7 +227,7 @@ int main() {
   // Directional light (sun)
   auto sun = scene::Light::create_directional(glm::vec3(0.5f, -1.0f, -0.3f),
                                               glm::vec3(1.0f, 0.95f, 0.9f));
-  sun->set_intensity(3.0f);
+  sun->set_intensity(0.0f);
   scene->add_light(sun);
 
   // Fill light (soft ambient from opposite direction)

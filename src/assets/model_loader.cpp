@@ -2,6 +2,7 @@
 #include "lmgl/assets/texture_library.hpp"
 
 #include <assimp/Importer.hpp>
+#include <assimp/material.h>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
@@ -138,6 +139,10 @@ std::shared_ptr<scene::Mesh> ModelLoader::process_mesh(aiMesh *ai_mesh, const ai
         // Emissive
         if (ai_material->Get(AI_MATKEY_COLOR_EMISSIVE, color) == AI_SUCCESS) {
             material->set_emissive(glm::vec3(color.r, color.g, color.b));
+        }
+        int two_sided = 0;
+        if (ai_material->Get(AI_MATKEY_TWOSIDED, two_sided) == AI_SUCCESS) {
+            material->set_double_sided(two_sided != 0);
         }
         // Load texture maps
         auto &tex_lib = TextureLibrary::get_instance();

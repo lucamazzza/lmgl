@@ -84,6 +84,13 @@ TEST_F(MaterialTest, SetTextureMap) {
     EXPECT_EQ(material->get_albedo_map(), dummy_texture);
 }
 
+TEST_F(MaterialTest, DoubleSidedDefaultsToFalse) { EXPECT_FALSE(material->is_double_sided()); }
+
+TEST_F(MaterialTest, SetDoubleSided) {
+    material->set_double_sided(true);
+    EXPECT_TRUE(material->is_double_sided());
+}
+
 TEST_F(MaterialTest, MetallicWorkflow) {
     material->set_albedo(glm::vec3(0.8f, 0.8f, 0.8f));
     material->set_metallic(1.0f);

@@ -236,6 +236,9 @@ void main() {
     } else {
         N = normalize(v_Normal);
     }
+    if (!gl_FrontFacing) {
+        N = -N;
+    }
 
     vec3 V = normalize(u_CameraPos - v_FragPos);
 

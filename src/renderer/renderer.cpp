@@ -280,12 +280,18 @@ void Renderer::render_mesh(std::shared_ptr<scene::Mesh> mesh, const glm::mat4 &t
         shader->set_int("u_UseEnvironmentMap", 0);
     }
     auto material = mesh->get_material();
-    if (material)
-        bind_material(material, shader);
-    else {
-        bind_material(m_default_material, shader);
+    auto active_material = material ? material : m_default_material;
+    bind_material(active_material, shader);
+
+    const bool render_double_sided = active_material && active_material->is_double_sided();
+    const bool disable_culling_for_mesh = m_culling_enabled && render_double_sided;
+    if (disable_culling_for_mesh) {
+        glDisable(GL_CULL_FACE);
     }
     mesh->render();
+    if (disable_culling_for_mesh) {
+        glEnable(GL_CULL_FACE);
+    }
     m_draw_calls++;
     m_triangles_count += mesh->get_index_count() / 3;
 }
