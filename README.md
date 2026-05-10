@@ -15,7 +15,7 @@
 </p>
 
 > [!IMPORTANT]
-> The project is currently under review for VR features integration
+> The project is currently under review for VR features integration. See the branch [`vr`](https://github.com/lucamazzza/lmgl/tree/vr)
 
 What is it?
 -----------
