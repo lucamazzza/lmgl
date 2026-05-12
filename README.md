@@ -16,6 +16,9 @@
 
 > [!IMPORTANT]
 > The project is currently under review for VR features integration
+> - [ ] Leap Motion Integration
+> - [ ] OpenVR Integration
+> - [ ] Game
 
 What is it?
 -----------
