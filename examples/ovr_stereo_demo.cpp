@@ -533,51 +533,37 @@ for (auto& child : scene->get_root()->get_children()) {
     };
 
     // Try to grab
-if (hand.pinch_strength > 0.85f && held_disk == nullptr) {
-for (int i = (int)disks.size() - 1; i >= 0; i--) {
-            auto& disk = disks[i];
-            glm::vec3 disk_world_pos = get_world_pos(disk);
-            float dist = glm::length(index_tip - disk_world_pos);
-            if (dist < 2.0f) {
-                 held_disk = disk;
-            held_by_hand = h;
-            int base = h * JOINTS_PER_HAND;
-            auto fingertip_node = hand_nodes[base + 3 + 1*4 + 3];
-            
-            glm::vec3 saved_scale = disk_original_scales[disk->get_name()];
-disk->detach_from_parent();
-fingertip_node->add_child(disk);
-disk->set_position(glm::vec3(0.0f));
-
-glm::mat4 parent_world = fingertip_node->get_world_transform();
-glm::vec3 parent_scale = glm::vec3(
-    glm::length(glm::vec3(parent_world[0])),
-    glm::length(glm::vec3(parent_world[1])),
-    glm::length(glm::vec3(parent_world[2]))
-);
-std::cout << "Parent scale: (" << parent_scale.x << ", " << parent_scale.y << ", " << parent_scale.z << ")" << std::endl;
-std::cout << "Saved scale: (" << saved_scale.x << ", " << saved_scale.y << ", " << saved_scale.z << ")" << std::endl;
-std::cout << "Final scale: (" << (saved_scale / parent_scale).x << ", " << (saved_scale / parent_scale).y << ", " << (saved_scale / parent_scale).z << ")" << std::endl;
-disk->set_scale(saved_scale / parent_scale);
-            
-            std::cout << "Grabbed: " << disk->get_name() << std::endl;
-            break;
-            }
+    if (hand.pinch_strength > 0.85f && held_disk == nullptr) {
+      for (int i = (int)disks.size() - 1; i >= 0; i--) {
+        auto& disk = disks[i];
+        glm::vec3 disk_world_pos = glm::vec3(disk->get_world_transform()[3]);
+        float dist = glm::length(index_tip - disk_world_pos);
+        if (dist < 2.0f) {
+          held_disk = disk;
+          held_by_hand = h;
+          break;
         }
-}
+      }
+    }
+
+    // Update held disk position every frame
+    if (held_disk && held_by_hand == (int)h) {
+      auto parent = held_disk->get_parent();
+        if (parent) {
+          glm::mat4 parent_world = parent->get_world_transform();
+          glm::mat4 world_to_local = glm::inverse(parent_world);
+          glm::vec4 local_pos = world_to_local * glm::vec4(index_tip, 1.0f);
+          held_disk->set_position(glm::vec3(local_pos));
+        }
+    }
 
     // Release
     if (hand.pinch_strength < 0.5f && held_by_hand == (int)h && held_disk) {
-        held_disk->detach_from_parent();
-scene->get_root()->add_child(held_disk);
-held_disk->set_position(index_tip);
-held_disk->set_scale(disk_original_scales[held_disk->get_name()]);
-    std::cout << "Released: " << held_disk->get_name() << std::endl;
-    held_disk = nullptr;
-    held_by_hand = -1;
+      held_disk = nullptr;
+      held_by_hand = -1;
     }
-      }
-    }
+  }
+}
 
     // Render scene with frustum culling (automatic)
     scene->update();
