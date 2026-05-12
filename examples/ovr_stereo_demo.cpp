@@ -21,9 +21,14 @@
 #include "lmgl/ui/button.hpp"
 #include "lmgl/ui/ui_element.hpp"
 #include "lmgl/vr/ovr_backend.hpp"
+#include "lmgl/vr/leap.h"
+#include "lmgl/vr/handInput.h"
 
 #include <iostream>
 #include <memory>
+#include <thread>
+#include <mutex>
+#include <atomic>
 
 int main() {
   using namespace lmgl;
@@ -171,7 +176,7 @@ int main() {
   // Create camera with aspect ratio from engine
   auto camera = std::make_shared<scene::Camera>(
       60.0f, engine.get_aspect_ratio() * 0.5f, 0.1f, 100.0f);
-  camera->set_position(glm::vec3(0.0f, 2.0f, 8.0f));
+  camera->set_position(glm::vec3(0.0f, 2.0f, 20.0f));
   camera->set_target(glm::vec3(0.0f, 0.0f, 0.0f));
 
   // Create renderer
@@ -192,24 +197,33 @@ int main() {
     std::cout << "OVR backend init failed, using fallback stereo only" << std::endl;
   }
 
+  auto leap = std::make_unique<vr::Leap>();
+  if (!leap->init()) {
+    std::cout << "Failed to initialize Leap Motion" << std::endl;
+  }
 
+  // Hands setup
+  auto hand_material = std::make_shared<scene::Material>("Hand");
+  hand_material->set_albedo(glm::vec3(0.9f, 0.75f, 0.6f));
+  hand_material->set_roughness(0.8f);
+  hand_material->set_metallic(0.0f);
 
-  // Ground plane
-  auto ground_material = std::make_shared<scene::Material>("Ground");
-  ground_material->set_albedo(glm::vec3(0.3f, 0.3f, 0.3f));
-  ground_material->set_metallic(0.0f);
-  ground_material->set_roughness(0.9f);
+  auto joint_mesh = scene::Mesh::create_sphere(pbr_shader, 0.3f, 8,8);
+  joint_mesh->set_material(hand_material);
 
-  auto ground = scene::Mesh::create_quad(pbr_shader, 20.0f, 20.0f);
-  ground->set_material(ground_material);
-  auto ground_node = std::make_shared<scene::Node>("Ground");
-  ground_node->set_mesh(ground);
-  ground_node->set_rotation(glm::vec3(-90.0f, 0.0f, 0.0f));
-  ground_node->set_position(glm::vec3(0.0f, -5.0f, 0.0f));
-  scene->get_root()->add_child(ground_node);
+  const int JOINTS_PER_HAND = 26;
+  std::vector<std::shared_ptr<scene::Node>> hand_nodes;
+
+  for (int i = 0; i < 2 * JOINTS_PER_HAND; i++) {
+    auto node = std::make_shared<scene::Node>("JointNode");
+    node->set_mesh(joint_mesh);
+    node->set_scale(1.0f);
+    scene->get_root()->add_child(node);
+    hand_nodes.push_back(node);
+}
 
   auto options = assets::ModelLoadOptions();
-  options.optimize_meshes = true;
+  options.optimize_meshes = false;
   options.flip_uvs = true;
   auto rifle = assets::ModelLoader::load("examples/assets/Hanoi.gltf",
                                          pbr_shader, options);
@@ -219,8 +233,32 @@ int main() {
     rifle->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
     rifle->set_scale(0.1f);
     scene->get_root()->add_child(rifle);
+    rifle->update_transform(scene->get_root()->get_world_transform());
     std::cout << "Wrench model loaded and added to scene" << std::endl;
   }
+  
+
+  
+  std::vector<std::shared_ptr<scene::Node>> disks;
+
+  // navigate to tower1
+  auto tower1 = rifle->get_children()[0]; // first child of hanoi
+  std::function<void(std::shared_ptr<scene::Node>)> find_disks;
+  find_disks = [&](std::shared_ptr<scene::Node> node) {
+      if (node->get_name().find("disk") != std::string::npos) {
+          disks.push_back(node);
+          std::cout << "Found disk: " << node->get_name() << std::endl;
+      }
+      for (auto& child : node->get_children())
+          find_disks(child);
+  };
+  find_disks(tower1);
+  std::unordered_map<std::string, glm::vec3> disk_original_scales;
+for (auto& disk : disks) {
+    disk_original_scales[disk->get_name()] = disk->get_scale();
+    std::cout << "Saved scale for " << disk->get_name() 
+              << ": " << disk->get_scale().x << std::endl;
+}
 
   // CREATE LIGHTS
 
@@ -272,6 +310,25 @@ int main() {
     std::cout << "Window resized: " << width << "x" << height
               << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
   });
+
+  std::atomic<bool> leap_running(true);
+  std::mutex leap_mutex;
+  const LEAP_TRACKING_EVENT* latest_frame = nullptr;
+  std::thread leap_thread([&]() {
+    while (leap_running) {
+        leap->update();
+        std::lock_guard<std::mutex> lock(leap_mutex);
+        latest_frame = leap->getCurFrame();
+    }
+  });
+
+  static std::shared_ptr<scene::Node> held_disk = nullptr;
+  static int held_by_hand = -1;
+
+  std::cout << "Scene root children: " << scene->get_root()->get_children().size() << std::endl;
+for (auto& child : scene->get_root()->get_children()) {
+    std::cout << "  " << child->get_name() << std::endl;
+}
 
   // Main loop
   engine.run([&](float dt) {
@@ -425,6 +482,103 @@ int main() {
     // Setup shadows automatically
     renderer->setup_shadows(scene, pbr_shader, enable_point_shadows, enable_directional_shadows);
 
+    // render hands
+    const LEAP_TRACKING_EVENT* frame = nullptr;
+    {
+        std::lock_guard<std::mutex> lock(leap_mutex);
+        frame = latest_frame;
+    }
+    if (frame) {
+
+      auto to_scene = [&](const LEAP_VECTOR& v) -> glm::vec3 {
+        glm::vec3 leap_pos =  glm::vec3(v.x, v.y, v.z) / 10.0f;
+
+        glm::vec3 forward = glm::normalize(camera->get_target() - camera_pos);
+        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0,1,0)));
+        glm::vec3 up = glm::cross(right, forward);
+
+        return camera_pos + right * leap_pos.x + up * (leap_pos.y - 20.0f) + forward * (-leap_pos.z + 20.0f);
+      };
+
+      for (int h = 0; h < 2; h++) {
+        int base = h * JOINTS_PER_HAND;
+
+        if (h >= (int)frame->nHands) {
+            for (int j = 0; j < JOINTS_PER_HAND; j++)
+                hand_nodes[base + j]->set_position(glm::vec3(0.0f, -1000.0f, 0.0f));
+            continue;
+        }
+
+        const LEAP_HAND& hand = frame->pHands[h];
+        int idx = base;
+
+        hand_nodes[idx++]->set_position(to_scene(hand.arm.prev_joint));  // elbow
+        hand_nodes[idx++]->set_position(to_scene(hand.arm.next_joint));  // wrist
+        hand_nodes[idx++]->set_position(to_scene(hand.palm.position));   // palm
+
+        for (int f = 0; f < 5; f++)
+            for (int b = 0; b < 4; b++)
+                hand_nodes[idx++]->set_position(to_scene(hand.digits[f].bones[b].next_joint));
+      }
+
+
+
+    for (uint32_t h = 0; h < frame->nHands; h++) {
+    const LEAP_HAND& hand = frame->pHands[h];
+    glm::vec3 palm = to_scene(hand.palm.position);
+    glm::vec3 index_tip = to_scene(hand.digits[1].bones[3].next_joint);
+
+    auto get_world_pos = [](std::shared_ptr<scene::Node> node) -> glm::vec3 {
+        return glm::vec3(node->get_world_transform()[3]);
+    };
+
+    // Try to grab
+if (hand.pinch_strength > 0.85f && held_disk == nullptr) {
+for (int i = (int)disks.size() - 1; i >= 0; i--) {
+            auto& disk = disks[i];
+            glm::vec3 disk_world_pos = get_world_pos(disk);
+            float dist = glm::length(index_tip - disk_world_pos);
+            if (dist < 2.0f) {
+                 held_disk = disk;
+            held_by_hand = h;
+            int base = h * JOINTS_PER_HAND;
+            auto fingertip_node = hand_nodes[base + 3 + 1*4 + 3];
+            
+            glm::vec3 saved_scale = disk_original_scales[disk->get_name()];
+disk->detach_from_parent();
+fingertip_node->add_child(disk);
+disk->set_position(glm::vec3(0.0f));
+
+glm::mat4 parent_world = fingertip_node->get_world_transform();
+glm::vec3 parent_scale = glm::vec3(
+    glm::length(glm::vec3(parent_world[0])),
+    glm::length(glm::vec3(parent_world[1])),
+    glm::length(glm::vec3(parent_world[2]))
+);
+std::cout << "Parent scale: (" << parent_scale.x << ", " << parent_scale.y << ", " << parent_scale.z << ")" << std::endl;
+std::cout << "Saved scale: (" << saved_scale.x << ", " << saved_scale.y << ", " << saved_scale.z << ")" << std::endl;
+std::cout << "Final scale: (" << (saved_scale / parent_scale).x << ", " << (saved_scale / parent_scale).y << ", " << (saved_scale / parent_scale).z << ")" << std::endl;
+disk->set_scale(saved_scale / parent_scale);
+            
+            std::cout << "Grabbed: " << disk->get_name() << std::endl;
+            break;
+            }
+        }
+}
+
+    // Release
+    if (hand.pinch_strength < 0.5f && held_by_hand == (int)h && held_disk) {
+        held_disk->detach_from_parent();
+scene->get_root()->add_child(held_disk);
+held_disk->set_position(index_tip);
+held_disk->set_scale(disk_original_scales[held_disk->get_name()]);
+    std::cout << "Released: " << held_disk->get_name() << std::endl;
+    held_disk = nullptr;
+    held_by_hand = -1;
+    }
+      }
+    }
+
     // Render scene with frustum culling (automatic)
     scene->update();
     auto eye_cameras = ovr_backend.build_stereo_cameras(*camera);
@@ -452,6 +606,8 @@ int main() {
 
   // Cleanup
   ovr_backend.shutdown();
+  leap_running = false;
+  leap_thread.join();
   engine.free();
   std::cout << "\nEngine shut down successfully." << std::endl;
   return 0;

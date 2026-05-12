@@ -6,6 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(HEADLESS "Build without display support for CI" OFF)
 option(LMGL_ENABLE_OVR "Enable LibOVR backend integration" OFF)
+option(LMGL_ENABLE_LEAP_MOTION "Enable Leap Motion integration" OFF)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -98,6 +99,9 @@ add_library(lmgl STATIC
     # vr
     include/lmgl/vr/ovr_backend.hpp
     src/vr/ovr_backend.cpp
+    include/lmgl/vr/leap.h
+    src/vr/leap.cpp
+    include/lmgl/vr/handInput.h
 )
 
 target_include_directories(lmgl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -122,6 +126,19 @@ if(LMGL_ENABLE_OVR)
     target_include_directories(lmgl PUBLIC ${OVR_INCLUDE_DIR})
     target_link_libraries(lmgl PUBLIC ${OVR_LIBRARY})
     target_compile_definitions(lmgl PUBLIC LMGL_VR_OVR)
+endif()
+
+if(LMGL_ENABLE_LEAP_MOTION)
+    find_path(LEAP_INCLUDE_DIR NAMES LeapC.h
+        HINTS "${CMAKE_SOURCE_DIR}/external/leap/include")
+    find_library(LEAP_LIBRARY NAMES LeapC
+        HINTS "${CMAKE_SOURCE_DIR}/external/leap/lib/x64")
+    if(NOT LEAP_INCLUDE_DIR OR NOT LEAP_LIBRARY)
+        message(FATAL_ERROR "LMGL_ENABLE_LEAP_MOTION=ON but LeapSDK headers/library were not found")
+    endif()
+    target_include_directories(lmgl PUBLIC ${LEAP_INCLUDE_DIR})
+    target_link_libraries(lmgl PUBLIC ${LEAP_LIBRARY})
+    target_compile_definitions(lmgl PUBLIC LMGL_LEAP)
 endif()
 
 if(APPLE)

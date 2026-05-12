@@ -52,6 +52,13 @@ std::shared_ptr<scene::Node> ModelLoader::load(const std::string &fpath, std::sh
 std::shared_ptr<scene::Node> ModelLoader::process_node(aiNode *ai_node, const aiScene *ai_scene, const std::string &dir,
                                                        std::shared_ptr<renderer::Shader> shader) {
     auto node = std::make_shared<scene::Node>(ai_node->mName.C_Str());
+    aiMatrix4x4 t = ai_node->mTransformation;
+    aiVector3D pos, scale;
+    aiQuaternion rot;
+    t.Decompose(scale, rot, pos);
+    node->set_position(glm::vec3(pos.x, pos.y, pos.z));
+    node->set_rotation(glm::quat(rot.w, rot.x, rot.y, rot.z));
+    node->set_scale(glm::vec3(scale.x, scale.y, scale.z));
     for (unsigned int i = 0; i < ai_node->mNumMeshes; ++i) {
         aiMesh *ai_mesh = ai_scene->mMeshes[ai_node->mMeshes[i]];
         auto mesh = process_mesh(ai_mesh, ai_scene, dir, shader);
