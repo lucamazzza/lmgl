@@ -29,9 +29,15 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+#include <algorithm>
+#include <cctype>
+#include <functional>
+#include <limits>
+#include <unordered_map>
 
 int main() {
   using namespace lmgl;
+  constexpr float kWorldScale = 10.0f;
 
   auto &engine = core::Engine::get_instance();
   if (!engine.init(1920, 1080, "LMGL - OVR Stereo Viewer", true, false)) {
@@ -175,8 +181,8 @@ int main() {
 
   // Create camera with aspect ratio from engine
   auto camera = std::make_shared<scene::Camera>(
-      60.0f, engine.get_aspect_ratio() * 0.5f, 0.1f, 100.0f);
-  camera->set_position(glm::vec3(0.0f, 2.0f, 20.0f));
+      60.0f, engine.get_aspect_ratio() * 0.5f, 0.1f, 1000.0f);
+  camera->set_position(glm::vec3(0.0f, 2.0f, 20.0f) * kWorldScale);
   camera->set_target(glm::vec3(0.0f, 0.0f, 0.0f));
 
   // Create renderer
@@ -208,7 +214,7 @@ int main() {
   hand_material->set_roughness(0.8f);
   hand_material->set_metallic(0.0f);
 
-  auto joint_mesh = scene::Mesh::create_sphere(pbr_shader, 0.3f, 8,8);
+  auto joint_mesh = scene::Mesh::create_sphere(pbr_shader, 0.3f * kWorldScale, 8, 8);
   joint_mesh->set_material(hand_material);
 
   const int JOINTS_PER_HAND = 26;
@@ -231,7 +237,7 @@ int main() {
     std::cerr << "Failed to load wrench model!" << std::endl;
   } else {
     rifle->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
-    rifle->set_scale(0.1f);
+    rifle->set_scale(1.0f);
     scene->get_root()->add_child(rifle);
     rifle->update_transform(scene->get_root()->get_world_transform());
     std::cout << "Wrench model loaded and added to scene" << std::endl;
@@ -253,12 +259,81 @@ int main() {
           find_disks(child);
   };
   find_disks(tower1);
+  const auto parse_disk_order = [](const std::string& name) -> int {
+    int value = 0;
+    bool found_digit = false;
+    for (unsigned char c : name) {
+      if (std::isdigit(c)) {
+        found_digit = true;
+        value = value * 10 + (c - '0');
+      }
+    }
+    return found_digit ? value : std::numeric_limits<int>::max();
+  };
+  std::unordered_map<scene::Node*, int> disk_order;
   std::unordered_map<std::string, glm::vec3> disk_original_scales;
-for (auto& disk : disks) {
-    disk_original_scales[disk->get_name()] = disk->get_scale();
-    std::cout << "Saved scale for " << disk->get_name() 
-              << ": " << disk->get_scale().x << std::endl;
-}
+  for (auto& disk : disks) {
+      disk_order[disk.get()] = parse_disk_order(disk->get_name());
+      disk_original_scales[disk->get_name()] = disk->get_scale();
+      std::cout << "Saved scale for " << disk->get_name()
+                << ": " << disk->get_scale().x << std::endl;
+  }
+
+  std::vector<std::shared_ptr<scene::Node>> towers;
+  std::function<void(std::shared_ptr<scene::Node>)> find_towers;
+  find_towers = [&](std::shared_ptr<scene::Node> node) {
+    if (node->get_name().find("tower") != std::string::npos) {
+      towers.push_back(node);
+    }
+    for (const auto& child : node->get_children()) {
+      find_towers(child);
+    }
+  };
+  find_towers(rifle);
+  if (towers.empty()) {
+    for (const auto& child : rifle->get_children()) {
+      towers.push_back(child);
+      if (towers.size() == 3) {
+        break;
+      }
+    }
+  }
+
+  const auto get_world_pos = [](const std::shared_ptr<scene::Node>& node) -> glm::vec3 {
+    return glm::vec3(node->get_world_transform()[3]);
+  };
+
+  const auto is_descendant_of =
+      [](const std::shared_ptr<scene::Node>& node, const std::shared_ptr<scene::Node>& ancestor) -> bool {
+    auto current = node;
+    while (current) {
+      if (current == ancestor) {
+        return true;
+      }
+      current = current->get_parent();
+    }
+    return false;
+  };
+
+  float tower_base_y = std::numeric_limits<float>::max();
+  for (const auto& disk : disks) {
+    tower_base_y = std::min(tower_base_y, get_world_pos(disk).y);
+  }
+  if (tower_base_y == std::numeric_limits<float>::max()) {
+    tower_base_y = 0.0f;
+  }
+  float disk_stack_step = 0.0f;
+  for (size_t i = 0; i < disks.size(); i++) {
+    for (size_t j = i + 1; j < disks.size(); j++) {
+      const float diff = std::abs(get_world_pos(disks[i]).y - get_world_pos(disks[j]).y);
+      if (diff > 0.001f && (disk_stack_step <= 0.0f || diff < disk_stack_step)) {
+        disk_stack_step = diff;
+      }
+    }
+  }
+  if (disk_stack_step <= 0.0f) {
+    disk_stack_step = 0.6f * kWorldScale;
+  }
 
   // CREATE LIGHTS
 
@@ -276,7 +351,8 @@ for (auto& disk : disks) {
 
   // Point light (orange accent)
   auto point_light = scene::Light::create_point(
-      glm::vec3(3.0f, 3.0f, 3.0f), 15.0f, glm::vec3(1.0f, 0.7f, 0.4f));
+      glm::vec3(3.0f, 3.0f, 3.0f) * kWorldScale, 15.0f * kWorldScale,
+      glm::vec3(1.0f, 0.7f, 0.4f));
   point_light->set_intensity(15.0f);
   scene->add_light(point_light);
 
@@ -324,6 +400,8 @@ for (auto& disk : disks) {
 
   static std::shared_ptr<scene::Node> held_disk = nullptr;
   static int held_by_hand = -1;
+  static std::shared_ptr<scene::Node> held_original_parent = nullptr;
+  static glm::vec3 held_original_local_position(0.0f);
 
   std::cout << "Scene root children: " << scene->get_root()->get_children().size() << std::endl;
 for (auto& child : scene->get_root()->get_children()) {
@@ -439,7 +517,7 @@ for (auto& child : scene->get_root()->get_children()) {
       std::cout << "Render mode: Points" << std::endl;
     });
     // Camera movement (WASD)
-    float cam_speed = 5.0f * dt;
+    float cam_speed = 5.0f * kWorldScale * dt;
     glm::vec3 forward = glm::normalize(camera->get_target() - camera_pos);
     glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0, 1, 0)));
 
@@ -491,13 +569,14 @@ for (auto& child : scene->get_root()->get_children()) {
     if (frame) {
 
       auto to_scene = [&](const LEAP_VECTOR& v) -> glm::vec3 {
-        glm::vec3 leap_pos =  glm::vec3(v.x, v.y, v.z) / 10.0f;
+        glm::vec3 leap_pos = (glm::vec3(v.x, v.y, v.z) / 10.0f) * kWorldScale;
 
         glm::vec3 forward = glm::normalize(camera->get_target() - camera_pos);
         glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0,1,0)));
         glm::vec3 up = glm::cross(right, forward);
 
-        return camera_pos + right * leap_pos.x + up * (leap_pos.y - 20.0f) + forward * (-leap_pos.z + 20.0f);
+        return camera_pos + right * leap_pos.x + up * (leap_pos.y - 20.0f * kWorldScale) +
+               forward * (-leap_pos.z + 20.0f * kWorldScale);
       };
 
       for (int h = 0; h < 2; h++) {
@@ -505,7 +584,7 @@ for (auto& child : scene->get_root()->get_children()) {
 
         if (h >= (int)frame->nHands) {
             for (int j = 0; j < JOINTS_PER_HAND; j++)
-                hand_nodes[base + j]->set_position(glm::vec3(0.0f, -1000.0f, 0.0f));
+                hand_nodes[base + j]->set_position(glm::vec3(0.0f, -1000.0f * kWorldScale, 0.0f));
             continue;
         }
 
@@ -528,19 +607,30 @@ for (auto& child : scene->get_root()->get_children()) {
     glm::vec3 palm = to_scene(hand.palm.position);
     glm::vec3 index_tip = to_scene(hand.digits[1].bones[3].next_joint);
 
-    auto get_world_pos = [](std::shared_ptr<scene::Node> node) -> glm::vec3 {
-        return glm::vec3(node->get_world_transform()[3]);
-    };
-
     // Try to grab
     if (hand.pinch_strength > 0.85f && held_disk == nullptr) {
       for (int i = (int)disks.size() - 1; i >= 0; i--) {
         auto& disk = disks[i];
         glm::vec3 disk_world_pos = glm::vec3(disk->get_world_transform()[3]);
         float dist = glm::length(index_tip - disk_world_pos);
-        if (dist < 2.0f) {
+        if (dist < 2.0f * kWorldScale) {
+          const int hand_base = static_cast<int>(h) * JOINTS_PER_HAND;
+          auto hand_palm_node = hand_nodes[hand_base + 2];
+
+          held_original_parent = disk->get_parent();
+          held_original_local_position = disk->get_position();
+
+          glm::vec3 world_position = get_world_pos(disk);
+          if (held_original_parent) {
+            held_original_parent->remove_child(disk);
+          }
+          hand_palm_node->add_child(disk);
+          glm::mat4 hand_world = hand_palm_node->get_world_transform();
+          glm::vec3 local_pos = glm::vec3(glm::inverse(hand_world) * glm::vec4(world_position, 1.0f));
+          disk->set_position(local_pos);
+
           held_disk = disk;
-          held_by_hand = h;
+          held_by_hand = static_cast<int>(h);
           break;
         }
       }
@@ -549,16 +639,80 @@ for (auto& child : scene->get_root()->get_children()) {
     // Update held disk position every frame
     if (held_disk && held_by_hand == (int)h) {
       auto parent = held_disk->get_parent();
-        if (parent) {
-          glm::mat4 parent_world = parent->get_world_transform();
-          glm::mat4 world_to_local = glm::inverse(parent_world);
-          glm::vec4 local_pos = world_to_local * glm::vec4(index_tip, 1.0f);
-          held_disk->set_position(glm::vec3(local_pos));
-        }
+      if (parent) {
+        glm::mat4 parent_world = parent->get_world_transform();
+        glm::mat4 world_to_local = glm::inverse(parent_world);
+        glm::vec4 local_pos = world_to_local * glm::vec4(index_tip, 1.0f);
+        held_disk->set_position(glm::vec3(local_pos));
+      }
     }
 
     // Release
     if (hand.pinch_strength < 0.5f && held_by_hand == (int)h && held_disk) {
+      glm::vec3 release_world_pos = index_tip;
+      std::shared_ptr<scene::Node> closest_tower = nullptr;
+      float closest_dist = std::numeric_limits<float>::max();
+      for (const auto& tower : towers) {
+        float dist = glm::length(release_world_pos - get_world_pos(tower));
+        if (dist < closest_dist) {
+          closest_dist = dist;
+          closest_tower = tower;
+        }
+      }
+
+      auto hand_parent = held_disk->get_parent();
+      if (hand_parent) {
+        hand_parent->remove_child(held_disk);
+      }
+
+      bool valid_move = (closest_tower != nullptr);
+      std::shared_ptr<scene::Node> top_disk = nullptr;
+      float top_y = -std::numeric_limits<float>::max();
+      if (valid_move) {
+        for (const auto& disk : disks) {
+          if (disk == held_disk) {
+            continue;
+          }
+          if (!is_descendant_of(disk, closest_tower)) {
+            continue;
+          }
+          float y = get_world_pos(disk).y;
+          if (!top_disk || y > top_y) {
+            top_y = y;
+            top_disk = disk;
+          }
+        }
+
+        const int held_order = disk_order[held_disk.get()];
+        const int top_order = top_disk ? disk_order[top_disk.get()] : std::numeric_limits<int>::max();
+        if (top_disk && held_order < top_order) {
+          valid_move = false;
+        }
+      }
+
+      if (valid_move) {
+        if (top_disk) {
+          const glm::vec3 target_world = get_world_pos(top_disk) + glm::vec3(0.0f, disk_stack_step, 0.0f);
+          top_disk->add_child(held_disk);
+          const glm::mat4 top_world = top_disk->get_world_transform();
+          const glm::vec3 local_target =
+              glm::vec3(glm::inverse(top_world) * glm::vec4(target_world, 1.0f));
+          held_disk->set_position(local_target);
+        } else {
+          glm::vec3 target_world = get_world_pos(closest_tower);
+          target_world.y = tower_base_y;
+          closest_tower->add_child(held_disk);
+          glm::mat4 tower_world = closest_tower->get_world_transform();
+          glm::vec3 local_target =
+              glm::vec3(glm::inverse(tower_world) * glm::vec4(target_world, 1.0f));
+          held_disk->set_position(local_target);
+        }
+      } else if (held_original_parent) {
+        held_original_parent->add_child(held_disk);
+        held_disk->set_position(held_original_local_position);
+      }
+
+      held_original_parent = nullptr;
       held_disk = nullptr;
       held_by_hand = -1;
     }

@@ -131,8 +131,13 @@ endif()
 if(LMGL_ENABLE_LEAP_MOTION)
     find_path(LEAP_INCLUDE_DIR NAMES LeapC.h
         HINTS "${CMAKE_SOURCE_DIR}/external/leap/include")
-    find_library(LEAP_LIBRARY NAMES LeapC
-        HINTS "${CMAKE_SOURCE_DIR}/external/leap/lib/x64")
+    if(APPLE)
+        set(LEAP_LIBRARY_HINT "${CMAKE_SOURCE_DIR}/external/leap/lib/macos")
+    else()
+        set(LEAP_LIBRARY_HINT "${CMAKE_SOURCE_DIR}/external/leap/lib/x64")
+    endif()
+    find_library(LEAP_LIBRARY NAMES LeapC LeapC.6 libLeapC.6
+        HINTS "${LEAP_LIBRARY_HINT}" "${CMAKE_SOURCE_DIR}/external/leap/lib/x64")
     if(NOT LEAP_INCLUDE_DIR OR NOT LEAP_LIBRARY)
         message(FATAL_ERROR "LMGL_ENABLE_LEAP_MOTION=ON but LeapSDK headers/library were not found")
     endif()
