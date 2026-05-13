@@ -51,10 +51,10 @@ int main() {
   // Load font
   auto &font_mgr = ui::FontManager::get();
   auto ui_font = font_mgr.load(
-      "ui_font", "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 14);
+      "ui_font", "examples/assets/IBMPlexMono-Text.ttf", 14);
   auto ui_font_small =
       font_mgr.load("ui_font_small",
-                    "/Users/lucamazza/Library/Fonts/IBMPlexMono-Text.ttf", 11);
+                    "examples/assets/IBMPlexMono-Text.ttf", 11);
 
   if (!ui_font || !ui_font_small) {
     std::cerr << "Warning: Failed to load UI fonts, UI overlay disabled"
