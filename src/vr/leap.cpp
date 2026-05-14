@@ -63,23 +63,34 @@ bool Leap::free()
 
 bool Leap::update()
 {  
+   if (!connection)
+      return false;
+
    const uint32_t timeout = 1000;      
-   LEAP_CONNECTION_MESSAGE msg;
+   LEAP_CONNECTION_MESSAGE msg = {};
    int64_t now = LeapGetNow();
-   int32_t frameSkipping = -1;   
-   do
+   int32_t frameSkipping = 0;
+   bool gotTrackingFrame = false;
+
+   for (int i = 0; i < 10; ++i)
    {
       if (LeapPollConnection(connection, timeout, &msg) != eLeapRS_Success)
       {
          std::cout << "[ERROR] Unable to poll connection" << std::endl;
          return false;
       }
+      if (msg.type != eLeapEventType_Tracking || msg.tracking_event == nullptr)
+         continue;
+
+      if (msg.tracking_event->info.timestamp >= now - 100)
+      {
+         gotTrackingFrame = true;
+         break;
+      }
       frameSkipping++;
-   } while (msg.tracking_event->info.timestamp < now - 100);
-   
-   // Only tracking events are processed:
-   if (msg.type != eLeapEventType_Tracking)
-      return false;   
+   }
+   if (!gotTrackingFrame)
+      return false;
 
    // We are lagging badly:
    if (frameSkipping > 5)

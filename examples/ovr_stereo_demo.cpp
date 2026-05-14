@@ -29,11 +29,35 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+#include <chrono>
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <functional>
 #include <limits>
 #include <unordered_map>
+
+namespace {
+constexpr int kMaxTrackedHands = 2;
+constexpr int kJointsPerHand = 26;
+constexpr int kBonesPerHand = 22;
+
+struct JointLink {
+  int from;
+  int to;
+};
+
+constexpr std::array<JointLink, kBonesPerHand> kHandJointLinks = {{
+    {0, 1},                                // elbow -> wrist
+    {1, 2},                                // wrist -> palm
+    {2, 3},                                // palm -> thumb base
+    {3, 4},   {4, 5},   {5, 6},   {2, 7},  // palm -> index base
+    {7, 8},   {8, 9},   {9, 10},  {2, 11}, // palm -> middle base
+    {11, 12}, {12, 13}, {13, 14}, {2, 15}, // palm -> ring base
+    {15, 16}, {16, 17}, {17, 18}, {2, 19}, // palm -> pinky base
+    {19, 20}, {20, 21}, {21, 22},
+}};
+} // namespace
 
 int main() {
   using namespace lmgl;
@@ -204,7 +228,8 @@ int main() {
   }
 
   auto leap = std::make_unique<vr::Leap>();
-  if (!leap->init()) {
+  const bool leap_available = leap->init();
+  if (!leap_available) {
     std::cout << "Failed to initialize Leap Motion" << std::endl;
   }
 
@@ -216,17 +241,28 @@ int main() {
 
   auto joint_mesh = scene::Mesh::create_sphere(pbr_shader, 0.3f * kWorldScale, 8, 8);
   joint_mesh->set_material(hand_material);
+  auto bone_mesh = scene::Mesh::create_cube(pbr_shader);
+  bone_mesh->set_material(hand_material);
 
-  const int JOINTS_PER_HAND = 26;
   std::vector<std::shared_ptr<scene::Node>> hand_nodes;
+  std::vector<std::shared_ptr<scene::Node>> hand_bone_nodes;
+  hand_nodes.reserve(kMaxTrackedHands * kJointsPerHand);
+  hand_bone_nodes.reserve(kMaxTrackedHands * kBonesPerHand);
 
-  for (int i = 0; i < 2 * JOINTS_PER_HAND; i++) {
+  for (int i = 0; i < kMaxTrackedHands * kJointsPerHand; i++) {
     auto node = std::make_shared<scene::Node>("JointNode");
     node->set_mesh(joint_mesh);
     node->set_scale(1.0f);
     scene->get_root()->add_child(node);
     hand_nodes.push_back(node);
-}
+  }
+  for (int i = 0; i < kMaxTrackedHands * kBonesPerHand; ++i) {
+    auto node = std::make_shared<scene::Node>("HandBoneNode");
+    node->set_mesh(bone_mesh);
+    node->set_scale(0.01f);
+    scene->get_root()->add_child(node);
+    hand_bone_nodes.push_back(node);
+  }
 
   auto options = assets::ModelLoadOptions();
   options.optimize_meshes = false;
@@ -390,13 +426,19 @@ int main() {
   std::atomic<bool> leap_running(true);
   std::mutex leap_mutex;
   const LEAP_TRACKING_EVENT* latest_frame = nullptr;
-  std::thread leap_thread([&]() {
-    while (leap_running) {
-        leap->update();
+  std::thread leap_thread;
+  if (leap_available) {
+    leap_thread = std::thread([&]() {
+      while (leap_running) {
+        if (!leap->update()) {
+          std::this_thread::sleep_for(std::chrono::milliseconds(2));
+          continue;
+        }
         std::lock_guard<std::mutex> lock(leap_mutex);
         latest_frame = leap->getCurFrame();
-    }
-  });
+      }
+    });
+  }
 
   static std::shared_ptr<scene::Node> held_disk = nullptr;
   static int held_by_hand = -1;
@@ -407,6 +449,49 @@ int main() {
 for (auto& child : scene->get_root()->get_children()) {
     std::cout << "  " << child->get_name() << std::endl;
 }
+
+  toggle_skybox->set_on_toggle([&](bool checked) {
+    if (skybox_ref) {
+      render_skybox = checked;
+      scene->set_skybox(render_skybox ? skybox_ref : nullptr);
+      std::cout << "Skybox " << (render_skybox ? "enabled" : "disabled")
+                << std::endl;
+    }
+  });
+
+  toggle_shadows->set_on_toggle([&](bool checked) {
+    scene->set_shadows_enabled(checked);
+    std::cout << "Shadows " << (checked ? "enabled" : "disabled")
+              << std::endl;
+  });
+
+  toggle_point_shadows->set_on_toggle([&](bool checked) {
+    enable_point_shadows = checked;
+    std::cout << "Point shadows " << (checked ? "enabled" : "disabled") << std::endl;
+  });
+
+  toggle_dir_shadows->set_on_toggle([&](bool checked) {
+    enable_directional_shadows = checked;
+    std::cout << "Directional shadows " << (checked ? "enabled" : "disabled") << std::endl;
+  });
+
+  btn_solid->set_on_click([&]() {
+    current_mode = renderer::RenderMode::Solid;
+    renderer->set_render_mode(current_mode);
+    std::cout << "Render mode: Solid" << std::endl;
+  });
+
+  btn_wireframe->set_on_click([&]() {
+    current_mode = renderer::RenderMode::Wireframe;
+    renderer->set_render_mode(current_mode);
+    std::cout << "Render mode: Wireframe" << std::endl;
+  });
+
+  btn_points->set_on_click([&]() {
+    current_mode = renderer::RenderMode::Points;
+    renderer->set_render_mode(current_mode);
+    std::cout << "Render mode: Points" << std::endl;
+  });
 
   // Main loop
   engine.run([&](float dt) {
@@ -473,49 +558,6 @@ for (auto& child : scene->get_root()->get_children()) {
                 << std::endl;
     }
 
-    // UI Callbacks
-    toggle_skybox->set_on_toggle([&](bool checked) {
-      if (skybox_ref) {
-        render_skybox = checked;
-        scene->set_skybox(render_skybox ? skybox_ref : nullptr);
-        std::cout << "Skybox " << (render_skybox ? "enabled" : "disabled")
-                  << std::endl;
-      }
-    });
-
-    toggle_shadows->set_on_toggle([&](bool checked) {
-      scene->set_shadows_enabled(checked);
-      std::cout << "Shadows " << (checked ? "enabled" : "disabled")
-                << std::endl;
-    });
-
-    toggle_point_shadows->set_on_toggle([&](bool checked) {
-      enable_point_shadows = checked;
-      std::cout << "Point shadows " << (checked ? "enabled" : "disabled") << std::endl;
-    });
-
-    toggle_dir_shadows->set_on_toggle([&](bool checked) {
-      enable_directional_shadows = checked;
-      std::cout << "Directional shadows " << (checked ? "enabled" : "disabled") << std::endl;
-    });
-
-    btn_solid->set_on_click([&]() {
-      current_mode = renderer::RenderMode::Solid;
-      renderer->set_render_mode(current_mode);
-      std::cout << "Render mode: Solid" << std::endl;
-    });
-
-    btn_wireframe->set_on_click([&]() {
-      current_mode = renderer::RenderMode::Wireframe;
-      renderer->set_render_mode(current_mode);
-      std::cout << "Render mode: Wireframe" << std::endl;
-    });
-
-    btn_points->set_on_click([&]() {
-      current_mode = renderer::RenderMode::Points;
-      renderer->set_render_mode(current_mode);
-      std::cout << "Render mode: Points" << std::endl;
-    });
     // Camera movement (WASD)
     float cam_speed = 5.0f * kWorldScale * dt;
     glm::vec3 forward = glm::normalize(camera->get_target() - camera_pos);
@@ -567,24 +609,31 @@ for (auto& child : scene->get_root()->get_children()) {
         frame = latest_frame;
     }
     if (frame) {
+      const glm::vec3 hidden_pos(0.0f, -1000.0f * kWorldScale, 0.0f);
+      const glm::vec3 cam_forward =
+          glm::normalize(camera->get_target() - camera_pos);
+      const glm::vec3 cam_right =
+          glm::normalize(glm::cross(cam_forward, glm::vec3(0, 1, 0)));
+      const glm::vec3 cam_up = glm::cross(cam_right, cam_forward);
 
       auto to_scene = [&](const LEAP_VECTOR& v) -> glm::vec3 {
         glm::vec3 leap_pos = (glm::vec3(v.x, v.y, v.z) / 10.0f) * kWorldScale;
-
-        glm::vec3 forward = glm::normalize(camera->get_target() - camera_pos);
-        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0,1,0)));
-        glm::vec3 up = glm::cross(right, forward);
-
-        return camera_pos + right * leap_pos.x + up * (leap_pos.y - 20.0f * kWorldScale) +
-               forward * (-leap_pos.z + 20.0f * kWorldScale);
+        return camera_pos + cam_right * leap_pos.x +
+               cam_up * (leap_pos.y - 20.0f * kWorldScale) +
+               cam_forward * (-leap_pos.z + 20.0f * kWorldScale);
       };
 
       for (int h = 0; h < 2; h++) {
-        int base = h * JOINTS_PER_HAND;
+        int base = h * kJointsPerHand;
+        int bone_base = h * kBonesPerHand;
 
         if (h >= (int)frame->nHands) {
-            for (int j = 0; j < JOINTS_PER_HAND; j++)
-                hand_nodes[base + j]->set_position(glm::vec3(0.0f, -1000.0f * kWorldScale, 0.0f));
+            for (int j = 0; j < kJointsPerHand; j++)
+                hand_nodes[base + j]->set_position(hidden_pos);
+            for (int b = 0; b < kBonesPerHand; ++b) {
+                hand_bone_nodes[bone_base + b]->set_position(hidden_pos);
+                hand_bone_nodes[bone_base + b]->set_scale(0.01f);
+            }
             continue;
         }
 
@@ -598,6 +647,26 @@ for (auto& child : scene->get_root()->get_children()) {
         for (int f = 0; f < 5; f++)
             for (int b = 0; b < 4; b++)
                 hand_nodes[idx++]->set_position(to_scene(hand.digits[f].bones[b].next_joint));
+
+        const float bone_radius = 0.10f * kWorldScale;
+        for (size_t b = 0; b < kHandJointLinks.size(); ++b) {
+          const JointLink &link = kHandJointLinks[b];
+          const glm::vec3 from = hand_nodes[base + link.from]->get_position();
+          const glm::vec3 to = hand_nodes[base + link.to]->get_position();
+          const glm::vec3 bone_dir = to - from;
+          const float bone_length = glm::length(bone_dir);
+          auto &bone_node = hand_bone_nodes[bone_base + static_cast<int>(b)];
+
+          if (bone_length < 0.0001f) {
+            bone_node->set_position(hidden_pos);
+            bone_node->set_scale(0.01f);
+            continue;
+          }
+
+          bone_node->set_position((from + to) * 0.5f);
+          bone_node->look_at(to);
+          bone_node->set_scale(glm::vec3(bone_radius, bone_radius, bone_length));
+        }
       }
 
 
@@ -614,7 +683,7 @@ for (auto& child : scene->get_root()->get_children()) {
         glm::vec3 disk_world_pos = glm::vec3(disk->get_world_transform()[3]);
         float dist = glm::length(index_tip - disk_world_pos);
         if (dist < 2.0f * kWorldScale) {
-          const int hand_base = static_cast<int>(h) * JOINTS_PER_HAND;
+          const int hand_base = static_cast<int>(h) * kJointsPerHand;
           auto hand_palm_node = hand_nodes[hand_base + 2];
 
           held_original_parent = disk->get_parent();
@@ -747,7 +816,12 @@ for (auto& child : scene->get_root()->get_children()) {
   // Cleanup
   ovr_backend.shutdown();
   leap_running = false;
-  leap_thread.join();
+  if (leap_thread.joinable()) {
+    leap_thread.join();
+  }
+  if (leap_available) {
+    leap->free();
+  }
   engine.free();
   std::cout << "\nEngine shut down successfully." << std::endl;
   return 0;
