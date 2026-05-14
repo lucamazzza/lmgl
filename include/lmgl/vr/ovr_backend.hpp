@@ -11,16 +11,25 @@
 
 namespace lmgl {
 
+/*!
+ * @namespace lmgl::vr
+ * @brief Features relative to the VR functionalities
+ */
 namespace vr {
 
 /*!
  * @brief Pair of eye cameras used for stereoscopic rendering.
  */
 struct StereoCameraPair {
+    //! Camera configured for the left eye.
     std::shared_ptr<scene::Camera> left;
+    //! Camera configured for the right eye.
     std::shared_ptr<scene::Camera> right;
 };
 
+/*!
+ * @brief Eye selector used for stereo rendering operations.
+ */
 enum class OvrEye { Left = 0, Right = 1 };
 
 /*!

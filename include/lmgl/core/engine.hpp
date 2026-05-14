@@ -28,7 +28,7 @@
 namespace lmgl {
 
 /*!
- * @namespace core
+ * @namespace lmgl::core
  * @brief Core components of the LMGL project.
  *
  * This namespace contains the essential classes and functions that form the
