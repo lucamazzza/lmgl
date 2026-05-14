@@ -4,7 +4,7 @@
  */
 #pragma once
 
-#ifdef LMGL_ENABLE_LEAP_MOTION
+#ifdef LMGL_LEAP
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

@@ -225,7 +225,7 @@ int main() {
               << std::endl;
   }
 
-#ifdef LMGL_ENABLE_LEAP_MOTION
+#ifdef LMGL_LEAP
   auto leap = std::make_unique<vr::Leap>();
   const bool leap_available = leap->init();
   if (!leap_available) {
@@ -426,20 +426,36 @@ int main() {
               << " (aspect: " << engine.get_aspect_ratio() << ")" << std::endl;
   });
 
-#ifdef LMGL_ENABLE_LEAP_MOTION
+#ifdef LMGL_LEAP
   std::atomic<bool> leap_running(true);
   std::mutex leap_mutex;
-  const LEAP_TRACKING_EVENT *latest_frame = nullptr;
+  LEAP_TRACKING_EVENT latest_frame{};
+  std::array<LEAP_HAND, kMaxTrackedHands> latest_hands{};
+  bool has_latest_frame = false;
   std::thread leap_thread;
   if (leap_available) {
+    latest_frame.pHands = latest_hands.data();
     leap_thread = std::thread([&]() {
       while (leap_running) {
         if (!leap->update()) {
           std::this_thread::sleep_for(std::chrono::milliseconds(2));
           continue;
         }
+        const LEAP_TRACKING_EVENT *polled_frame = leap->getCurFrame();
+        if (polled_frame == nullptr || polled_frame->pHands == nullptr) {
+          continue;
+        }
+
+        const uint32_t hand_count = std::min<uint32_t>(
+            polled_frame->nHands, static_cast<uint32_t>(kMaxTrackedHands));
         std::lock_guard<std::mutex> lock(leap_mutex);
-        latest_frame = leap->getCurFrame();
+        latest_frame = *polled_frame;
+        latest_frame.nHands = hand_count;
+        for (uint32_t i = 0; i < hand_count; ++i) {
+          latest_hands[i] = polled_frame->pHands[i];
+        }
+        latest_frame.pHands = latest_hands.data();
+        has_latest_frame = true;
       }
     });
   }
@@ -617,80 +633,92 @@ int main() {
     renderer->setup_shadows(scene, pbr_shader, enable_point_shadows,
                             enable_directional_shadows);
 
-#ifdef LMGL_ENABLE_LEAP_MOTION
+#ifdef LMGL_LEAP
     // render hands
+    LEAP_TRACKING_EVENT frame_snapshot{};
+    std::array<LEAP_HAND, kMaxTrackedHands> frame_hands{};
     const LEAP_TRACKING_EVENT *frame = nullptr;
     {
       std::lock_guard<std::mutex> lock(leap_mutex);
-      frame = latest_frame;
+      if (has_latest_frame) {
+        frame_snapshot = latest_frame;
+        frame_hands = latest_hands;
+        frame_snapshot.pHands = frame_hands.data();
+        frame = &frame_snapshot;
+      }
     }
     if (frame) {
-      const glm::vec3 hidden_pos(0.0f, -1000.0f * kWorldScale, 0.0f);
-      const glm::vec3 cam_forward =
-          glm::normalize(camera->get_target() - camera_pos);
-      const glm::vec3 cam_right =
-          glm::normalize(glm::cross(cam_forward, glm::vec3(0, 1, 0)));
-      const glm::vec3 cam_up = glm::cross(cam_right, cam_forward);
+      static int64_t last_processed_leap_frame = -1;
+      if (frame->tracking_frame_id != last_processed_leap_frame) {
+        last_processed_leap_frame = frame->tracking_frame_id;
 
-      auto to_scene = [&](const LEAP_VECTOR &v) -> glm::vec3 {
-        glm::vec3 leap_pos = (glm::vec3(v.x, v.y, v.z) / 10.0f) * kWorldScale;
-        return camera_pos + cam_right * leap_pos.x +
-               cam_up * (leap_pos.y - 20.0f * kWorldScale) +
-               cam_forward * (-leap_pos.z + 20.0f * kWorldScale);
-      };
+        const glm::vec3 hidden_pos(0.0f, -1000.0f * kWorldScale, 0.0f);
+        const glm::vec3 cam_forward =
+            glm::normalize(camera->get_target() - camera_pos);
+        const glm::vec3 cam_right =
+            glm::normalize(glm::cross(cam_forward, glm::vec3(0, 1, 0)));
+        const glm::vec3 cam_up = glm::cross(cam_right, cam_forward);
 
-      for (int h = 0; h < 2; h++) {
-        int base = h * kJointsPerHand;
-        int bone_base = h * kBonesPerHand;
+        auto to_scene = [&](const LEAP_VECTOR &v) -> glm::vec3 {
+          glm::vec3 leap_pos =
+              (glm::vec3(v.x, v.y, v.z) / 10.0f) * kWorldScale;
+          return camera_pos + cam_right * leap_pos.x +
+                 cam_up * (leap_pos.y - 20.0f * kWorldScale) +
+                 cam_forward * (-leap_pos.z + 20.0f * kWorldScale);
+        };
 
-        if (h >= (int)frame->nHands) {
-          for (int j = 0; j < kJointsPerHand; j++)
-            hand_nodes[base + j]->set_position(hidden_pos);
-          for (int b = 0; b < kBonesPerHand; ++b) {
-            hand_bone_nodes[bone_base + b]->set_position(hidden_pos);
-            hand_bone_nodes[bone_base + b]->set_scale(0.01f);
-          }
-          continue;
-        }
+        for (int h = 0; h < 2; h++) {
+          int base = h * kJointsPerHand;
+          int bone_base = h * kBonesPerHand;
 
-        const LEAP_HAND &hand = frame->pHands[h];
-        int idx = base;
-
-        hand_nodes[idx++]->set_position(to_scene(hand.arm.prev_joint)); // elbow
-        hand_nodes[idx++]->set_position(to_scene(hand.arm.next_joint)); // wrist
-        hand_nodes[idx++]->set_position(to_scene(hand.palm.position));  // palm
-
-        for (int f = 0; f < 5; f++)
-          for (int b = 0; b < 4; b++)
-            hand_nodes[idx++]->set_position(
-                to_scene(hand.digits[f].bones[b].next_joint));
-
-        const float bone_radius = 0.10f * kWorldScale;
-        for (size_t b = 0; b < kHandJointLinks.size(); ++b) {
-          const JointLink &link = kHandJointLinks[b];
-          const glm::vec3 from = hand_nodes[base + link.from]->get_position();
-          const glm::vec3 to = hand_nodes[base + link.to]->get_position();
-          const glm::vec3 bone_dir = to - from;
-          const float bone_length = glm::length(bone_dir);
-          auto &bone_node = hand_bone_nodes[bone_base + static_cast<int>(b)];
-
-          if (bone_length < 0.0001f) {
-            bone_node->set_position(hidden_pos);
-            bone_node->set_scale(0.01f);
+          if (h >= (int)frame->nHands) {
+            for (int j = 0; j < kJointsPerHand; j++)
+              hand_nodes[base + j]->set_position(hidden_pos);
+            for (int b = 0; b < kBonesPerHand; ++b) {
+              hand_bone_nodes[bone_base + b]->set_position(hidden_pos);
+              hand_bone_nodes[bone_base + b]->set_scale(0.01f);
+            }
             continue;
           }
 
-          bone_node->set_position((from + to) * 0.5f);
-          bone_node->look_at(to);
-          bone_node->set_scale(
-              glm::vec3(bone_radius, bone_radius, bone_length));
-        }
-      }
+          const LEAP_HAND &hand = frame->pHands[h];
+          int idx = base;
 
-      for (uint32_t h = 0; h < frame->nHands; h++) {
-        const LEAP_HAND &hand = frame->pHands[h];
-        glm::vec3 palm = to_scene(hand.palm.position);
-        glm::vec3 index_tip = to_scene(hand.digits[1].bones[3].next_joint);
+          hand_nodes[idx++]->set_position(to_scene(hand.arm.prev_joint)); // elbow
+          hand_nodes[idx++]->set_position(to_scene(hand.arm.next_joint)); // wrist
+          hand_nodes[idx++]->set_position(to_scene(hand.palm.position));  // palm
+
+          for (int f = 0; f < 5; f++)
+            for (int b = 0; b < 4; b++)
+              hand_nodes[idx++]->set_position(
+                  to_scene(hand.digits[f].bones[b].next_joint));
+
+          const float bone_radius = 0.10f * kWorldScale;
+          for (size_t b = 0; b < kHandJointLinks.size(); ++b) {
+            const JointLink &link = kHandJointLinks[b];
+            const glm::vec3 from = hand_nodes[base + link.from]->get_position();
+            const glm::vec3 to = hand_nodes[base + link.to]->get_position();
+            const glm::vec3 bone_dir = to - from;
+            const float bone_length = glm::length(bone_dir);
+            auto &bone_node = hand_bone_nodes[bone_base + static_cast<int>(b)];
+
+            if (bone_length < 0.0001f) {
+              bone_node->set_position(hidden_pos);
+              bone_node->set_scale(0.01f);
+              continue;
+            }
+
+            bone_node->set_position((from + to) * 0.5f);
+            bone_node->look_at(to);
+            bone_node->set_scale(
+                glm::vec3(bone_radius, bone_radius, bone_length));
+          }
+        }
+
+        for (uint32_t h = 0; h < frame->nHands; h++) {
+          const LEAP_HAND &hand = frame->pHands[h];
+          glm::vec3 palm = to_scene(hand.palm.position);
+          glm::vec3 index_tip = to_scene(hand.digits[1].bones[3].next_joint);
 
         // Try to grab
         if (hand.pinch_strength > 0.85f && held_disk == nullptr) {
@@ -735,76 +763,78 @@ int main() {
         }
 
         // Release
-        if (hand.pinch_strength < 0.5f && held_by_hand == (int)h && held_disk) {
-          glm::vec3 release_world_pos = index_tip;
-          std::shared_ptr<scene::Node> closest_tower = nullptr;
-          float closest_dist = std::numeric_limits<float>::max();
-          for (const auto &tower : towers) {
-            float dist = glm::length(release_world_pos - get_world_pos(tower));
-            if (dist < closest_dist) {
-              closest_dist = dist;
-              closest_tower = tower;
-            }
-          }
-
-          auto hand_parent = held_disk->get_parent();
-          if (hand_parent) {
-            hand_parent->remove_child(held_disk);
-          }
-
-          bool valid_move = (closest_tower != nullptr);
-          std::shared_ptr<scene::Node> top_disk = nullptr;
-          float top_y = -std::numeric_limits<float>::max();
-          if (valid_move) {
-            for (const auto &disk : disks) {
-              if (disk == held_disk) {
-                continue;
-              }
-              if (!is_descendant_of(disk, closest_tower)) {
-                continue;
-              }
-              float y = get_world_pos(disk).y;
-              if (!top_disk || y > top_y) {
-                top_y = y;
-                top_disk = disk;
+          if (hand.pinch_strength < 0.5f && held_by_hand == (int)h &&
+              held_disk) {
+            glm::vec3 release_world_pos = index_tip;
+            std::shared_ptr<scene::Node> closest_tower = nullptr;
+            float closest_dist = std::numeric_limits<float>::max();
+            for (const auto &tower : towers) {
+              float dist = glm::length(release_world_pos - get_world_pos(tower));
+              if (dist < closest_dist) {
+                closest_dist = dist;
+                closest_tower = tower;
               }
             }
 
-            const int held_order = disk_order[held_disk.get()];
-            const int top_order = top_disk ? disk_order[top_disk.get()]
-                                           : std::numeric_limits<int>::max();
-            if (top_disk && held_order < top_order) {
-              valid_move = false;
+            auto hand_parent = held_disk->get_parent();
+            if (hand_parent) {
+              hand_parent->remove_child(held_disk);
             }
-          }
 
-          if (valid_move) {
-            if (top_disk) {
-              const glm::vec3 target_world =
-                  get_world_pos(top_disk) +
-                  glm::vec3(0.0f, disk_stack_step, 0.0f);
-              top_disk->add_child(held_disk);
-              const glm::mat4 top_world = top_disk->get_world_transform();
-              const glm::vec3 local_target = glm::vec3(
-                  glm::inverse(top_world) * glm::vec4(target_world, 1.0f));
-              held_disk->set_position(local_target);
-            } else {
-              glm::vec3 target_world = get_world_pos(closest_tower);
-              target_world.y = tower_base_y;
-              closest_tower->add_child(held_disk);
-              glm::mat4 tower_world = closest_tower->get_world_transform();
-              glm::vec3 local_target = glm::vec3(glm::inverse(tower_world) *
-                                                 glm::vec4(target_world, 1.0f));
-              held_disk->set_position(local_target);
+            bool valid_move = (closest_tower != nullptr);
+            std::shared_ptr<scene::Node> top_disk = nullptr;
+            float top_y = -std::numeric_limits<float>::max();
+            if (valid_move) {
+              for (const auto &disk : disks) {
+                if (disk == held_disk) {
+                  continue;
+                }
+                if (!is_descendant_of(disk, closest_tower)) {
+                  continue;
+                }
+                float y = get_world_pos(disk).y;
+                if (!top_disk || y > top_y) {
+                  top_y = y;
+                  top_disk = disk;
+                }
+              }
+
+              const int held_order = disk_order[held_disk.get()];
+              const int top_order = top_disk ? disk_order[top_disk.get()]
+                                             : std::numeric_limits<int>::max();
+              if (top_disk && held_order < top_order) {
+                valid_move = false;
+              }
             }
-          } else if (held_original_parent) {
-            held_original_parent->add_child(held_disk);
-            held_disk->set_position(held_original_local_position);
-          }
 
-          held_original_parent = nullptr;
-          held_disk = nullptr;
-          held_by_hand = -1;
+            if (valid_move) {
+              if (top_disk) {
+                const glm::vec3 target_world =
+                    get_world_pos(top_disk) +
+                    glm::vec3(0.0f, disk_stack_step, 0.0f);
+                top_disk->add_child(held_disk);
+                const glm::mat4 top_world = top_disk->get_world_transform();
+                const glm::vec3 local_target = glm::vec3(
+                    glm::inverse(top_world) * glm::vec4(target_world, 1.0f));
+                held_disk->set_position(local_target);
+              } else {
+                glm::vec3 target_world = get_world_pos(closest_tower);
+                target_world.y = tower_base_y;
+                closest_tower->add_child(held_disk);
+                glm::mat4 tower_world = closest_tower->get_world_transform();
+                glm::vec3 local_target = glm::vec3(
+                    glm::inverse(tower_world) * glm::vec4(target_world, 1.0f));
+                held_disk->set_position(local_target);
+              }
+            } else if (held_original_parent) {
+              held_original_parent->add_child(held_disk);
+              held_disk->set_position(held_original_local_position);
+            }
+
+            held_original_parent = nullptr;
+            held_disk = nullptr;
+            held_by_hand = -1;
+          }
         }
       }
     }
@@ -845,7 +875,7 @@ int main() {
 
   // Cleanup
   ovr_backend.shutdown();
-#ifdef LMGL_ENABLE_LEAP_MOTION
+#ifdef LMGL_LEAP
   leap_running = false;
   if (leap_thread.joinable()) {
     leap_thread.join();

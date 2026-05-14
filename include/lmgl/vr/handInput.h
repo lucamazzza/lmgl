@@ -4,7 +4,7 @@
  */
 #pragma once
 
-#ifdef LMGL_ENABLE_LEAP_MOTION
+#ifdef LMGL_LEAP
 
 #include "lmgl/vr/leap.h"
 #include <glm/glm.hpp>

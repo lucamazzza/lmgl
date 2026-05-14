@@ -4,7 +4,7 @@
 #include <glm/matrix.hpp>
 #include <glm/mat4x4.hpp>
 
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
 #include <ovr.h>
 #endif
 
@@ -12,7 +12,7 @@ namespace lmgl {
 
 namespace vr {
 
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
 struct OvrBackend::RuntimeState {
     std::unique_ptr<OvVR> helper;
 };
@@ -36,7 +36,7 @@ bool OvrBackend::initialize() {
     if (m_initialized)
         return true;
 
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
     m_runtime = std::make_unique<RuntimeState>();
     m_runtime->helper = std::make_unique<OvVR>();
     if (!m_runtime->helper || !m_runtime->helper->init()) {
@@ -60,7 +60,7 @@ void OvrBackend::shutdown() {
     if (!m_initialized)
         return;
 
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
     if (m_runtime && m_runtime->helper) {
         m_runtime->helper->free();
     }
@@ -84,7 +84,7 @@ void OvrBackend::set_fallback_ipd(float ipd) {
 }
 
 StereoCameraPair OvrBackend::build_stereo_cameras(const scene::Camera &center_camera) {
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
     if (m_has_runtime && m_runtime && m_runtime->helper) {
         m_runtime->helper->update();
         m_ipd = extract_ipd_from_helper(*m_runtime->helper, m_ipd);
@@ -122,7 +122,7 @@ StereoCameraPair OvrBackend::build_stereo_cameras(const scene::Camera &center_ca
     glm::vec3 left_eye_local(-0.5f * m_ipd, 0.0f, 0.0f);
     glm::vec3 right_eye_local(0.5f * m_ipd, 0.0f, 0.0f);
 
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
     if (m_has_runtime && m_runtime && m_runtime->helper) {
         const glm::mat4 hmd_mat = m_runtime->helper->getModelviewMatrix();
         head_local_position = glm::vec3(hmd_mat[3]);
@@ -154,7 +154,7 @@ StereoCameraPair OvrBackend::build_stereo_cameras(const scene::Camera &center_ca
 }
 
 bool OvrBackend::pass(OvrEye eye, unsigned int texture_id) {
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
     if (!m_has_runtime || !m_runtime || !m_runtime->helper || texture_id == 0)
         return false;
     m_runtime->helper->pass(eye == OvrEye::Left ? OvVR::EYE_LEFT : OvVR::EYE_RIGHT, texture_id);
@@ -167,7 +167,7 @@ bool OvrBackend::pass(OvrEye eye, unsigned int texture_id) {
 }
 
 void OvrBackend::render() {
-#if defined(LMGL_VR_OVR)
+#ifdef LMGL_VR_OVR
     if (!m_has_runtime || !m_runtime || !m_runtime->helper)
         return;
     m_runtime->helper->render();

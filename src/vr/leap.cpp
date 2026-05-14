@@ -1,6 +1,6 @@
 #include "lmgl/vr/leap.h"
 
-#ifdef LMGL_ENABLE_LEAP_MOTION
+#ifdef LMGL_LEAP
 
 namespace lmgl{
 namespace vr {
