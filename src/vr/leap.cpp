@@ -1,5 +1,7 @@
 #include "lmgl/vr/leap.h"
 
+#ifdef LMGL_ENABLE_LEAP_MOTION
+
 namespace lmgl{
 namespace vr {
 Leap::Leap() : connection{nullptr}, curFrame{nullptr}, lastFrameId{0}{}
@@ -112,3 +114,5 @@ const LEAP_TRACKING_EVENT *Leap::getCurFrame() const
 }
 } //namespace vr
 } // namspace lmgl
+
+#endif

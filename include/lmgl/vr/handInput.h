@@ -4,6 +4,8 @@
  */
 #pragma once
 
+#ifdef LMGL_ENABLE_LEAP_MOTION
+
 #include "lmgl/vr/leap.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -64,3 +66,5 @@ inline HandState extractHandState(const LEAP_HAND& lh) {
                                    lh.digits[0].bones[3].next_joint.z);
     return hs;
 }
+
+#endif

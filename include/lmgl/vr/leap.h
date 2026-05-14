@@ -4,6 +4,8 @@
  */
 #pragma once
 
+#ifdef LMGL_ENABLE_LEAP_MOTION
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>   
@@ -72,3 +74,4 @@ private:
 } // namespace vr
 } // namespace lmgl
 
+#endif
