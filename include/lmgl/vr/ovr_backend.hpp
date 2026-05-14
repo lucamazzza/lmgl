@@ -31,6 +31,8 @@ enum class OvrEye { Left = 0, Right = 1 };
  */
 class OvrBackend {
   public:
+    OvrBackend();
+    ~OvrBackend();
     /*!
      * @brief Initializes the backend.
      *

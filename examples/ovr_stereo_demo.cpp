@@ -62,7 +62,7 @@ constexpr std::array<JointLink, kBonesPerHand> kHandJointLinks = {{
 int main() {
   using namespace lmgl;
   constexpr float kWorldScale = 10.0f;
-
+  std::cout << "Starting LMGL OVR Stereo Demo..." << std::endl;
   auto &engine = core::Engine::get_instance();
   if (!engine.init(1920, 1080, "LMGL - OVR Stereo Viewer", true, false)) {
     std::cerr << "Failed to initialize engine!" << std::endl;

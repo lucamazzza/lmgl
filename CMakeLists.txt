@@ -118,8 +118,10 @@ target_sources(lmgl PRIVATE external/glad/src/glad.c)
 target_link_libraries(lmgl PUBLIC glfw glm::glm assimp ${OPENGL_LIBRARY} freetype)
 
 if(LMGL_ENABLE_OVR)
-    find_path(OVR_INCLUDE_DIR NAMES openvr.h)
-    find_library(OVR_LIBRARY NAMES openvr_api)
+    find_path(OVR_INCLUDE_DIR NAMES openvr.h
+        HINTS "${CMAKE_SOURCE_DIR}/external/openvr/headers")
+    find_library(OVR_LIBRARY NAMES openvr_api
+        HINTS "${CMAKE_SOURCE_DIR}/external/openvr/lib/win64")
     if(NOT OVR_INCLUDE_DIR OR NOT OVR_LIBRARY)
         message(FATAL_ERROR "LMGL_ENABLE_OVR=ON but OpenVR headers/library were not found")
     endif()

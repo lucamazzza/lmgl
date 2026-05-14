@@ -17,7 +17,7 @@ struct OvrBackend::RuntimeState {
     std::unique_ptr<OvVR> helper;
 };
 
-static float extract_ipd_from_helper(const OvVR &helper, float fallback) {
+static float extract_ipd_from_helper(OvVR &helper, float fallback) {
     const glm::mat4 left_eye_to_head = helper.getEye2HeadMatrix(OvVR::EYE_LEFT);
     const glm::mat4 right_eye_to_head = helper.getEye2HeadMatrix(OvVR::EYE_RIGHT);
     const glm::mat4 left_head_to_eye = glm::inverse(left_eye_to_head);
@@ -28,6 +28,9 @@ static float extract_ipd_from_helper(const OvVR &helper, float fallback) {
     return ipd;
 }
 #endif
+
+OvrBackend::~OvrBackend() = default;
+OvrBackend::OvrBackend() = default;
 
 bool OvrBackend::initialize() {
     if (m_initialized)
