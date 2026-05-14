@@ -1,6 +1,6 @@
 /*!
  * @file ovr_backend.hpp
- * @brief Optional LibOVR integration for stereoscopic camera generation.
+ * @brief Optional OpenVR integration for stereoscopic camera generation.
  */
 
 #pragma once
@@ -21,10 +21,12 @@ struct StereoCameraPair {
     std::shared_ptr<scene::Camera> right;
 };
 
+enum class OvrEye { Left = 0, Right = 1 };
+
 /*!
- * @brief Optional LibOVR backend.
+ * @brief Optional OpenVR backend.
  *
- * If LMGL is built with LibOVR support, this class can query runtime values
+ * If LMGL is built with OpenVR support, this class can query runtime values
  * such as IPD. Otherwise, it gracefully falls back to a configurable default.
  */
 class OvrBackend {
@@ -49,9 +51,9 @@ class OvrBackend {
     bool is_initialized() const;
 
     /*!
-     * @brief Reports whether a LibOVR runtime session is available.
+     * @brief Reports whether an OpenVR runtime session is available.
      *
-     * @return True when connected to a LibOVR runtime.
+     * @return True when connected to an OpenVR runtime.
      */
     bool has_runtime() const;
 
@@ -76,6 +78,20 @@ class OvrBackend {
      * @return Stereo camera pair.
      */
     StereoCameraPair build_stereo_cameras(const scene::Camera &center_camera);
+
+    /*!
+     * @brief Submit one rendered eye texture to OpenVR compositor.
+     *
+     * @param eye Eye selector.
+     * @param texture_id OpenGL texture id.
+     * @return True if submission succeeded.
+     */
+    bool pass(OvrEye eye, unsigned int texture_id);
+
+    /*!
+     * @brief Finalize a compositor frame after both eyes are submitted.
+     */
+    void render();
 
   private:
     bool m_initialized = false;

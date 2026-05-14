@@ -791,7 +791,15 @@ for (auto& child : scene->get_root()->get_children()) {
     // Render scene with frustum culling (automatic)
     scene->update();
     auto eye_cameras = ovr_backend.build_stereo_cameras(*camera);
-    renderer->render_stereo(scene, eye_cameras.left, eye_cameras.right);
+    if (ovr_backend.has_runtime()) {
+      renderer->render(scene, eye_cameras.left);
+      ovr_backend.pass(vr::OvrEye::Left, renderer->get_offscreen_texture_id());
+      renderer->render(scene, eye_cameras.right);
+      ovr_backend.pass(vr::OvrEye::Right, renderer->get_offscreen_texture_id());
+      ovr_backend.render();
+    } else {
+      renderer->render_stereo(scene, eye_cameras.left, eye_cameras.right);
+    }
 
     // Update and render UI
     if (ui_font && fps_text) {

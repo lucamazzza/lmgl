@@ -102,6 +102,17 @@ class Renderer {
                        std::shared_ptr<scene::Camera> right_camera);
 
     /*!
+     * @brief Returns the latest offscreen color texture id.
+     *
+     * @return OpenGL texture id, or 0 when unavailable.
+     */
+    inline unsigned int get_offscreen_texture_id() const {
+        if (!m_framebuffer || !m_framebuffer->get_color_attachment())
+            return 0;
+        return m_framebuffer->get_color_attachment()->get_id();
+    }
+
+    /*!
      * @brief Set the rendering mode.
      *
      * This method allows changing the rendering mode of the renderer.
@@ -449,6 +460,7 @@ class Renderer {
      * @param viewport_h Height of destination viewport.
      */
     void composite_to_backbuffer(int viewport_x, int viewport_y, int viewport_w, int viewport_h);
+
 };
 
 } // namespace renderer

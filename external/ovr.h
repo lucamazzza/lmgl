@@ -12,11 +12,8 @@
 // #INCLUDE //
 //////////////
    
-   // GLEW:
-   #include <GL/glew.h>
-
-   // FreeGLUT:
-   #include <GL/freeglut.h>   
+   // OpenGL loader:
+   #include <glad/glad.h>
 
    // GLM:
    #include <glm/gtc/packing.hpp>
